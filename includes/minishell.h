@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/14 18:26:08 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/15 16:13:55 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 # include <editline/readline.h>
 # include "libft.h"
 
-int	main();
+void	execution(void);
 
 #endif
