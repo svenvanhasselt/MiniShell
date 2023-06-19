@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/16 14:19:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/19 18:02:53 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ typedef struct s_lst
 
 int		main();
 char	*ft_readline(char *prompt);
-int		ft_checkline(char *s);
-int		count_words_msh(char *s);
-int		count_words(char const	*s, char c);
+void	check_line(char *line);
+// int		ft_checkline(char *s);
+// int		count_words_msh(char *s);
+// int		count_words(char const	*s, char c);
+// char	**count_arrays_msh(char	*s, char **new);
+// int		ft_free(char	**new, int words);
 
 #endif

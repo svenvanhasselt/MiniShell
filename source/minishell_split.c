@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/16 12:54:12 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/16 15:23:28 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/19 15:25:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	count_words_msh(char *s)
 {
 	int	i;
 	int	words;
+	int	one_before;
+	int	one_after;
 
 	i = 0;
 	words = 0;
@@ -51,6 +53,7 @@ int	count_words_msh(char *s)
 		else
 		{
 			words++;
+			printf("words count %d\n", words);
 			if (s[i] == '\'')
 			{
 				printf("sq i = %d\n", i);
@@ -67,19 +70,38 @@ int	count_words_msh(char *s)
 					i++;
 				i++;
 			}
-			else if ((s[i] == '|' || s[i] == '>' || s[i] == '<') && (s[--i] != ' ' || (s[++i] != ' ' && s[++i] != '\0')))//(((s[--i] != ' ' || (s[++i] != ' ' && s[++i] != '\0')) || (s[--i] != ' ' && (s[++i] != ' ' && s[++i] != '\0')))))
+			one_before = i - 1;
+			one_after = i + 1;
+			if ((s[i] == '|' || s[i] == '>' || s[i] == '<') && s[one_after] != '\0' && (s[one_before] != ' '  || s[one_before] != '\'' || s[one_before] != '\"' || s[one_after] != ' ' || s[one_after] != '\'' || s[one_after] != '\"'))
 			{
+				printf("s[i] = %c, s[one_before] = %c and s[one_after] = %c\n", s[i], s[one_after], s[one_before]);
+				printf("this is the s[i] %c and the index %d\n", s[i], i);
 				printf("pipe i now= %d\n", i);
-				words++;
+				if (s[one_after] != ' ' || s[one_before] != ' ' || (s[one_after] != ' ' && s[one_before] != ' ') || s[one_after] != '\'') //|| s[one_after] == '\'' || s[one_after] == '\"' || s[one_before] == '\'' || s[one_before] == '\"')
+				{
+					words++;
+					printf("this is the word count %d\n", words);
+				}
 				i++;
 				printf("and pipe i now= %d\n", i);
 			}
 			while(s[i] != '\0' && s[i] != ' ' && s[i] != '\'' && s[i] != '\"')
+			{
+				one_before = i - 1;
+				one_after = i + 1;
+				if (s[i] == '|' && s[one_before] != ' ' && s[one_before] != '\'')
+				{
+					// i++;
+					break;
+				}
 				i++;
+			}
 		}
 	}
 	return (words);
 }
+
+// if you want to add other special characters you can add them in line 89 in the if statement
 int	count_words(char const	*s, char c)
 {
 	int	i;
@@ -101,22 +123,93 @@ int	count_words(char const	*s, char c)
 	return (words);
 }
 
-// int	ft_free(char	**new, int words)
-// {
-// 	if (!new[words])
-// 	{
-// 		while (words >= 0)
-// 		{
-// 			free (new[words]);
-// 			words--;
-// 		}
-// 		free (new);
-// 		return (0);
-// 	}
-// 	return (0);
-// }
+int	ft_free(char	**new, int words)
+{
+	if (!new[words])
+	{
+		while (words >= 0)
+		{
+			free (new[words]);
+			words--;
+		}
+		free (new);
+		return (0);
+	}
+	return (0);
+}
 
-// char	**count_arrays(char	*s, char c, char **new)
+char	**count_arrays_msh(char	*s, char **new)
+{
+	unsigned int	i;
+	int				words;
+	unsigned int	start;
+	size_t			len;
+	// int				one_before;
+	// int				one_after;
+
+	i = 0;
+	words = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == ' ')
+			i++;
+		else
+		{
+			start = i;
+			if (s[i] == '\'')
+			{
+				printf("sq i = %d\n", i);
+				i++;
+				while(s[i] != '\'' && s[i] != '\0')
+					i++;
+				i++;
+				len = (size_t)(i - start);
+				new[words] = ft_substr(s, start, len);
+				printf("this is the %d word in sq = %s\n", words, new[words]);
+				ft_free(new, words);
+				words++;
+			}
+			else if (s[i] == '\"')
+			{
+				printf("dq i = %d\n", i);
+				i++;
+				while(s[i] != '\"' && s[i] != '\0')
+					i++;
+				i++;
+				len = (size_t)(i - start);
+				new[words] = ft_substr(s, start, len);
+				printf("this is the %d word in dq = %s\n", words, new[words]);
+				ft_free(new, words);
+				words++;
+			}
+			// one_before = i - 1;
+			// one_after = i + 1;
+			// if ((s[i] == '|' || s[i] == '>' || s[i] == '<') && (s[one_before] != ' ' || s[one_after] != ' '))
+			// {
+			// 	printf("this is the s[i] %c and the index %d\n", s[i], i);
+			// 	printf("pipe i now= %d\n", i);
+			// 	if (s[one_after] != ' ')
+			// 		words++;
+			// 	i++;
+			// 	printf("and pipe i now= %d\n", i);
+			// }
+			else
+			{
+				while (s[i] != '\0' && s[i] != ' ' && s[i] != '\'' && s[i] != '\"')
+					i++;
+				len = (size_t)(i - start);
+				new[words] = ft_substr(s, start, len);
+				printf("this is the %d word %s\n", words, new[words]);
+				ft_free(new, words);
+				words++;
+			}
+		}
+		new[words] = NULL;
+	}
+	return (new);
+}
+
+// char	**count_arrays(char	*s, char **new)
 // {
 // 	unsigned int	i;
 // 	int				words;
@@ -127,12 +220,12 @@ int	count_words(char const	*s, char c)
 // 	words = 0;
 // 	while (s[i] != '\0')
 // 	{
-// 		if (s[i] == c)
+// 		if (s[i] == ' ')
 // 			i++;
 // 		else
 // 		{
 // 			start = i;
-// 			while (s[i] != '\0' && s[i] != c)
+// 			while (s[i] != '\0' && s[i] != ' ')
 // 				i++;
 // 			len = (size_t)(i - start);
 // 			new[words] = ft_substr(s, start, len);
