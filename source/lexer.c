@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/19 20:25:21 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/20 16:31:22 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,68 @@ void	check_line(char *line)
 	int	i;
 	int	start;
 	char	*new;
-	// int		size;
+	int		size;
+	int		dq_start;
 
 	i = 0;
 	while(line[i] != '\0')
 	{
+		if (line[i] == ' ')
+			i++;
 		start = i;
-		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|'))
+		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"'))
 		{
-			printf("this is i = %d and the chr = %c\n", i, line[i]);
 			i++;
 		}
-		// while(line[i] != ' ' && line[i] != '\0')
+		// if (line[i] == '\"')
+		// {
+		// 	dq_start = i;
 		// 	i++;
-		// if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-		// 	i++;
+		// 	while(line[i] != '\0' && line[i] != '\"')
+		// 		i++;
+		// 	if (line[i] == '\"')
+		// 		i++;
+		// 	size = i - dq_start;
+		// 	new = ft_substr(line, start, (size_t)(size));
+		// 	printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
+		// }
 		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 		{
-			new = ft_substr(line, start, (size_t)(i - start));
-			printf("this is new string in if= %s\n", new);
+			size = i - start;
+			printf("this is the size in if %d\n", size);
+			if (size != 0)
+			{
+				new = ft_substr(line, start, (size_t)(size));
+				printf("this is new string in if= \"%s\" and the char '%c'\n", new, line[i]);
+			}
+			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
+			{
+				size = 1;
+				new = ft_substr(line, i, (size_t)(size));
+				printf("this is new string in the same if= \"%s\" and the char '%c'\n", new, line[i]);
+			}
 		}
 		else
 		{
-			new = ft_substr(line, start, (size_t)(i - start));
-			printf("this is new string in else = %s\n", new);
+			if (line[i] == '\"')
+			{
+				dq_start = i;
+				i++;
+				while(line[i] != '\0' && line[i] != '\"')
+					i++;
+				if (line[i] == '\"')
+					i++;
+				size = i - dq_start;
+				new = ft_substr(line, start, (size_t)(size));
+				printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
+			}
+			else
+			{
+				size = i - start;
+				printf("this is the size in else %d\n", size);
+				new = ft_substr(line, start, (size_t)(size));
+				printf("this is new string in else = \"%s\" and the char '%c'\n", new, line[i]);
+			}
 		}
 		i++;
 	}
