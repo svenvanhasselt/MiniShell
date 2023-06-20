@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/15 18:26:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/20 16:24:58 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,102 +19,166 @@ typedef	struct exec_struc
 	int		outfile;
 	int		fdin;
 	int		fdout;
-	int num_commands;
+	int 	num_commands;
+	int		**pipe_fd;
+	int		*fork_id;
 }	t_exec;
 
-void	redirection(int file, int tmpfd, int *fd);
-void	prepare(t_exec *data);
+// void	redirection(int file, int tmpfd, int *fd);
+void	*prepare(void);
+void	close_pipes(t_exec	*data);
+void	waitpid_forks(t_exec *data);
+void	create_pipes_forks(t_exec *data);
 
 void	execution(void)
 {
 	t_exec	*data;
-	int		tmp_in;
-	int		tmp_out;
-	int		pipe_fd[2];
-	int		*fork_id;
 	int		i;
-	char 	*test_s;
 
-	test_s = NULL;
-	data = malloc (1 * sizeof(t_exec));
-	if (!data)
-		exit (1);
-	prepare(data);
-	fork_id = malloc(data->num_commands * sizeof(int));
-	if (!fork_id)
-		exit (1);
-	tmp_in = dup(0);
-	tmp_out = dup(1);
-	redirection(data->infile, tmp_in, &data->fdin);
-	i = 0;
-	while (i < data->num_commands)
+	data = prepare();
+	if (data->infile)
 	{
-		if (i == data->num_commands - 1)
-		{
-			redirection(data->outfile, tmp_out, &data->fdout);
-			fork_id[i] = fork();
-			if (fork_id[i] == -1)
-				exit (1);
-			if (fork_id[i] == 0)
-			{
-				printf("In child\n");
-				exit(0);
-			}
-		}
-		else
-		{
-			if (pipe(pipe_fd) == -1)
-				exit (1);
-			data->fdin = dup(pipe_fd[0]);
-			data->fdout = dup(pipe_fd[1]);
-			fork_id[i] = fork();
-			if (fork_id[i] == -1)
-				exit (1);
-			if (fork_id[i] == 0)
-			{
-				printf("In child\n");
-			
-				write(pipe_fd[1], "Testing!", 8);
-				read(pipe_fd[0], test_s, 8);
-				write(2, test_s, 8);
-				close (pipe_fd[0]);
-				close (pipe_fd[1]);
-				exit(0);
-			}
-		}
-		i++;
-	}
-	dup2(tmp_in, 0);
-	dup2(tmp_out, 1);
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	i = 0;
-	while (i < data->num_commands)
-	{
-		waitpid(fork_id[i], NULL, 0);
-		i++;
-	}
-}
-
-void	prepare(t_exec *data)
-{
-	data->num_commands = 5;
-	data->infile = 0;
-}
-
-void	redirection(int file, int tmpfd, int *fd)
-{
-	if (file)
-	{
-		*fd = open("test", O_RDONLY);
-		if (!*fd)
+		data->fdin = open("test_in", O_RDONLY);
+		if (!data->fdin)
 			exit(1);
 	}
 	else
+		data->fdin = STDIN_FILENO;
+	if (data->outfile)
 	{
-		*fd = dup(tmpfd);
-		if (!*fd)
+		data->fdout = open("test", O_WRONLY);
+		if (!data->fdout)
 			exit(1);
 	}
+	else
+		data->fdout = STDOUT_FILENO;
+	create_pipes_forks(data);
+	i = 0;
+	while (i < data->num_commands)
+	{
+		if (i == 0 && data->fork_id[i] == 0)
+		{
+			if (dup2(data->fdin, STDIN_FILENO) < 0)
+				exit (1);
+			if (dup2(data->pipe_fd[i][1], STDOUT_FILENO) < 0)
+				exit (1);
+			write(2, "Testing!\n", 9);
 
+			close_pipes(data);
+			exit(0);
+		}
+		if (i == 0 && data->fork_id[i] == 0)
+			exit (0);
+		else if (i == data->num_commands - 1 && data->fork_id[i] == 0)
+		{
+			if (dup2(data->fdout, STDOUT_FILENO) < 0)
+				exit (1);
+			if (dup2(data->pipe_fd[i - 1][0], STDIN_FILENO) < 0)
+				exit (1);
+			close_pipes(data);
+			exit(0);
+		}
+		else if (data->fork_id[i] == 0)
+		{
+			if (dup2(data->pipe_fd[i - 1][0], STDIN_FILENO) < 0)
+				exit (1);
+			if (dup2(data->pipe_fd[i][1], STDOUT_FILENO) < 0)
+				exit (1);
+			char *test;
+			test = malloc (9 * sizeof(char));
+			read (STDIN_FILENO, test, 9);
+			write (2, test, 9);
+			close_pipes(data);
+			exit(0);
+		}
+		i++;
+	}
+	close_pipes(data);
+	waitpid_forks(data);
+}
+
+void	*prepare(void)
+{
+	int		i;
+	t_exec	*data;
+
+	data = malloc (1 * sizeof(t_exec));
+	if (!data)
+		exit (1);
+	data->num_commands = 5;
+	data->infile = 0;
+	data->outfile = 0;
+	data->fork_id = malloc(data->num_commands * sizeof(int));
+	if (!data->fork_id)
+		exit (1);
+	i = 0;
+	data->pipe_fd = (int **) malloc ((data->num_commands - 1) * sizeof(int *));
+	while (i < data->num_commands - 1)
+	{
+		data->pipe_fd[i] = (int *) malloc (2 * sizeof(int));
+		if (!data->pipe_fd[i])
+			exit (1);
+		i++;
+	}
+	return (data);
+}
+
+// void	redirection(int file, int tmpfd, int *fd)
+// {
+// 	int	file_fd;
+
+// 	if (file)
+// 	{
+// 		file_fd = open("test", O_RDONLY);
+// 		if (!file_fd)
+// 			exit(1);
+// 		if (dup2(file_fd, *fd) < 0)
+// 			exit (1);
+// 	}
+// 	else
+// 		return ;
+// }
+
+void	close_pipes(t_exec	*data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_commands - 1)
+	{
+		close (data->pipe_fd[i][0]);
+		close (data->pipe_fd[i][1]);
+		i++;
+	}
+}
+
+void	waitpid_forks(t_exec *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_commands)
+	{
+		waitpid(data->fork_id[i], NULL, 0);
+		i++;
+	}
+}
+
+void	create_pipes_forks(t_exec *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_commands)
+	{
+		data->fork_id[i] = fork();
+		if (data->fork_id[i] == -1)
+			exit (1);
+		if (i < data->num_commands - 1)
+		{
+			if (pipe(data->pipe_fd[i]) < 0)
+				exit (1);
+		}
+		i++;	
+	}
 }
