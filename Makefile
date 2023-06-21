@@ -6,13 +6,13 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/06/15 16:42:17 by svan-has      ########   odam.nl          #
+#    Updated: 2023/06/21 12:10:48 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -Werror -Wall -Wextra
+CFLAGS := -Werror -Wall -Wextra #-fsanitize=address -g
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
