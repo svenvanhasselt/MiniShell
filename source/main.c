@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/15 16:14:30 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/22 18:58:14 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main()
 	// 		add_history(line);
 	// }
 	line = ft_readline("minishell~>");
-	printf("hi\n");
+	// printf("hi\n");
 	// printf("line = %s\n", line);
 	return(0);
 }

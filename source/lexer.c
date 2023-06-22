@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/22 17:05:35 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/22 19:06:27 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	check_line(char *line, t_node **lst)
 			// ft_add_back_list(&lst, make_node(new, size, line[i], NORMAL));
 			// print_list(lst);
 			printf("this is new string first if= \"%s\" and the char '%c'\n", new, line[i]);
+			ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+			print_list(*lst);
 			i++;
 		}
 		start = i;
@@ -62,14 +64,22 @@ void	check_line(char *line, t_node **lst)
 			{
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in if= \"%s\" and the char '%c'\n", new, line[i]);
+				// if (!(*lst))
+				// {
+				// 	*lst = make_node(new, size, line[i], NORMAL);
+				// 	(*lst)->next = NULL;
 				ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
 				print_list(*lst);
+				// 	print_list(*lst);
+				// }
 			}
 			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 			{
 				size = 1;
 				new = ft_substr(line, i, (size_t)(size));
 				printf("this is new string in the same if= \"%s\" and the char '%c'\n", new, line[i]);
+				ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+				print_list(*lst);
 			}
 		}
 		else
@@ -85,11 +95,15 @@ void	check_line(char *line, t_node **lst)
 				size = i - dq_start;
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
+				ft_add_back_list(lst, make_node(new, size, line[dq_start], NORMAL));
+				print_list(*lst);
 				if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 				{
 					size = 1;
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
+					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+					print_list(*lst);
 				}
 			}
 			else if (line[i] == '\'')
@@ -103,11 +117,15 @@ void	check_line(char *line, t_node **lst)
 				size = i - sq_start;
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is string in single qoute= \"%s\" and the char '%c'\n", new, line[i]);
+				ft_add_back_list(lst, make_node(new, size, line[sq_start], NORMAL));
+				print_list(*lst);
 				if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 				{
 					size = 1;
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after sq= \"%s\" and the char '%c'\n", new, line[i]);
+					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+					print_list(*lst);
 				}
 			}
 			else
@@ -116,10 +134,14 @@ void	check_line(char *line, t_node **lst)
 				printf("this is the size in else %d\n", size);
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in else = \"%s\" and the char '%c'\n", new, line[i]);
+				ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+				print_list(*lst);
 			}
 		}
 		i++;
 	}
+	printf("this is the last result->");
+	print_list(*lst);
 }
 
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
@@ -129,17 +151,17 @@ t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
 	node = (t_node *)malloc(sizeof(t_node));
 	if (node == NULL)
 		exit(1);
-	printf("hi hi\n");
+	// printf("hi hi\n");
 	node->str = str;
 	node->len = len;
-	printf("hi hi1\n");
+	// printf("hi hi1\n");
 	node->type = type;
-	printf("hi hi2\n");
+	// printf("hi hi2\n");
 	node->state = state;
-	printf("hi hi3\n");
+	// printf("hi hi3\n");
 	node->next = NULL;
 	node->prev = NULL;
-	printf("hi hi4\n");
+	// printf("hi hi4\n");
 	return (node);
 }
 
@@ -147,10 +169,10 @@ t_node	*ft_lastlist(t_node *lst)
 {
 	if (!lst)
 		return (0);
-	printf("hi hi9\n");
+	// printf("hi hi9\n");
 	while (lst->next)
 		lst = lst->next;
-	printf("hi hi10\n");
+	// printf("hi hi10\n");
 	return (lst);
 }
 
@@ -160,17 +182,17 @@ void	ft_add_back_list(t_node **lst, t_node *new)
 
 	if (!new || !lst)
 		return ;
-	printf("hi hi5\n");
+	// printf("hi hi5\n");
 	if (!*lst)
 	{
-		printf("hi hi6\n");
+		// printf("hi hi6\n");
 		*lst = new;
 		(*lst)->next = NULL;
 		return ;
 	}
-	printf("hi hi7\n");
+	// printf("hi hi7\n");
 	current = ft_lastlist(*lst);
-	printf("hi hi8\n");
+	// printf("hi hi8\n");
 	current->next = new;
 	current->next->next = NULL;
 }
@@ -196,10 +218,12 @@ void	print_list(t_node *lst)
 		return ;
 	while (lst->next != NULL)
 	{
-		printf("%s, ", lst->str);
+		printf("%s,", lst->str);
+		printf("%d,", lst->type);
 		lst = lst->next;
 	}
 	printf("%s\n", lst->str);
+	printf("%d\n,", lst->type);
 }
 
 char	*ft_readline(char *prompt)
@@ -211,6 +235,7 @@ char	*ft_readline(char *prompt)
 	// int		prev_words;
 	// char	**new;
 	
+	lst = NULL;
 	while(1)
 	{
 		line = readline(prompt);
