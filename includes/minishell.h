@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/15 16:13:55 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/22 11:05:31 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,33 @@
 # include <editline/readline.h>
 # include "libft.h"
 
+typedef struct s_funcstruc
+{
+	char	*name;
+	void	(*func)(void*);
+}	t_func;
+
+typedef struct exec_struc
+{
+	int		infile;
+	int		outfile;
+	int		fdin;
+	int		fdout;
+	int		num_commands;
+	int		**pipe_fd;
+	int		*fork_pid;
+	t_func	*builtin_func[7];
+	char	*test_cmd[3][4];
+}	t_exec;
+
 void	execution(void);
+void	close_pipes(t_exec	*data);
+void	waitpid_forks(t_exec *data);
+void	create_pipes(t_exec *data);
+// void	builtin_func(t_exec *data);
+int		check_array_size(char **array);
+
+/* Built-ins */
+int		echo(char **cmd_table);
 
 #endif

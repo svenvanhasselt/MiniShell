@@ -6,31 +6,16 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/21 12:35:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/22 11:02:20 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-typedef struct exec_struc
-{
-	int		infile;
-	int		outfile;
-	int		fdin;
-	int		fdout;
-	int		num_commands;
-	int		**pipe_fd;
-	int		*fork_id;
-	char	*test_cmd[3][3];
-}	t_exec;
-
 void	redirection(t_exec *data);
 void	*prepare(void);
 void	execute(t_exec *data, int fdin, int fdout, int i);
-void	close_pipes(t_exec	*data);
-void	waitpid_forks(t_exec *data);
-void	create_pipes(t_exec *data);
 void	*testing(t_exec *data);
 
 void	execution(void)
@@ -42,20 +27,21 @@ void	execution(void)
 	data = testing(data);
 	redirection(data);
 	create_pipes(data);
-	i = 0;
-	while (i < data->num_commands)
-	{
-		data->fork_id[i] = fork();
-		if (data->fork_id[i] == -1)
-			exit (1);
-		if (i == 0 && data->fork_id[i] == 0)
-			execute(data, data->fdin, data->pipe_fd[i][1], i);
-		else if (i == data->num_commands - 1 && data->fork_id[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
-		else if (data->fork_id[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
-		i++;
-	}
+	echo(data->test_cmd[0]);
+	// i = 0;
+	// while (i < data->num_commands)
+	// {
+	// 	data->fork_pid[i] = fork();
+	// 	if (data->fork_pid[i] == -1)
+	// 		exit (1);
+	// 	if (i == 0 && data->fork_pid[i] == 0)
+	// 		execute(data, data->fdin, data->pipe_fd[i][1], i);
+	// 	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+	// 		execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
+	// 	else if (data->fork_pid[i] == 0)
+	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
+	// 	i++;
+	// }
 	close_pipes(data);
 	waitpid_forks(data);
 }
@@ -71,8 +57,8 @@ void	*prepare(void)
 	data->num_commands = 3;
 	data->infile = 0;
 	data->outfile = 1;
-	data->fork_id = malloc(data->num_commands * sizeof(int));
-	if (!data->fork_id)
+	data->fork_pid = malloc(data->num_commands * sizeof(int));
+	if (!data->fork_pid)
 		exit (1);
 	i = 0;
 	data->pipe_fd = (int **) malloc ((data->num_commands - 1) * sizeof(int *));
@@ -118,52 +104,12 @@ void	execute(t_exec *data, int fdin, int fdout, int i)
 	exit(0);
 }
 
-void	close_pipes(t_exec	*data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->num_commands - 1)
-	{
-		close (data->pipe_fd[i][0]);
-		close (data->pipe_fd[i][1]);
-		i++;
-	}
-}
-
-void	waitpid_forks(t_exec *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->num_commands)
-	{
-		waitpid(data->fork_id[i], NULL, 0);
-		i++;
-	}
-}
-
-void	create_pipes(t_exec *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->num_commands)
-	{
-		if (i < data->num_commands - 1)
-		{
-			if (pipe(data->pipe_fd[i]) < 0)
-				exit (1);
-		}
-		i++;
-	}
-}
-
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = "/bin/ls";
-	data->test_cmd[0][1] = "-la";
-	data->test_cmd[0][2] = NULL;
+	data->test_cmd[0][0] = "echo";
+	data->test_cmd[0][1] = "one";
+	data->test_cmd[0][2] = "two";
+	data->test_cmd[0][3] = NULL;
 	data->test_cmd[1][0] = "/usr/bin/wc";
 	data->test_cmd[1][1] = "-l";
 	data->test_cmd[1][2] = NULL;
