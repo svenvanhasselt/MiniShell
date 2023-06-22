@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/22 11:05:31 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/22 14:29:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct exec_struc
 }	t_exec;
 
 void	execution(void);
-void	close_pipes(t_exec	*data);
+void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data);
 // void	builtin_func(t_exec *data);
@@ -48,5 +48,6 @@ int		check_array_size(char **array);
 
 /* Built-ins */
 int		echo(char **cmd_table);
+int		cd(char **cmd_table);
 
 #endif

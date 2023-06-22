@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/22 11:02:20 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/22 15:10:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	execution(void)
 	data = testing(data);
 	redirection(data);
 	create_pipes(data);
-	echo(data->test_cmd[0]);
-	// i = 0;
+	printf("%d\n", cd(data->test_cmd[0]));
+	i = 0;
 	// while (i < data->num_commands)
 	// {
 	// 	data->fork_pid[i] = fork();
@@ -42,7 +42,7 @@ void	execution(void)
 	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
 	// 	i++;
 	// }
-	close_pipes(data);
+	close_pipes_files(data);
 	waitpid_forks(data);
 }
 
@@ -98,17 +98,17 @@ void	execute(t_exec *data, int fdin, int fdout, int i)
 		exit (1);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		exit (1);
-	close_pipes(data);
+	close_pipes_files(data);
 	execve(data->test_cmd[i][0], data->test_cmd[i], NULL);
-	write (2, "Error execve\n", 8);
+	write (2, "Error execve\n", 14);
 	exit(0);
 }
 
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = "echo";
-	data->test_cmd[0][1] = "one";
-	data->test_cmd[0][2] = "two";
+	data->test_cmd[0][0] = "cd";
+	data->test_cmd[0][1] = "source";
+	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
 	data->test_cmd[1][0] = "/usr/bin/wc";
 	data->test_cmd[1][1] = "-l";

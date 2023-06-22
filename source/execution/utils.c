@@ -6,14 +6,14 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/22 10:01:12 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/22 14:30:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	close_pipes(t_exec	*data)
+void	close_pipes_files(t_exec *data)
 {
 	int	i;
 
@@ -24,6 +24,10 @@ void	close_pipes(t_exec	*data)
 		close (data->pipe_fd[i][1]);
 		i++;
 	}
+	if (data->infile && i == 0)
+		close(data->fdin);
+	if (data->outfile && i == data->num_commands - 1)
+		close(data->fdout);
 }
 
 void	waitpid_forks(t_exec *data)
