@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/19 18:02:53 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/22 17:04:29 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,12 @@ typedef struct s_lst
 
 int		main();
 char	*ft_readline(char *prompt);
-void	check_line(char *line);
+void	check_line(char *line, t_node **lst);
+t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
+t_node	*ft_lastlist(t_node *lst);
+void	ft_add_back_list(t_node **lst, t_node *new);
+int		ft_sizelist(t_node *lst);
+void	print_list(t_node *lst);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
