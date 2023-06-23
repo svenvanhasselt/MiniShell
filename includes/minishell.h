@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/22 17:04:29 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/06/23 11:46:20 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ enum e_token
 
 enum e_situation
 {
-	IN_DOUBLEQ,
-	IN_SINGLEQ,
 	NORMAL,
+	IN_SINGLEQ,
+	IN_DOUBLEQ,
 };
 
 typedef struct s_node
