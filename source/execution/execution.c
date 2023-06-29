@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/27 19:07:38 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/29 17:54:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 void	redirection(t_exec *data);
 void	*prepare(void);
 void	execute(t_exec *data, int fdin, int fdout, int i);
+char	**copy_environment_list(void);
 void	*testing(t_exec *data);
 
 void	execution(void)
@@ -27,7 +28,21 @@ void	execution(void)
 	data = testing(data);
 	redirection(data);
 	create_pipes(data);
+	unsetenv("PWD");
+	unsetenv("OLDPWD");
+	printf("PWD:  %s\n", getenv("PWD"));
+	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
 	printf("%d\n", cd(data->test_cmd[0]));
+	printf("PWD:  %s\n", getenv("PWD"));
+	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
+	printf("\n\n\nSecond cd\n\n\n");
+	// unsetenv("PWD");
+	// unsetenv("OLDPWD");
+	printf("PWD:  %s\n", getenv("PWD"));
+	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
+	printf("%d\n", cd(data->test_cmd[0]));
+	printf("PWD:  %s\n", getenv("PWD"));
+	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
 	i = 0;
 	// while (i < data->num_commands)
 	// {
@@ -44,12 +59,13 @@ void	execution(void)
 	// }
 	close_pipes_files(data);
 	waitpid_forks(data);
+	exit(0);
 }
 
 void	*prepare(void)
 {
-	int		i;
-	t_exec	*data;
+	int			i;
+	t_exec		*data;
 
 	data = malloc (1 * sizeof(t_exec));
 	if (!data)
@@ -69,7 +85,29 @@ void	*prepare(void)
 			exit (1);
 		i++;
 	}
+	data->environ = copy_environment_list();
 	return (data);
+}
+
+char	**copy_environment_list(void)
+{
+	int			i;
+	extern char	**environ;
+	char		**new_environ;
+
+	i = 0;
+	while (environ[i])
+		i++;
+	new_environ = null_check(malloc ((i + 1) * sizeof (char *)));
+	i = 0;
+	while (environ[i])
+	{
+		new_environ[i] = null_check(ft_strdup(environ[i]));
+		i++;
+	}
+	new_environ[i] = NULL;
+	environ = new_environ;
+	return (new_environ);
 }
 
 void	redirection(t_exec *data)

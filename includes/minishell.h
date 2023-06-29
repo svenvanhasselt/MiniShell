@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/22 14:29:42 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/29 17:09:31 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ typedef struct exec_struc
 	int		*fork_pid;
 	t_func	*builtin_func[7];
 	char	*test_cmd[3][4];
+	char	**environ;
 }	t_exec;
 
 void	execution(void);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data);
+void	*null_check(void *check);
 // void	builtin_func(t_exec *data);
 int		check_array_size(char **array);
 

@@ -6,13 +6,13 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/06/22 11:05:04 by svan-has      ########   odam.nl          #
+#    Updated: 2023/06/29 13:29:51 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -fsanitize=address -g
+CFLAGS := #-Wall -Werror -Wextra
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
@@ -23,6 +23,7 @@ SRC := \
 		main.c\
 		execution/execution.c\
 		execution/utils.c\
+		execution/error_exit.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		
