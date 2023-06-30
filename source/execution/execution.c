@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/29 17:54:33 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/30 12:55:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,19 @@ void	*testing(t_exec *data);
 void	execution(void)
 {
 	t_exec	*data;
-	int		i;
+	// int		i;
 
 	data = prepare();
 	data = testing(data);
-	redirection(data);
-	create_pipes(data);
-	unsetenv("PWD");
-	unsetenv("OLDPWD");
-	printf("PWD:  %s\n", getenv("PWD"));
-	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
-	printf("%d\n", cd(data->test_cmd[0]));
-	printf("PWD:  %s\n", getenv("PWD"));
-	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
-	printf("\n\n\nSecond cd\n\n\n");
-	// unsetenv("PWD");
-	// unsetenv("OLDPWD");
-	printf("PWD:  %s\n", getenv("PWD"));
-	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
-	printf("%d\n", cd(data->test_cmd[0]));
-	printf("PWD:  %s\n", getenv("PWD"));
-	printf("OLDPWD:  %s\n", getenv("OLDPWD"));
-	i = 0;
+
+	env();
+	printf("\n\n\n");
+	printf("%d\n", unset("HOME"));
+	env();
+	
+	// redirection(data);
+	// create_pipes(data);
+	// i = 0;
 	// while (i < data->num_commands)
 	// {
 	// 	data->fork_pid[i] = fork();
@@ -57,8 +48,8 @@ void	execution(void)
 	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
 	// 	i++;
 	// }
-	close_pipes_files(data);
-	waitpid_forks(data);
+	// close_pipes_files(data);
+	// waitpid_forks(data);
 	exit(0);
 }
 

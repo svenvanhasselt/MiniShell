@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/29 17:59:53 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/06/30 10:37:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int		ft_putenv(char *variable, char *path);
 
 int	cd(char **cmd_table)
 {
-	if ((!cmd_table[1] && !getenv("HOME")) || (cmd_table[1] && !ft_strncmp(cmd_table[1], "", 1)))
+	if ((!cmd_table[1] && !getenv("HOME")) || \
+	(cmd_table[1] && !ft_strncmp(cmd_table[1], "", 1)))
 		return (0);
 	else if (!cmd_table[1] && change_dir((getenv("HOME"))) > 0)
 		return (1);
@@ -30,10 +31,10 @@ int	cd(char **cmd_table)
 int	find_env_var(char *variable)
 {
 	int			i;
-	extern char **environ;
+	extern char	**environ;
 
 	i = 0;
-	while(environ[i])
+	while (environ[i])
 	{
 		if (!strncmp(environ[i], variable, ft_strlen(variable)))
 			return (i);
@@ -48,8 +49,8 @@ int	change_dir(char *path)
 	int			env_oldpwd;
 	char		*old_dir;
 	char		*new_dir;
-	extern char **environ;
-	
+	extern char	**environ;
+
 	env_pwd = find_env_var("PWD=");
 	env_oldpwd = find_env_var("OLDPWD=");
 	old_dir = null_check(getcwd(NULL, 0));
@@ -78,29 +79,23 @@ int	change_dir(char *path)
 int	ft_putenv(char *variable, char *path)
 {
 	int			i;
-	extern char **environ;
+	extern char	**environ;
 	char		**new_environ;
 
 	i = 0;
-	while(environ[i])
+	while (environ[i])
 		i++;
-	new_environ = malloc ((i + 2) * sizeof(char *));
-	if (!new_environ)
-		return (1);
+	new_environ = null_check(malloc ((i + 2) * sizeof(char *)));
 	i = 0;
 	while (environ[i])
 	{
-		new_environ[i] = ft_strdup(environ[i]);
-		if (!new_environ[i])
-			return (1);
+		new_environ[i] = null_check(ft_strdup(environ[i]));
 		i++;
 	}
-	new_environ[i] = ft_strjoin(variable, path);
-	if (!new_environ[i])
-		return (1);
+	new_environ[i] = null_check(ft_strjoin(variable, path));
 	new_environ[i + 1] = NULL;
 	i = 0;
-	while(environ[i])
+	while (environ[i])
 	{
 		free(environ[i]);
 		i++;
