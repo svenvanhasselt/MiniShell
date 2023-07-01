@@ -6,7 +6,7 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/06/30 12:49:06 by svan-has      ########   odam.nl          #
+#    Updated: 2023/07/01 13:25:43 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC := \
 		builtins/pwd.c\
 		builtins/env.c\
 		builtins/unset.c\
+		builtins/export.c\
 		
 SRC := $(SRC:%=$(SRC_DIR)/%)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

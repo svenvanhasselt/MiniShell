@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/30 12:55:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 15:29:43 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,12 @@ void	execution(void)
 {
 	t_exec	*data;
 	// int		i;
+	extern char	**environ;
 
 	data = prepare();
 	data = testing(data);
 
-	env();
-	printf("\n\n\n");
-	printf("%d\n", unset("HOME"));
+	export("Posti=sdf456");
 	env();
 	
 	// redirection(data);

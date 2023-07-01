@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 10:44:18 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/30 11:52:19 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 12:34:11 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	pwd(void)
 {
-	char *current_dir;
+	char	*current_dir;
 
 	current_dir = getcwd(NULL, 0);
 	if (!current_dir)

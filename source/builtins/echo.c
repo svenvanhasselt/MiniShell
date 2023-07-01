@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:47:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/30 10:29:53 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 12:20:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	echo(char **cmd_table)
 	int	arguments;
 	int	new_line;
 
-	arguments = check_array_size(cmd_table);
+	arguments = array_size(cmd_table);
 	new_line = check_newline(cmd_table, arguments);
 	i = 1 + new_line;
 	while (i < arguments)

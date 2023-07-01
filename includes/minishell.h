@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/30 12:33:06 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 13:25:01 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data);
 void	*null_check(void *check);
 // void	builtin_func(t_exec *data);
-int		check_array_size(char **array);
+int		array_size(char **array);
 int		error_exit(char *message);
 
 /* Built-ins */
@@ -55,6 +55,7 @@ int		cd(char **cmd_table);
 int		pwd(void);
 int		env(void);
 int		unset(char *variable);
+int		export(char *string);
 
 /* Built-in Tools*/
 int		find_env_var(char *variable);

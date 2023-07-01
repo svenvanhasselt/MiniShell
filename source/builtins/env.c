@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 12:08:54 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/30 12:12:46 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 12:33:49 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	env(void)
 {
 	int			i;
-	extern char **environ;
+	extern char	**environ;
 
 	i = 0;
 	while (environ[i])

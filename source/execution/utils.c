@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/22 14:30:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/01 12:19:54 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	create_pipes(t_exec *data)
 // 	data->builtin_func[7]->func = &exit;
 // }
 
-int	check_array_size(char **array)
+int	array_size(char **array)
 {
 	int count;
 
