@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/01 12:33:13 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/03 12:07:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int		find_env_var(char *variable);
 int		change_dir(char *path);
-int		ft_putenv(char *variable, char *path);
 
 int	cd(char **cmd_table)
 {
@@ -60,47 +59,9 @@ int	change_dir(char *path)
 	if (chdir(path) < 0)
 		return (2);
 	new_dir = null_check(getcwd(NULL, 0));
-	if (env_pwd >= 0)
-	{
-		free(environ[env_pwd]);
-		environ[env_pwd] = null_check(ft_strjoin("PWD=", new_dir));
-	}
-	else
-		ft_putenv("PWD=", new_dir);
-	if (env_oldpwd >= 0)
-	{
-		free(environ[env_oldpwd]);
-		environ[env_oldpwd] = null_check(ft_strjoin("OLDPWD=", old_dir));
-	}
-	else
-		ft_putenv("OLDPWD=", old_dir);
+	export(null_check(ft_strjoin("PWD=", new_dir)));
+	export(null_check(ft_strjoin("OLDPWD=", old_dir)));
 	free(old_dir);
 	free(new_dir);
-	return (0);
-}
-
-int	ft_putenv(char *variable, char *path)
-{
-	int			i;
-	extern char	**environ;
-	char		**new_environ;
-
-	new_environ = null_check(malloc ((array_size(environ)+2) * sizeof(char *)));
-	i = 0;
-	while (environ[i])
-	{
-		new_environ[i] = null_check(ft_strdup(environ[i]));
-		i++;
-	}
-	new_environ[i] = null_check(ft_strjoin(variable, path));
-	new_environ[i + 1] = NULL;
-	i = 0;
-	while (environ[i])
-	{
-		free(environ[i]);
-		i++;
-	}
-	free(environ);
-	environ = new_environ;
 	return (0);
 }

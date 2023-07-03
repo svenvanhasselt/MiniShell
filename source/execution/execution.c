@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/01 15:29:43 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/03 17:43:57 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ void	execution(void)
 	data = prepare();
 	data = testing(data);
 
-	export("Posti=sdf456");
-	env();
+	
 	
 	// redirection(data);
 	// create_pipes(data);
@@ -141,7 +140,7 @@ void	*testing(t_exec *data)
 	data->test_cmd[1][0] = "/usr/bin/wc";
 	data->test_cmd[1][1] = "-l";
 	data->test_cmd[1][2] = NULL;
-	data->test_cmd[2][0] = "/bin/cat";
-	data->test_cmd[2][1] = NULL;
+	data->test_cmd[2][0] = "echo";
+	data->test_cmd[2][1] = "$PWD";
 	return (data);
 }
