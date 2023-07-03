@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/03 17:38:57 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/03 19:12:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main()
 {
 	// char *line;
 
-	atexit(f);
+	// atexit(f);
 	execution();
 	// while(1)
 	// {

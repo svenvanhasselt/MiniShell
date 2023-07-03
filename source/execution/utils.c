@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/01 12:19:54 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/03 19:14:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	create_pipes(t_exec *data)
 	}
 }
 
+
 // void	builtin_func(t_exec *data)
 // {
 // 	data->builtin_func[0]->name = "echo";
@@ -69,11 +70,11 @@ void	create_pipes(t_exec *data)
 // 	data->builtin_func[3]->name = "export";
 // 	data->builtin_func[3]->func = &export;
 // 	data->builtin_func[4]->name = "unset";
-// 	data->builtin_func[5]->func = &unset;
-// 	data->builtin_func[6]->name = "env";
-// 	data->builtin_func[6]->func = &env;
-// 	data->builtin_func[7]->name = "echo";
-// 	data->builtin_func[7]->func = &exit;
+// 	data->builtin_func[4]->func = &unset;
+// 	data->builtin_func[5]->name = "env";
+// 	data->builtin_func[5]->func = &env;
+// 	data->builtin_func[6]->name = "echo";
+// 	data->builtin_func[6]->func = &exit_builtin;
 // }
 
 int	array_size(char **array)

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/01 13:25:01 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/03 19:12:17 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		pwd(void);
 int		env(void);
 int		unset(char *variable);
 int		export(char *string);
+int		exit_builtin(int status);
 
 /* Built-in Tools*/
 int		find_env_var(char *variable);
