@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/03 12:07:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/04 10:39:22 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	change_dir(char *path)
 	env_oldpwd = find_env_var("OLDPWD");
 	old_dir = null_check(getcwd(NULL, 0));
 	if (chdir(path) < 0)
-		return (2);
+		error_exit(path);
 	new_dir = null_check(getcwd(NULL, 0));
 	export(null_check(ft_strjoin("PWD=", new_dir)));
 	export(null_check(ft_strjoin("OLDPWD=", old_dir)));

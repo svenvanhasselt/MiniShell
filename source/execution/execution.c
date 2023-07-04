@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:13:12 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/04 11:19:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	*prepare(void);
 void	execute(t_exec *data, int fdin, int fdout, int i);
 char	**copy_environment_list(void);
 void	*testing(t_exec *data);
+char	*path_cmd(char *command);
 
 void	execution(void)
 {
@@ -28,26 +29,31 @@ void	execution(void)
 	data = prepare();
 	data = testing(data);
 
-	echo(data->test_cmd[2]);
-	
-	// redirection(data);
-	// create_pipes(data);
-	// i = 0;
-	// while (i < data->num_commands)
-	// {
-	// 	data->fork_pid[i] = fork();
-	// 	if (data->fork_pid[i] == -1)
-	// 		exit (1);
-	// 	if (i == 0 && data->fork_pid[i] == 0)
-	// 		execute(data, data->fdin, data->pipe_fd[i][1], i);
-	// 	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-	// 		execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
-	// 	else if (data->fork_pid[i] == 0)
-	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
-	// 	i++;
-	// }
-	// close_pipes_files(data);
-	// waitpid_forks(data);
+	// printf("%s\n", path_cmd("ls"));
+
+
+
+
+
+
+	redirection(data);
+	create_pipes(data);
+	i = 0;
+	while (i < data->num_commands)
+	{
+		data->fork_pid[i] = fork();
+		if (data->fork_pid[i] == -1)
+			exit (1);
+		if (i == 0 && data->fork_pid[i] == 0)
+			execute(data, data->fdin, data->pipe_fd[i][1], i);
+		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+			execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
+		else if (data->fork_pid[i] == 0)
+			execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
+		i++;
+	}
+	close_pipes_files(data);
+	waitpid_forks(data);
 	exit(0);
 }
 
@@ -61,7 +67,7 @@ void	*prepare(void)
 		exit (1);
 	data->num_commands = 3;
 	data->infile = 0;
-	data->outfile = 1;
+	data->outfile = 0;
 	data->fork_pid = malloc(data->num_commands * sizeof(int));
 	if (!data->fork_pid)
 		exit (1);
@@ -121,26 +127,56 @@ void	redirection(t_exec *data)
 
 void	execute(t_exec *data, int fdin, int fdout, int i)
 {
+	extern char	**environ;
+	
 	if (dup2(fdin, STDIN_FILENO) < 0)
 		exit (1);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		exit (1);
 	close_pipes_files(data);
-	execve(data->test_cmd[i][0], data->test_cmd[i], NULL);
-	write (2, "Error execve\n", 14);
+	execve(path_cmd(data->test_cmd[i][0]), data->test_cmd[i], environ);
+	errno = ENOENT;
+	error_exit(data->test_cmd[i][0]);
 	exit(0);
+}
+
+char	*path_cmd(char *command)
+{
+	int			i;
+	extern char	**environ;
+	char		**paths;
+	char		*cmd_path;
+
+	if (ft_strchr(command, '/'))
+		return (command);
+	i = find_env_var("PATH");
+	if (i >= 0)
+		paths = null_check(ft_split(environ[i] + find_value(environ[i]) + 1, ':'));
+	else
+		return (NULL);
+	i = 0;
+	while (paths[i])
+	{
+		cmd_path = null_check(ft_strjoin(paths[i], "/"));
+		cmd_path = null_check(ft_strjoin_free(cmd_path, command));
+		if (access(cmd_path, X_OK) == 0)
+			return (cmd_path);
+		free(cmd_path);
+		i++;
+	}
+	return (command);
 }
 
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = "cd";
-	data->test_cmd[0][1] = "source";
+	data->test_cmd[0][0] = "ls";
+	data->test_cmd[0][1] = "source1";
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
-	data->test_cmd[1][0] = "/usr/bin/wc";
+	data->test_cmd[1][0] = "wc";
 	data->test_cmd[1][1] = "-l";
 	data->test_cmd[1][2] = NULL;
-	data->test_cmd[2][0] = "echo";
+	data->test_cmd[2][0] = "cat";
 	data->test_cmd[2][1] = NULL;
 	return (data);
 }

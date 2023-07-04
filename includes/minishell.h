@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:12:17 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/04 10:54:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int		exit_builtin(int status);
 
 /* Built-in Tools*/
 int		find_env_var(char *variable);
+int		find_value(char *string);
 
 #endif
