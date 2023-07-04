@@ -6,13 +6,13 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/04 18:41:31 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/04 19:24:06 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	**put_env(char *string, char **env);
+char	**put_env(char *string, char *(**env));
 
 int	export(char *string, char **env)
 {
@@ -46,7 +46,7 @@ int	export(char *string, char **env)
 			env[val_set] = string;
 		}
 		else
-			env = put_env(string, env);
+			put_env(string, &env);
 		free(value);
 	}
 	env_builtin(env);
@@ -67,20 +67,22 @@ int	find_value(char *string)
 	return (-1);
 }
 
-char	**put_env(char *string, char **env)
+char	**put_env(char *string, char *(**env))
 {
 	int			i;
 	char		**new_environ;
 
-	new_environ = null_check(malloc ((array_size(env)+2) * sizeof(char *)));
+	new_environ = null_check(malloc (100 * sizeof(char *)));
 	i = 0;
-	while (env[i])
+	printf("SSS: %s\n", (*(env[i])));
+	while (*(*env))
 	{
-		new_environ[i] = env[i];
-		i++;
+		new_environ[i] = *(*(env));
+		(*(env))++;
 	}
 	new_environ[i] = string;
 	new_environ[i + 1] = NULL;
 	// free(env);
+	*env = new_environ;
 	return (new_environ);
 }

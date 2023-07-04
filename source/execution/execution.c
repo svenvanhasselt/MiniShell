@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/04 18:43:03 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/04 18:47:41 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	execution(void)
 	// printf("%s\n", path_cmd("ls"));
 
 	cd(data->test_cmd[0], data->env);
-	env_builtin(data->env);
+	// env_builtin(data->env);
 
 
 
