@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/23 14:41:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:41:49 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	check_line(char *line, t_node **lst)
 	int		size;
 	int		dq_start;
 	int		sq_start;
-	int		env_start;
+	// int		env_start;
 	// t_node	*lst;
 
 	i = 0;
@@ -65,15 +65,7 @@ void	check_line(char *line, t_node **lst)
 			{
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in if= \"%s\" and the char '%c'\n", new, line[i]);
-				// if (!(*lst))
-				// {
-				// 	*lst = make_node(new, size, line[i], NORMAL);
-				// 	(*lst)->next = NULL;
-				// ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
 				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-				// print_list(*lst);
-				// 	print_list(*lst);
-				// }
 			}
 			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 			{
@@ -81,7 +73,6 @@ void	check_line(char *line, t_node **lst)
 				new = ft_substr(line, i, (size_t)(size));
 				printf("this is new string in the same if= \"%s\" and the char '%c'\n", new, line[i]);
 				ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				// print_list(*lst);
 			}
 		}
 		else
@@ -91,21 +82,7 @@ void	check_line(char *line, t_node **lst)
 				dq_start = i;
 				i++;
 				while(line[i] != '\0' && line[i] != '\"')
-				{
-					// if(line[i] == '$')
-					// {
-					// 	printf("hi this is %c and the index= %d\n", line[i], i);
-					// 	env_start = i;
-					// 	while(line[i] != ' ' && line[i] != '\0' && line[i] != '\"')
-					// 		i++;
-					// 	printf("and this the end with char = %c and index = %d\n", line[i], i);
-					// 	size = i - env_start;
-					// 	new = ft_substr(line, env_start, (size_t)(size));
-					// 	printf("this is ENV string in the Double qoute= \"%s\" and the char '%c'\n", new, line[i]);
-					// 	ft_add_back_list(lst, make_node(new, size, ENV, IN_DOUBLEQ));
-					// }
 					i++;
-				}
 				if (line[i] == '\"')
 					i++;
 				size = i - dq_start;
@@ -119,7 +96,6 @@ void	check_line(char *line, t_node **lst)
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-					// print_list(*lst);
 				}
 			}
 			else if (line[i] == '\'')
@@ -141,7 +117,6 @@ void	check_line(char *line, t_node **lst)
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after sq= \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-					// print_list(*lst);
 				}
 			}
 			else
@@ -150,9 +125,7 @@ void	check_line(char *line, t_node **lst)
 				printf("this is the size in else %d\n", size);
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in else = \"%s\" and the char '%c'\n", new, line[i]);
-				// ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
 				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-				// print_list(*lst);
 			}
 		}
 		i++;
@@ -265,16 +238,6 @@ char	*ft_readline(char *prompt)
 		{
 			printf("line = %s\n", line);
 			check_line(line, &lst);
-			// res = ft_checkline(line);
-			// printf("this is the res =%d\n", res);
-			// words = count_words_msh(line);
-			// printf("this is new word count = %d\n", words);
-			// prev_words = count_words(line, ' ');
-			// printf("this is prev word count = %d\n", prev_words);
-			// new = (char **)malloc(sizeof(char *) * (count_words_msh(line) + 1));
-			// if (!new)
-			// 	return(NULL);
-			// count_arrays_msh(line, new);
 			add_history(line);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/06/23 11:46:20 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/06 17:23:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <editline/readline.h>
 # include "libft.h"
 
+//********LEXER*************
 enum e_token
 {
 	WORD = -1,
@@ -56,6 +57,28 @@ typedef struct s_lst
 	t_node	*last;
 	int		list_size;
 }	t_lst;
+
+//******Parser********
+
+enum e_node_type
+{
+	RD,
+	CMD,
+};
+
+typedef struct s_parser_node
+{
+	enum e_node_type n_type;
+	struct s_parser_node	*nxt_node;
+	struct s_parser_node	*prev_node;
+	char			*str;
+}				t_parser_node;
+
+typedef struct s_parser_list
+{
+	t_parser_node	*lst;
+	struct s_parser_list *next;
+}				t_parser_list;
 
 int		main();
 char	*ft_readline(char *prompt);
