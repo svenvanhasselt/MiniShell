@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 18:26:26 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 18:31:16 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void	*prepare(void)
 	data = malloc (1 * sizeof(t_exec));
 	if (!data)
 		exit (1);
-	data->num_commands = 3;
+	data->num_commands = 1;
 	data->infile = 0;
-	data->outfile = 1;
+	data->outfile = 0;
 	data->fork_pid = malloc(data->num_commands * sizeof(int));
 	if (!data->fork_pid)
 		exit (1);
@@ -178,7 +178,7 @@ void	check_builtins(char **cmd_table, t_exec *data)
 		env_builtin(data->env);
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
 		exit_builtin(666);
-	else if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
+	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		export_builtin(cmd_table[1], &data->env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
 		pwd_builtin();
@@ -187,8 +187,8 @@ void	check_builtins(char **cmd_table, t_exec *data)
 }
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = ft_strdup("cd");
-	data->test_cmd[0][1] = "source";
+	data->test_cmd[0][0] = ft_strdup("export");
+	data->test_cmd[0][1] = "";
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
 	data->test_cmd[1][0] = ft_strdup("env");
