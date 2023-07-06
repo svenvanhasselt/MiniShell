@@ -6,14 +6,14 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 10:44:18 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/01 12:34:11 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:56:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <minishell.h>
 
-int	pwd(void)
+int	pwd_builtin(void)
 {
 	char	*current_dir;
 

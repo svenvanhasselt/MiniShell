@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/04 18:34:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:56:03 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int		array_size(char **array);
 int		error_exit(char *message);
 
 /* Built-ins */
-int		echo(char **cmd_table);
-int		cd(char **cmd_table, char **env);
-int		pwd(void);
+int		echo_builtin(char **cmd_table);
+int		cd_builtin(char **cmd_table, char ***env);
+int		pwd_builtin(void);
 int		env_builtin(char **env);
-int		unset(char *variable, char **env);
-int		export(char *string, char **env);
+int		unset_builtin(char *variable, char ***env);
+int		export_builtin(char *string, char ***env);
 int		exit_builtin(int status);
 
 /* Built-in Tools*/

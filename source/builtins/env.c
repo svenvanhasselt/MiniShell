@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 12:08:54 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/04 18:35:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:51:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	env_builtin(char **env)
 	while (env[i])
 	{
 		if (printf("%s\n", env[i]) < 0)
-			error_exit("env failure");
+			error_exit("minishell failure");
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:47:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:08:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:56:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_newline(char **cmd_table, int arguments)
 		return (0);
 }
 
-int	echo(char **cmd_table)
+int	echo_builtin(char **cmd_table)
 {
 	int	i;
 	int	arguments;

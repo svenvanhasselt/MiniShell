@@ -6,19 +6,19 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/04 11:12:48 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/06 16:53:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <libft.h>
+#include <minishell.h>
 
 void *null_check(void *check)
 {
 	if (!check)
-		exit (write(2, "minishell failure\n", 18));
+		error_exit("minishell failure\n");
 	return (check);
 }
 
