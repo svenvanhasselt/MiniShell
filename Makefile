@@ -6,7 +6,7 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/06/19 17:29:00 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/07/07 12:13:55 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIB	:= $(LIBFT)/libft.a
 SRC_DIR := source
 OBJ_DIR := object
 SRC := \
-		main.c lexer.c\
+		main.c lexer.c parser.c ll_list_parser.c ll_node_parser.c\
 
 SRC := $(SRC:%=$(SRC_DIR)/%)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

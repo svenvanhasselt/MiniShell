@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/06 16:41:49 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/06 18:35:32 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	check_line(char *line, t_node **lst)
 	}
 	printf("this is the last result->");
 	print_list(*lst);
+	make_node_parser(lst);
 }
 
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
