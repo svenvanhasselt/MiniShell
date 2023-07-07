@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:55:43 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 19:47:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,8 @@ int	execution(void)
 	data = prepare();
 	data = testing(data);
 
-
-	// export_builtin("sdf=test", &data->env);
-	export_builtin(data->test_cmd[0][1], &data->env);
-	export_builtin(data->test_cmd[1][1], &data->env);
-	// export_builtin("A=test", &data->env);
+	export_builtin(data->test_cmd[0], &data->env);
 	env_builtin(data->env);
-	// export_builtin("sdf=test", &data->env);
 	// redirection(data);
 	// if (data->num_commands == 1)
 	// {
@@ -59,7 +54,7 @@ int	execution(void)
 	// }
 	// close_pipes_files(data);
 	// waitpid_forks(data);
-	exit(0);
+	exit(data->exit_status);
 }
 
 void	*prepare(void)
@@ -68,24 +63,15 @@ void	*prepare(void)
 	t_exec		*data;
 	extern char	**environ;
 
-	data = malloc (1 * sizeof(t_exec));
-	if (!data)
-		exit (1);
-	data->num_commands = 1;
+	data = null_check(malloc (1 * sizeof(t_exec)));
+	data->num_commands = 2;
 	data->infile = 0;
 	data->outfile = 0;
-	data->fork_pid = malloc(data->num_commands * sizeof(int));
-	if (!data->fork_pid)
-		exit (1);
-	i = 0;
-	data->pipe_fd = (int **) malloc ((data->num_commands - 1) * sizeof(int *));
-	while (i < data->num_commands - 1)
-	{
-		data->pipe_fd[i] = (int *) malloc (2 * sizeof(int));
-		if (!data->pipe_fd[i])
-			exit (1);
-		i++;
-	}
+	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
+	data->pipe_fd = null_check(malloc ((data->num_commands - 1) * sizeof(int *)));
+	i = -1;
+	while (++i < data->num_commands - 1)
+		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
 	data->env = copy_environment_list(environ);
 	return (data);
 }
@@ -115,7 +101,7 @@ void	redirection(t_exec *data)
 	{
 		data->fdin = open("test_in", O_RDONLY);
 		if (!data->fdin)
-			exit(1);
+			error_exit("ADD INFILE", errno);
 	}
 	else
 		data->fdin = STDIN_FILENO;
@@ -123,7 +109,7 @@ void	redirection(t_exec *data)
 	{
 		data->fdout = open("test", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (!data->fdout)
-			exit(1);
+			error_exit("ADD OUTFILE", errno);
 	}
 	else
 		data->fdout = STDOUT_FILENO;
@@ -132,16 +118,17 @@ void	redirection(t_exec *data)
 void	execute(t_exec *data, int fdin, int fdout, int i)
 {
 	if (dup2(fdin, STDIN_FILENO) < 0)
-		exit (1);
+		error_exit("minishell failure", errno);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
-		exit (1);
+		error_exit("minishell failure", errno);
 	close_pipes_files(data);
-	check_builtins(data->test_cmd[i], data);
+	if (check_builtins(data->test_cmd[i], data))
+		exit (0);
 	execve(path_cmd(data->test_cmd[i][0], data->env), \
 	data->test_cmd[i], data->env);
-	errno = ENOENT;
-	error_exit(data->test_cmd[i][0]);
-	exit(0);
+	if (errno != EACCES)
+		error_exit(data->test_cmd[i][0], ERR_NO_CMD);
+	error_exit(data->test_cmd[i][0], errno);
 }
 
 char	*path_cmd(char *command, char **env)
@@ -186,7 +173,7 @@ int	check_builtins(char **cmd_table, t_exec *data)
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
 		exit_builtin(666);
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
-		export_builtin(cmd_table[1], &data->env);
+		export_builtin(cmd_table, &data->env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
 		pwd_builtin();
 	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
@@ -199,11 +186,11 @@ int	check_builtins(char **cmd_table, t_exec *data)
 void	*testing(t_exec *data)
 {
 	data->test_cmd[0][0] = ft_strdup("export");
-	data->test_cmd[0][1] = ft_strdup("A=test");
+	data->test_cmd[0][1] = ft_strdup("S=45");
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
-	data->test_cmd[1][0] = ft_strdup("export");
-	data->test_cmd[1][1] = ft_strdup("Asdsf-dsfdf=test");
+	data->test_cmd[1][0] = ft_strdup("/Users/svan-has/ls");
+	data->test_cmd[1][1] = ft_strdup("A=dsf");
 	data->test_cmd[1][2] = NULL;
 	data->test_cmd[2][0] = ft_strdup("echo");
 	data->test_cmd[2][1] = "yay";

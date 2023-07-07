@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 10:37:23 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 18:32:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	waitpid_forks(t_exec *data)
 	i = 0;
 	while (i < data->num_commands)
 	{
-		waitpid(data->fork_pid[i], NULL, 0);
+		waitpid(data->fork_pid[i], &data->exit_status, 0);
 		i++;
 	}
+	if (WIFEXITED(data->exit_status))
+        data->exit_status = WEXITSTATUS(data->exit_status);
 }
 
 void	create_pipes(t_exec *data)

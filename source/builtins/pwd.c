@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 10:44:18 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 16:56:23 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 16:48:37 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	pwd_builtin(void)
 
 	current_dir = getcwd(NULL, 0);
 	if (!current_dir)
-		error_exit("getcwd");
+		error_exit("getcwd", errno);
 	if (printf("%s\n", current_dir) < 0)
-		error_exit("pwd failure");
+		error_exit("pwd failure", errno);
 	free(current_dir);
 	return (0);
 }

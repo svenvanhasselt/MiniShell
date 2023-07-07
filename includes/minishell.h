@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:04:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 19:44:56 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <readline/history.h>
 # include <editline/readline.h>
 # include "libft.h"
+
+enum e_myerrors {
+	ERR_NO_CMD			= -1,
+	ERR_EXPORT_INVALID	= -2,
+};
 
 typedef struct s_funcstruc
 {
@@ -33,6 +38,7 @@ typedef struct exec_struc
 	int		fdin;
 	int		fdout;
 	int		num_commands;
+	int		exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	t_func	*builtin_func[7];
@@ -47,7 +53,8 @@ void	create_pipes(t_exec *data);
 void	*null_check(void *check);
 // void	builtin_func(t_exec *data);
 int		array_size(char **array);
-int		error_exit(char *message);
+int		error_exit(char *message, int error_no);
+void	error_seterrno(char *message, int error_no, int status);
 
 /* Built-ins */
 int		echo_builtin(char **cmd_table);
@@ -55,7 +62,7 @@ int		cd_builtin(char **cmd_table, char ***env);
 int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
-int		export_builtin(char *string, char ***env);
+int		export_builtin(char **cmd_table, char ***env);
 int		exit_builtin(int status);
 
 /* Built-in Tools*/

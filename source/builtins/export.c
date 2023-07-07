@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 13:55:09 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 19:45:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,48 @@
 #include <libft.h>
 
 char	**put_env(char *string, char ***env);
-int		add_variable(char *string, char ***env, int val_set);
+int		add_variable(char *string, char ***env);
 int		check_variable(char **variable);
 
-int	export_builtin(char *string, char ***env)
+int	export_builtin(char **cmd_table, char ***env)
 {
 	int	i;
+	int	j;
 	int	val_set;
 
-	if (!string)
+	i = 1;
+	while (cmd_table[i])
 	{
-		i = 0;
-		while ((*env)[i])
+		if (!cmd_table[i])
 		{
-			val_set = find_value((*env)[i]);
-			if (val_set < 0)
-				printf("declare -x %s\n", (*env)[i]);
-			else
-				printf("declare -x %.*s\"%s\"\n", val_set + 1, \
-				(*env)[i], (*env)[i] + val_set + 1);
-			i++;
+			j = 0;
+			while ((*env)[j])
+			{
+				val_set = find_value((*env)[j]);
+				if (val_set < 0)
+					printf("declare -x %s\n", (*env)[j]);
+				else
+					printf("declare -x %.*s\"%s\"\n", val_set + 1, \
+					(*env)[j], (*env)[j] + val_set + 1);
+				i++;
+			}
+			return (0);
 		}
-		return (0);
+		else
+			add_variable(cmd_table[i], env);
+		i++;
 	}
-	else
-		add_variable(string, env, val_set);
 	return (0);
 }
 
-int	add_variable(char *string, char ***env, int val_set)
+int	add_variable(char *string, char ***env)
 {
 	char	*variable;
 	int		join_value;
+	int		val_set;
 
 	if (!ft_isalpha(string[0]))
-		error_exit("not a valid identifier");
+		error_exit("not a valid identifier", errno);
 	if (find_value(string) < 0)
 		return (0);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
@@ -70,8 +77,7 @@ int	add_variable(char *string, char ***env, int val_set)
 
 int	check_variable(char **variable)
 {
-	int		i;
-	char	*new_variable;
+	int	i;
 
 	i = 0;
 	while ((*variable)[i])
@@ -84,7 +90,7 @@ int	check_variable(char **variable)
 		else if (ft_isalnum((*variable)[i]))
 			i++;
 		else
-			error_exit("not a valid identifier");
+			error_exit("not a valid identifier", errno);
 	}
 	return (0);
 }
