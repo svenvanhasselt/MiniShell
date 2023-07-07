@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 12:30:06 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 16:56:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 10:40:26 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	copy_environ(int var_unset, char ***env);
 int	unset_builtin(char *variable, char ***env)
 {
 	int			var_unset;
-	
+
 	if (!variable)
 		return (0);
 	var_unset = find_env_var(variable, *env);

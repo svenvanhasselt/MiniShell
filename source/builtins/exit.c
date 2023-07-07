@@ -6,11 +6,11 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:30:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/03 18:52:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 10:41:39 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
+#include <stdlib.h>
 
 int	exit_builtin(int status)
 {

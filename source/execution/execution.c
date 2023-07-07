@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 18:31:16 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 13:55:43 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,46 @@ void	execute(t_exec *data, int fdin, int fdout, int i);
 char	**copy_environment_list(char **env);
 void	*testing(t_exec *data);
 char	*path_cmd(char *command, char **env);
-void	check_builtins(char **cmd_table, t_exec *data);
+int		check_builtins(char **cmd_table, t_exec *data);
 
-void	execution(void)
+int	execution(void)
 {
 	t_exec	*data;
 	int		i;
 
 	data = prepare();
 	data = testing(data);
-	
 
-	redirection(data);
-	if (data->num_commands == 1)
-	{
-		check_builtins(data->test_cmd[0], data);
-		exit (0);
-	}
-	create_pipes(data);
-	i = 0;
-	while (i < data->num_commands)
-	{
-		data->fork_pid[i] = fork();
-		if (data->fork_pid[i] == -1)
-			exit (1);
-		if (i == 0 && data->fork_pid[i] == 0)
-			execute(data, data->fdin, data->pipe_fd[i][1], i);
-		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
-		else if (data->fork_pid[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
-		i++;
-	}
-	close_pipes_files(data);
-	waitpid_forks(data);
+
+	// export_builtin("sdf=test", &data->env);
+	export_builtin(data->test_cmd[0][1], &data->env);
+	export_builtin(data->test_cmd[1][1], &data->env);
+	// export_builtin("A=test", &data->env);
+	env_builtin(data->env);
+	// export_builtin("sdf=test", &data->env);
+	// redirection(data);
+	// if (data->num_commands == 1)
+	// {
+	// 	if (check_builtins(data->test_cmd[0], data))
+	// 		return (0);
+	// }
+	// create_pipes(data);
+	// i = 0;
+	// while (i < data->num_commands)
+	// {
+	// 	data->fork_pid[i] = fork();
+	// 	if (data->fork_pid[i] == -1)
+	// 		exit (1);
+	// 	if (i == 0 && data->fork_pid[i] == 0)
+	// 		execute(data, data->fdin, data->pipe_fd[i][1], i);
+	// 	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+	// 		execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
+	// 	else if (data->fork_pid[i] == 0)
+	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
+	// 	i++;
+	// }
+	// close_pipes_files(data);
+	// waitpid_forks(data);
 	exit(0);
 }
 
@@ -124,14 +130,15 @@ void	redirection(t_exec *data)
 }
 
 void	execute(t_exec *data, int fdin, int fdout, int i)
-{	
+{
 	if (dup2(fdin, STDIN_FILENO) < 0)
 		exit (1);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		exit (1);
 	close_pipes_files(data);
 	check_builtins(data->test_cmd[i], data);
-	execve(path_cmd(data->test_cmd[i][0], data->env), data->test_cmd[i], data->env);
+	execve(path_cmd(data->test_cmd[i][0], data->env), \
+	data->test_cmd[i], data->env);
 	errno = ENOENT;
 	error_exit(data->test_cmd[i][0]);
 	exit(0);
@@ -163,7 +170,7 @@ char	*path_cmd(char *command, char **env)
 	return (command);
 }
 
-void	check_builtins(char **cmd_table, t_exec *data)
+int	check_builtins(char **cmd_table, t_exec *data)
 {
 	int	i;
 
@@ -184,15 +191,19 @@ void	check_builtins(char **cmd_table, t_exec *data)
 		pwd_builtin();
 	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
 		unset_builtin(cmd_table[1], &data->env);
+	else
+		return (0);
+	return (1);
 }
+
 void	*testing(t_exec *data)
 {
 	data->test_cmd[0][0] = ft_strdup("export");
-	data->test_cmd[0][1] = "";
+	data->test_cmd[0][1] = ft_strdup("A=test");
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
-	data->test_cmd[1][0] = ft_strdup("env");
-	data->test_cmd[1][1] = NULL;
+	data->test_cmd[1][0] = ft_strdup("export");
+	data->test_cmd[1][1] = ft_strdup("Asdsf-dsfdf=test");
 	data->test_cmd[1][2] = NULL;
 	data->test_cmd[2][0] = ft_strdup("echo");
 	data->test_cmd[2][1] = "yay";

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 16:53:36 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 10:40:18 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <libft.h>
 #include <minishell.h>
 
-void *null_check(void *check)
+void	*null_check(void *check)
 {
 	if (!check)
 		error_exit("minishell failure\n");

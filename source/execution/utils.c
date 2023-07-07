@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/03 19:14:52 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/07 10:37:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	create_pipes(t_exec *data)
 	}
 }
 
-
 // void	builtin_func(t_exec *data)
 // {
 // 	data->builtin_func[0]->name = "echo";
@@ -79,7 +78,7 @@ void	create_pipes(t_exec *data)
 
 int	array_size(char **array)
 {
-	int count;
+	int	count;
 
 	if (!array)
 		return (-1);
