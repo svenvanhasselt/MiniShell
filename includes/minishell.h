@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/07 12:18:33 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/10 16:03:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,20 @@ void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
 
-//--------Parser functions
-t_parser_node	*make_node_parser(t_node **tokens);
+//--------Parser Node functions
+t_parser_node	*make_node_parser(t_node *tokens);
 t_parser_node	*ft_lastlist_parser(t_parser_node *lst);
 void			ft_add_back_list_parser(t_parser_node **lst, t_parser_node *new);
 int				ft_sizelist_parser(t_parser_node *lst);
 void			print_list_parser(t_parser_node *lst);
 //-----Parser list functions
-t_parser_list	*make_node_lparser(t_parser_node **small_list);
-t_parser_node	*ft_lastlist_lparser(t_parser_node *lst);
-void			ft_add_back_list_lparser(t_parser_node **lst, t_parser_node *new);
-int				ft_sizelist_lparser(t_parser_node *lst);
-void			print_list_lparser(t_parser_node *lst);
+t_parser_list	*make_node_lparser(t_parser_node *small_list);
+t_parser_list	*ft_lastlist_lparser(t_parser_list *lst);
+void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
+int				ft_sizelist_lparser(t_parser_list *lst);
+void			print_list_lparser(t_parser_list *lst);
+//-----Parser
+void	make_parser(t_node **tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
