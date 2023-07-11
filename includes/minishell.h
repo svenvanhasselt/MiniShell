@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/07 19:44:56 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/11 16:08:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 # include <editline/readline.h>
 # include "libft.h"
 
-enum e_myerrors {
+enum e_minishell_errors {
 	ERR_NO_CMD			= -1,
 	ERR_EXPORT_INVALID	= -2,
+	ERR_CD_FILE_UNAIV	= -3,
+	ERR_CD_NO_HOME		= -4,
 };
 
 typedef struct s_funcstruc
@@ -46,17 +48,15 @@ typedef struct exec_struc
 	char	**env;
 }	t_exec;
 
+/*	Main execution functions */
 int		execution(void);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
-void	create_pipes(t_exec *data);
-void	*null_check(void *check);
-// void	builtin_func(t_exec *data);
-int		array_size(char **array);
+void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
-void	error_seterrno(char *message, int error_no, int status);
+int		error_seterrno(char *message, char *message2, int error_no);
 
-/* Built-ins */
+/*	Built-ins */
 int		echo_builtin(char **cmd_table);
 int		cd_builtin(char **cmd_table, char ***env);
 int		pwd_builtin(void);
@@ -65,8 +65,12 @@ int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
 int		exit_builtin(int status);
 
-/* Built-in Tools*/
+/*	Tools */
+char	**copy_environment_list(char **env);
+int		array_size(char **array);
+void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
+int		add_variable(char *string, char ***env);
 
 #endif

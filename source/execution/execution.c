@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 19:47:33 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/11 18:29:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 void	redirection(t_exec *data);
 void	*prepare(void);
-void	execute(t_exec *data, int fdin, int fdout, int i);
-char	**copy_environment_list(char **env);
+void	execute(t_exec *data, int fdin, int fdout, int i);	
 void	*testing(t_exec *data);
 char	*path_cmd(char *command, char **env);
-int		check_builtins(char **cmd_table, t_exec *data);
+int		check_builtins(char **cmd_table, t_exec **data);
 
 int	execution(void)
 {
@@ -29,31 +28,28 @@ int	execution(void)
 	data = prepare();
 	data = testing(data);
 
-	export_builtin(data->test_cmd[0], &data->env);
-	env_builtin(data->env);
-	// redirection(data);
-	// if (data->num_commands == 1)
-	// {
-	// 	if (check_builtins(data->test_cmd[0], data))
-	// 		return (0);
-	// }
-	// create_pipes(data);
-	// i = 0;
-	// while (i < data->num_commands)
-	// {
-	// 	data->fork_pid[i] = fork();
-	// 	if (data->fork_pid[i] == -1)
-	// 		exit (1);
-	// 	if (i == 0 && data->fork_pid[i] == 0)
-	// 		execute(data, data->fdin, data->pipe_fd[i][1], i);
-	// 	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-	// 		execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
-	// 	else if (data->fork_pid[i] == 0)
-	// 		execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
-	// 	i++;
-	// }
-	// close_pipes_files(data);
-	// waitpid_forks(data);
+	redirection(data);
+	i = 0;
+	if (check_builtins(data->test_cmd[0], &data))
+		i++;
+	create_pipes(data, data->num_commands - i);
+	while (i < data->num_commands)
+	{
+		data->fork_pid[i] = fork();
+		if (data->fork_pid[i] == -1)
+			error_exit("operation failure", errno);
+		if (data->num_commands == 1 && data->fork_pid[i] == 0)
+			execute(data, data->fdin, data->fdout, i);
+		else if (i == 0 && data->fork_pid[i] == 0)
+			execute(data, data->fdin, data->pipe_fd[i][1], i);
+		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+			execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
+		else if (data->fork_pid[i] == 0)
+			execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
+		i++;
+	}
+	close_pipes_files(data);
+	waitpid_forks(data);
 	exit(data->exit_status);
 }
 
@@ -64,7 +60,7 @@ void	*prepare(void)
 	extern char	**environ;
 
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = 2;
+	data->num_commands = 1;
 	data->infile = 0;
 	data->outfile = 0;
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
@@ -74,25 +70,6 @@ void	*prepare(void)
 		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
 	data->env = copy_environment_list(environ);
 	return (data);
-}
-
-char	**copy_environment_list(char **env)
-{
-	int			i;
-	char		**new_environ;
-
-	i = 0;
-	while (env[i])
-		i++;
-	new_environ = null_check(malloc ((i + 1) * sizeof (char *)));
-	i = 0;
-	while (env[i])
-	{
-		new_environ[i] = null_check(ft_strdup(env[i]));
-		i++;
-	}
-	new_environ[i] = NULL;
-	return (new_environ);
 }
 
 void	redirection(t_exec *data)
@@ -118,12 +95,12 @@ void	redirection(t_exec *data)
 void	execute(t_exec *data, int fdin, int fdout, int i)
 {
 	if (dup2(fdin, STDIN_FILENO) < 0)
-		error_exit("minishell failure", errno);
+		error_exit("operation failure", errno);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
-		error_exit("minishell failure", errno);
+		error_exit("operation failure", errno);
 	close_pipes_files(data);
-	if (check_builtins(data->test_cmd[i], data))
-		exit (0);
+	if (check_builtins(data->test_cmd[i], &data))
+		exit (data->exit_status);
 	execve(path_cmd(data->test_cmd[i][0], data->env), \
 	data->test_cmd[i], data->env);
 	if (errno != EACCES)
@@ -154,45 +131,53 @@ char	*path_cmd(char *command, char **env)
 		free(cmd_path);
 		i++;
 	}
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
 	return (command);
 }
 
-int	check_builtins(char **cmd_table, t_exec *data)
+int	check_builtins(char **cmd_table, t_exec **data)
 {
 	int	i;
+	int	status;
 
 	i = -1;
 	while (cmd_table[0][++i])
 		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
 	if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
-		cd_builtin(cmd_table, &data->env);
+		status = cd_builtin(cmd_table, &(*data)->env);
 	else if (strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
-		echo_builtin(cmd_table);
+		status = echo_builtin(cmd_table);
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
-		env_builtin(data->env);
+		status = env_builtin((*data)->env);
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		exit_builtin(666);
+		status = exit_builtin(666);
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
-		export_builtin(cmd_table, &data->env);
+		status = export_builtin(cmd_table, &(*data)->env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
-		pwd_builtin();
+		status = pwd_builtin();
 	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
-		unset_builtin(cmd_table[1], &data->env);
+		status = unset_builtin(cmd_table[1], &(*data)->env);
 	else
 		return (0);
+	(*data)->exit_status = status;
 	return (1);
 }
 
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = ft_strdup("export");
-	data->test_cmd[0][1] = ft_strdup("S=45");
+	data->test_cmd[0][0] = ft_strdup("/Users/svan-has/lss");
+	data->test_cmd[0][1] = NULL;
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;
-	data->test_cmd[1][0] = ft_strdup("/Users/svan-has/ls");
-	data->test_cmd[1][1] = ft_strdup("A=dsf");
+	data->test_cmd[1][0] = ft_strdup("export");
+	data->test_cmd[1][1] = NULL;
 	data->test_cmd[1][2] = NULL;
-	data->test_cmd[2][0] = ft_strdup("echo");
-	data->test_cmd[2][1] = "yay";
+	// data->test_cmd[2][0] = ft_strdup("export");
+	// data->test_cmd[2][1] = ft_strdup("S=46");
+	// data->test_cmd[2][2] = ft_strdup("S=48");
+	// data->test_cmd[2][3] = NULL;
 	return (data);
 }

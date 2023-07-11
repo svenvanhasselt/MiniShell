@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 18:55:19 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/11 16:11:20 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		exit_status(int error_no);
 void	*null_check(void *check)
 {
 	if (!check)
-		error_exit("minishell failure", errno);
+		error_exit("operation failure", errno);
 	return (check);
 }
 
@@ -35,14 +35,24 @@ int	error_exit(char *message, int error_no)
 	exit (exit_status(error_no));
 }
 
-void	error_seterrno(char *message, int error_no, int status)
+int	error_seterrno(char *message, char *message2, int error_no)
 {
 	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd(": ", 2);
+	if (message)
+	{
+		ft_putstr_fd(message, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	if (message2)
+	{
+		ft_putstr_fd("'", 2);
+		ft_putstr_fd(message2, 2);
+		ft_putstr_fd("'", 2);
+		ft_putstr_fd(": ", 2);
+	}
 	ft_putstr_fd(strerror_minishell(error_no), 2);
 	ft_putstr_fd("\n", 2);
-	status = exit_status(error_no);
+	return (1);
 }
 
 char	*strerror_minishell(int	error_no)
@@ -51,6 +61,10 @@ char	*strerror_minishell(int	error_no)
 		return ("command not found");
 	if (error_no == ERR_EXPORT_INVALID)
 		return ("not a valid identifier");
+	if (error_no == ERR_CD_FILE_UNAIV)
+		return ("No such file or directory");
+	if (error_no == ERR_CD_NO_HOME)
+		return ("HOME not set");
 	return (strerror(error_no));
 }
 

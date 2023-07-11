@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/07 18:32:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/11 12:37:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ void	waitpid_forks(t_exec *data)
 	while (i < data->num_commands)
 	{
 		waitpid(data->fork_pid[i], &data->exit_status, 0);
+		if (WIFEXITED(data->exit_status))
+        	data->exit_status = WEXITSTATUS(data->exit_status);
 		i++;
 	}
-	if (WIFEXITED(data->exit_status))
-        data->exit_status = WEXITSTATUS(data->exit_status);
 }
 
-void	create_pipes(t_exec *data)
+void	create_pipes(t_exec *data, int num_commands)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->num_commands)
+	while (i < num_commands)
 	{
-		if (i < data->num_commands - 1)
+		if (i < num_commands - 1)
 		{
 			if (pipe(data->pipe_fd[i]) < 0)
 				exit (1);
@@ -60,23 +60,24 @@ void	create_pipes(t_exec *data)
 	}
 }
 
-// void	builtin_func(t_exec *data)
-// {
-// 	data->builtin_func[0]->name = "echo";
-// 	data->builtin_func[0]->func = &echo;
-// 	data->builtin_func[1]->name = "cd";
-// 	data->builtin_func[1]->func = &cd;
-// 	data->builtin_func[2]->name = "pwd";
-// 	data->builtin_func[2]->func = &pwd;
-// 	data->builtin_func[3]->name = "export";
-// 	data->builtin_func[3]->func = &export;
-// 	data->builtin_func[4]->name = "unset";
-// 	data->builtin_func[4]->func = &unset;
-// 	data->builtin_func[5]->name = "env";
-// 	data->builtin_func[5]->func = &env;
-// 	data->builtin_func[6]->name = "echo";
-// 	data->builtin_func[6]->func = &exit_builtin;
-// }
+char	**copy_environment_list(char **env)
+{
+	int			i;
+	char		**new_environ;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_environ = null_check(malloc ((i + 1) * sizeof (char *)));
+	i = 0;
+	while (env[i])
+	{
+		new_environ[i] = null_check(ft_strdup(env[i]));
+		i++;
+	}
+	new_environ[i] = NULL;
+	return (new_environ);
+}
 
 int	array_size(char **array)
 {
@@ -85,6 +86,9 @@ int	array_size(char **array)
 	if (!array)
 		return (-1);
 	count = 0;
+	int i = 0;
+	while(array[i])
+		i++;
 	while (array[count])
 		count++;
 	return (count);

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/07 15:33:01 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/11 18:29:19 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void	f(void)
 {
-	system("leaks -quiet minishell");
+	// system("leaks -quiet minishell");
+	while(1)
+		sleep(1);
 }
 
 int	main()
 {
 	// char *line;
-
+	int pid = getpid();
+	printf("%d\n", pid);
 	// atexit(f);
 	execution();
 	// while(1)
