@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/10 16:03:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/11 18:03:14 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+#include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <editline/readline.h>
 # include "libft.h"
+# include <errno.h>
 
 //********LEXER*************
 enum e_token
@@ -68,7 +70,7 @@ enum e_node_type
 
 typedef struct s_parser_node
 {
-	enum e_node_type n_type;
+	// enum e_node_type n_type;
 	struct s_parser_node	*nxt_node;
 	struct s_parser_node	*prev_node;
 	char			*str;
@@ -100,7 +102,7 @@ t_parser_list	*make_node_lparser(t_parser_node *small_list);
 t_parser_list	*ft_lastlist_lparser(t_parser_list *lst);
 void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
 int				ft_sizelist_lparser(t_parser_list *lst);
-void			print_list_lparser(t_parser_list *lst);
+void			print_list_lparser(t_parser_list **plist);
 //-----Parser
 void	make_parser(t_node **tokens);
 // int		ft_checkline(char *s);
