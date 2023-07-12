@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_striteri.c                                      :+:    :+:            */
+/*   exit.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.42.fr>            +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/19 17:59:03 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 17:36:07 by svan-has      ########   odam.nl         */
+/*   Created: 2023/07/03 18:30:32 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/07/07 10:41:39 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+int	exit_builtin(int status)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		f(i, &s[i]);
-		i++;
-	}
+	exit(status);
 }

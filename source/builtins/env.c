@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_striteri.c                                      :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.42.fr>            +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/19 17:59:03 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/06 17:36:07 by svan-has      ########   odam.nl         */
+/*   Created: 2023/06/30 12:08:54 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/07/10 18:57:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <minishell.h>
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+int	env_builtin(char **env)
 {
-	unsigned int	i;
+	int	i;
 
 	i = 0;
-	while (s[i])
+	while (env[i])
 	{
-		f(i, &s[i]);
+		if (printf("%s\n", env[i]) < 0)
+			error_exit("operation failure", errno);
 		i++;
 	}
+	return (0);
 }
