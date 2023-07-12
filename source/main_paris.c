@@ -6,13 +6,13 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/11 17:59:18 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/12 11:56:59 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main()
+int	main_paris()
 {
 	char *line;
 

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/11 18:03:14 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/12 11:57:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_parser_list
 	struct s_parser_list *next;
 }				t_parser_list;
 
-int		main();
+int		main_paris();
 char	*ft_readline(char *prompt);
 void	check_line(char *line, t_node **lst);
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
