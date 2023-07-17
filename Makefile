@@ -6,7 +6,7 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/07/12 16:17:50 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/07/17 14:07:37 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC := \
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\
 		parser/redirections.c\
+		parser/syntax_error.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/error_handling.c\

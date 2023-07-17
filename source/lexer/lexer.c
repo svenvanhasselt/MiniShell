@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:04:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 17:48:09 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	check_line(char *line, t_node **lst)
 	print_list(*lst);
 	// make_node_parser(lst);
 	make_parser(lst);
+	printf("we got out from here\n");
 }
 
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
@@ -230,6 +231,7 @@ char	*ft_readline(char *prompt)
 	lst = NULL;
 	while(1)
 	{
+		printf("each time\n");
 		line = readline(prompt);
 		if (!line)
 		{

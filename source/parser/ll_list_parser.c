@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/12 14:32:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 14:42:04 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,11 @@ int	ft_sizelist_lparser(t_parser_list *lst)
 
 void	print_list_lparser(t_parser_list **plist)
 {
-	if (!plist)
+	if (!plist || !*plist)
+	{
+		printf("it is NULL\n");
 		return ;
+	}
 	while ((*plist)->next != NULL)
 	{
 		printf("the head each node = \"%s\"\n", (*plist)->lst->str);

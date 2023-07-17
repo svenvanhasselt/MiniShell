@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/12 17:04:20 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 17:32:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,29 @@ t_node	*rd_managment(t_node *tokens, t_parser_list **p_list)
 	{
 		printf("yesssss\n");
 		tokens = tokens->next;
-		if (!(tokens->type == SPACE || tokens->type == WORD))
-		{
-			write(2, "syntax error near unexpected token `newline'\n", 46);
-			exit(2);
-		}
-		while(tokens->type == SPACE && tokens->type != PIPE && tokens->next != NULL)
+		// if (!(tokens->type == SPACE || tokens->type == WORD))
+		// {
+		// 	write(2, "syntax error near unexpected token `newline'\n", 46);
+		// 	exit(2);
+		// }
+		while(tokens->type == SPACE && tokens->type != PIPE && tokens != NULL)
 		{
 			printf("i\n");
 			tokens = tokens->next;
 		}
-		if (tokens->type == PIPE)
-		{
-			write(2, "syntax error near unexpected token `|'\n", 40);
-			exit(3);
-		}
+		//CHECK if I have added this in my syntax error check
+		// if (tokens->type == PIPE)
+		// {
+		// 	write(2, "syntax error near unexpected token `|'\n", 40);
+		// 	exit(3);
+		// }
 		printf("after the space? = %s\n", tokens->str);
-		if (tokens->type == WORD)
+		if (tokens->type == WORD || tokens->type == SINGLE_QOUTE || tokens->type == DOUBLE_QOUTE)
 		{
 			node = ft_lastlist_lparser(*p_list);
 			node->rd_out = true;
 			node->file_out = tokens->str;
+			close(node->fd_out);
 			node->fd_out = open(tokens->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (node->fd_out == -1)
 			{
