@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/17 17:48:09 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 18:28:04 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	check_line(char *line, t_node **lst)
 	printf("this is the last result->");
 	print_list(*lst);
 	// make_node_parser(lst);
-	make_parser(lst);
+	//make_parser(lst);
 	printf("we got out from here\n");
 }
 
@@ -223,15 +223,17 @@ char	*ft_readline(char *prompt)
 {
 	char	*line;
 	t_node	*lst;
-	// int		res;
-	// int		words;
-	// int		prev_words;
-	// char	**new;
+	t_parser_list *p_list;
+	// t_parser_list *head;
+
+	p_list = NULL;
 	
 	lst = NULL;
 	while(1)
 	{
 		printf("each time\n");
+		free_llist(&p_list);
+		free_tokens(&lst);
 		line = readline(prompt);
 		if (!line)
 		{
@@ -242,12 +244,24 @@ char	*ft_readline(char *prompt)
 		{
 			printf("line = %s\n", line);
 			check_line(line, &lst);
+			make_parser(&lst, &p_list);
 			add_history(line);
 		}
 	}
 	return (line);
 }
 
+void	free_tokens(t_node **lst)
+{
+	t_node *temp;
+
+	while (*lst)
+	{
+		temp = (*lst);
+		(*lst) = (*lst)->next;
+		free(temp);
+	}
+}
 // t_node	*make_node(char *line)
 // {
 // 	i

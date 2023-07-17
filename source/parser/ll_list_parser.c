@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/17 14:42:04 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 18:17:40 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,23 @@ void	print_list_lparser(t_parser_list **plist)
 	}
 	printf("the head each node = \"%s\"\n", (*plist)->lst->str);
 	print_list_parser((*plist)->lst);
+}
+
+void	free_llist(t_parser_list **p_list)
+{
+	t_parser_list *temp;
+
+	if (!p_list || !*p_list)
+	{
+		printf("it is NULL\n");
+		return ;
+	}
+	while ((*p_list))
+	{
+		temp = *p_list;
+		free_list((*p_list)->lst);
+		(*p_list) = (*p_list)->next;
+		free(temp);
+	}
+	printf("done freeing\n");
 }
