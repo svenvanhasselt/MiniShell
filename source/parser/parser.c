@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/17 18:29:24 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/18 14:01:20 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 	{
 		if ((*tokens)->next != NULL)
 		{
+			printf("or here?\n");
 			n_list = make_node_parser(*tokens);
 			// head = *tokens;
 			printf("the token for parser list = %s\n", (*tokens)->str);
@@ -67,7 +68,11 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 				break;
 		}
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
+		{
+			if ((*tokens)->type == SPACE && (*tokens)->next == NULL)
+				break;
 			(*tokens) = (*tokens)->next;
+		}
 		if (*tokens == NULL)
 			break;
 	}
@@ -79,5 +84,5 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 
 //fd leaks
 //check syntax error at first
-// I need to add p_list to ft_readline function so that I can free them each time 
-// if there is a space at the end like this "ls -l " i gave seg fault > which is wrong
+
+// I should take care of redirection in!
