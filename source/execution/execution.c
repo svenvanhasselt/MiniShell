@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/11 18:29:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/19 16:35:13 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	execute(t_exec *data, int fdin, int fdout, int i);
 void	*testing(t_exec *data);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data);
+void	create_cmd_table(t_parser_list **p_list);
 
-int	execution(void)
+int	execution(t_parser_list **p_list)
 {
 	t_exec	*data;
 	int		i;
@@ -28,6 +29,7 @@ int	execution(void)
 	data = prepare();
 	data = testing(data);
 
+	create_cmd_table(p_list);
 	redirection(data);
 	i = 0;
 	if (check_builtins(data->test_cmd[0], &data))
@@ -51,6 +53,22 @@ int	execution(void)
 	close_pipes_files(data);
 	waitpid_forks(data);
 	exit(data->exit_status);
+}
+
+void	create_cmd_table(t_parser_list **p_list)
+{
+	printf("creating table\n");
+	while((*p_list))
+	{
+		printf("test1\n");
+		while ((*p_list)->lst)
+		{
+			printf("%s\n", (*p_list)->lst->str);
+			(*p_list)->lst = (*p_list)->lst->nxt_node;
+		}
+		(*p_list) = (*p_list)->next;
+
+	}
 }
 
 void	*prepare(void)
@@ -168,7 +186,7 @@ int	check_builtins(char **cmd_table, t_exec **data)
 
 void	*testing(t_exec *data)
 {
-	data->test_cmd[0][0] = ft_strdup("/Users/svan-has/lss");
+	data->test_cmd[0][0] = ft_strdup("bash");
 	data->test_cmd[0][1] = NULL;
 	data->test_cmd[0][2] = NULL;
 	data->test_cmd[0][3] = NULL;

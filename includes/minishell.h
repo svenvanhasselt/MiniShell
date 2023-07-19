@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/17 18:28:00 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/19 16:19:38 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_parser_list
 {
 	t_parser_node	*lst;
 	struct s_parser_list *next;
+	char			**cmd_table;
 	bool			rd_in;
 	int				fd_in;
 	char			*file_in;
@@ -137,7 +138,7 @@ typedef struct s_funcstruc
 	void	(*func)(void*);
 }	t_func;
 
-typedef struct exec_struc
+typedef struct s_exec_struc
 {
 	int		infile;
 	int		outfile;
@@ -153,7 +154,7 @@ typedef struct exec_struc
 }	t_exec;
 
 /*	Main execution functions */
-int		execution(void);
+int		execution(t_parser_list **p_list);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
