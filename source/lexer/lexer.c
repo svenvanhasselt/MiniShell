@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:04:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/18 17:40:33 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	check_line(char *line, t_node **lst)
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+					// i++;
 				}
 			}
 			else if (line[i] == '\'')
@@ -117,15 +118,28 @@ void	check_line(char *line, t_node **lst)
 					new = ft_substr(line, i, (size_t)(size));
 					printf("this is new string after sq= \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+					// i++;
 				}
 			}
+			//else if (line[i] != '\0')
+			//for which case I have added the previous line?
+			// it was for this "ls -l >"
 			else
 			{
 				size = i - start;
-				printf("this is the size in else %d\n", size);
-				new = ft_substr(line, start, (size_t)(size));
-				printf("this is new string in else = \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				if (size == 0 && line[i] == '\0')
+				{
+					printf("I will get here for %d this\n", line[i]);
+					// ft_add_back_list(lst, NULL);
+					break;
+				}
+				else
+				{
+					printf("this is the size in else %d\n", size);
+					new = ft_substr(line, start, (size_t)(size));
+					printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
+					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				}
 			}
 		}
 		i++;
@@ -133,7 +147,8 @@ void	check_line(char *line, t_node **lst)
 	printf("this is the last result->");
 	print_list(*lst);
 	// make_node_parser(lst);
-	make_parser(lst);
+	//make_parser(lst);
+	printf("we got out from here\n");
 }
 
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
@@ -222,14 +237,17 @@ char	*ft_readline(char *prompt)
 {
 	char	*line;
 	t_node	*lst;
-	// int		res;
-	// int		words;
-	// int		prev_words;
-	// char	**new;
+	t_parser_list *p_list;
+	// t_parser_list *head;
+
+	p_list = NULL;
 	
 	lst = NULL;
 	while(1)
 	{
+		printf("each time\n");
+		free_llist(&p_list);
+		free_tokens(&lst);
 		line = readline(prompt);
 		if (!line)
 		{
@@ -240,36 +258,21 @@ char	*ft_readline(char *prompt)
 		{
 			printf("line = %s\n", line);
 			check_line(line, &lst);
+			make_parser(&lst, &p_list);
 			add_history(line);
 		}
 	}
 	return (line);
 }
 
-// t_node	*make_node(char *line)
-// {
-// 	i
-// }
+void	free_tokens(t_node **lst)
+{
+	t_node *temp;
 
-// t_lst	make_list(char *line)
-// {
-// 	t_lst *list;
-// 	int	start;
-// 	int	i;
-
-// 	i = 0;
-// 	start = 0;
-// 	list = (t_lst *)malloc(sizeof(t_lst));
-// 	while(line)
-// 	{
-		
-// 	}
-// }
-
-// t_test {
-// 	e_token	type;
-// }
-
-// t_test test;
-
-// test->type = WORD;
+	while (*lst)
+	{
+		temp = (*lst);
+		(*lst) = (*lst)->next;
+		free(temp);
+	}
+}

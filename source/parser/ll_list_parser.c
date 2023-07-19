@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/11 12:39:23 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 18:17:40 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@ t_parser_list	*make_node_lparser(t_parser_node *small_list)
 		exit(1);
 	node->lst = small_list;
 	node->next = NULL;
+	node->rd_in = false;
+	node->fd_in = -5;
+	node->file_in = NULL;
+	node->errno_out = 0;
+	node->rd_out = false;
+	node->fd_out = -5;
+	node->file_out = NULL;
+	node->errno_out = 0;
 	return (node);
 }
 
@@ -69,8 +77,11 @@ int	ft_sizelist_lparser(t_parser_list *lst)
 
 void	print_list_lparser(t_parser_list **plist)
 {
-	if (!plist)
+	if (!plist || !*plist)
+	{
+		printf("it is NULL\n");
 		return ;
+	}
 	while ((*plist)->next != NULL)
 	{
 		printf("the head each node = \"%s\"\n", (*plist)->lst->str);
@@ -79,4 +90,23 @@ void	print_list_lparser(t_parser_list **plist)
 	}
 	printf("the head each node = \"%s\"\n", (*plist)->lst->str);
 	print_list_parser((*plist)->lst);
+}
+
+void	free_llist(t_parser_list **p_list)
+{
+	t_parser_list *temp;
+
+	if (!p_list || !*p_list)
+	{
+		printf("it is NULL\n");
+		return ;
+	}
+	while ((*p_list))
+	{
+		temp = *p_list;
+		free_list((*p_list)->lst);
+		(*p_list) = (*p_list)->next;
+		free(temp);
+	}
+	printf("done freeing\n");
 }

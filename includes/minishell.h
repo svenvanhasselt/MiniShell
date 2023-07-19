@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/12 12:23:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/17 18:28:00 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
-#include <fcntl.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <editline/readline.h>
-# include "libft.h"
 # include <errno.h>
+# include <stdbool.h>
+# include "libft.h"
 
 //********LEXER*************
 enum e_token
@@ -80,6 +81,14 @@ typedef struct s_parser_list
 {
 	t_parser_node	*lst;
 	struct s_parser_list *next;
+	bool			rd_in;
+	int				fd_in;
+	char			*file_in;
+	int				errno_in;
+	bool			rd_out;
+	int				fd_out;
+	char			*file_out;
+	int				errno_out;
 }				t_parser_list;
 
 int		main();
@@ -90,26 +99,31 @@ t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
-
+void	free_tokens(t_node **lst);
 //--------Parser Node functions
 t_parser_node	*make_node_parser(t_node *tokens);
 t_parser_node	*ft_lastlist_parser(t_parser_node *lst);
 void			ft_add_back_list_parser(t_parser_node **lst, t_parser_node *new);
 int				ft_sizelist_parser(t_parser_node *lst);
 void			print_list_parser(t_parser_node *lst);
+void			free_list(t_parser_node *lst);
 //-----Parser list functions
 t_parser_list	*make_node_lparser(t_parser_node *small_list);
 t_parser_list	*ft_lastlist_lparser(t_parser_list *lst);
 void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
 int				ft_sizelist_lparser(t_parser_list *lst);
 void			print_list_lparser(t_parser_list **plist);
+t_node			*rd_managment(t_node *tokens, t_parser_list **p_list);
+void			free_llist(t_parser_list **p_list);
 //-----Parser
-void	make_parser(t_node **tokens);
+void	make_parser(t_node **tokens, t_parser_list **p_list);
+void	syntax_error(t_node *tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
 // char	**count_arrays_msh(char	*s, char **new);
 // int		ft_free(char	**new, int words);
+
 enum e_minishell_errors {
 	ERR_NO_CMD			= -1,
 	ERR_EXPORT_INVALID	= -2,
