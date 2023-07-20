@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/17 18:17:40 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/20 17:13:13 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,22 @@ int	ft_sizelist_lparser(t_parser_list *lst)
 
 void	print_list_lparser(t_parser_list **plist)
 {
+	t_parser_list	*head;
+
 	if (!plist || !*plist)
 	{
-		printf("it is NULL\n");
+		printf("it is NULL1\n");
 		return ;
 	}
-	while ((*plist)->next != NULL)
+	head = *plist;
+	while (head->next != NULL)
 	{
-		printf("the head each node = \"%s\"\n", (*plist)->lst->str);
-		print_list_parser((*plist)->lst);
-		*plist = (*plist)->next;
+		printf("the head each node = \"%s\"\n", head->lst->str);
+		print_list_parser(head->lst);
+		head = head->next;
 	}
-	printf("the head each node = \"%s\"\n", (*plist)->lst->str);
-	print_list_parser((*plist)->lst);
+	printf("the head each node = \"%s\"\n", head->lst->str);
+	print_list_parser(head->lst);
 }
 
 void	free_llist(t_parser_list **p_list)
@@ -103,6 +106,7 @@ void	free_llist(t_parser_list **p_list)
 	}
 	while ((*p_list))
 	{
+		printf("test\n");
 		temp = *p_list;
 		free_list((*p_list)->lst);
 		(*p_list) = (*p_list)->next;

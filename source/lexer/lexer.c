@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/19 16:17:16 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/20 12:39:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ char	*ft_readline(char *prompt)
 			printf("line = %s\n", line);
 			check_line(line, &lst);
 			make_parser(&lst, &p_list);
+			print_list_lparser(&p_list);
 			add_history(line);
 			execution(&p_list);
 		}

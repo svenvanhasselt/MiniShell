@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/19 16:35:13 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/20 17:46:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 
 void	redirection(t_exec *data);
-void	*prepare(void);
+void	*prepare(t_parser_list *p_list);
 void	execute(t_exec *data, int fdin, int fdout, int i);	
 void	*testing(t_exec *data);
 char	*path_cmd(char *command, char **env);
@@ -23,13 +23,23 @@ void	create_cmd_table(t_parser_list **p_list);
 
 int	execution(t_parser_list **p_list)
 {
-	t_exec	*data;
-	int		i;
+	int				i;
+	t_exec			*data;
 
-	data = prepare();
+	data = prepare(*p_list);
 	data = testing(data);
-
 	create_cmd_table(p_list);
+	// while((*p_list))
+	// {
+	// 	i = 0;
+	// 	// printf("%s\n", (*p_list)->lst->str);
+	// 	while ((*p_list)->cmd_table[i])
+	// 	{
+	// 		printf("%s\n", (*p_list)->cmd_table[i]);
+	// 		i++;
+	// 	}
+	// 	(*p_list) = (*p_list)->next;
+	// }
 	redirection(data);
 	i = 0;
 	if (check_builtins(data->test_cmd[0], &data))
@@ -52,33 +62,70 @@ int	execution(t_parser_list **p_list)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	exit(data->exit_status);
+	return(data->exit_status);
+}
+
+int	lst_size(t_parser_node	*lst)
+{
+	int				count;
+	t_parser_node	*current;
+
+	current = lst;
+	count = 0;
+	while (current != NULL)
+	{
+		current = current->nxt_node;
+		count++;
+	}
+	return (count);
+}
+
+int	lst_size_p(t_parser_list	*lst)
+{
+	int				count;
+	t_parser_list	*current;
+
+	current = lst;
+	count = 0;
+	while (current != NULL)
+	{
+		current = current->next;
+		count++;
+	}
+	return (count);
 }
 
 void	create_cmd_table(t_parser_list **p_list)
 {
-	printf("creating table\n");
-	while((*p_list))
-	{
-		printf("test1\n");
-		while ((*p_list)->lst)
-		{
-			printf("%s\n", (*p_list)->lst->str);
-			(*p_list)->lst = (*p_list)->lst->nxt_node;
-		}
-		(*p_list) = (*p_list)->next;
+	int	i;
+	int	size;
+	t_parser_list *head;
 
+	head = *p_list;
+	while(head)
+	{
+		i = 0;
+		size = lst_size(head->lst);
+		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
+		while (head->lst)
+		{
+			head->cmd_table[i] = head->lst->str;
+			head->lst = head->lst->nxt_node;
+			i++;
+		}
+		head->cmd_table[i] = NULL;
+		head = head->next;
 	}
 }
 
-void	*prepare(void)
+void	*prepare(t_parser_list *p_list)
 {
 	int			i;
 	t_exec		*data;
 	extern char	**environ;
 
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = 1;
+	data->num_commands = lst_size_p(p_list);
 	data->infile = 0;
 	data->outfile = 0;
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
