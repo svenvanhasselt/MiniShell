@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:17:12 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 14:16:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	check_line(char *line, t_node **lst)
 {
-	int	i;
-	int	start;
+	int		i;
+	int		start;
 	char	*new;
 	int		size;
 	int		dq_start;
@@ -33,6 +33,7 @@ void	check_line(char *line, t_node **lst)
 			i++;
 		}
 		start = i;
+		printf("this is the start char = %d\n", line[start]);
 		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\''))
 		{
 			i++;
@@ -44,7 +45,10 @@ void	check_line(char *line, t_node **lst)
 			{
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in if= \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				if (line[start] == '$')
+					ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
+				else
+					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
 			}
 			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 			{
@@ -104,17 +108,38 @@ void	check_line(char *line, t_node **lst)
 			else
 			{
 				size = i - start;
-				if (size == 0 && line[i] == '\0')
+				printf("second = this is the start char = %d\n", line[start]);
+				//test different things to see if this changed things
+				// if (size == 0 && line[i] == '\0')
+				// {
+				// 	printf("I will get here for %d this\n", line[i]);
+				// 	break;
+				// }
+				if (line[start] == '\0' && line[i] == '\0')
 				{
-					printf("I will get here for %d this\n", line[i]);
+					printf("it was me! sorry :D \n");
 					break;
 				}
 				else
 				{
-					printf("this is the size in else %d\n", size);
-					new = ft_substr(line, start, (size_t)(size));
-					printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
-					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+					if (line[i] == '\0')
+					{
+						printf("this is the size in if in else %d\n", size);
+						new = ft_substr(line, start, (size_t)(size));
+						printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
+						if (line[start] == '$')
+							ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
+						else
+							ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+						break;
+					}
+					else
+					{
+						printf("this is the size in else %d\n", size);
+						new = ft_substr(line, start, (size_t)(size));
+						printf("this is new string in else in else = \"%s\" and the char '%d'\n", new, line[i]);
+						ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+					}
 				}
 			}
 		}
