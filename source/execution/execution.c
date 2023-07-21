@@ -6,16 +6,16 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/20 17:46:42 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 11:10:09 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	redirection(t_exec *data);
+void	redirection(t_parser_list *p_list, t_exec *data, int i);
 void	*prepare(t_parser_list *p_list);
-void	execute(t_exec *data, int fdin, int fdout, int i);	
+void	execute(t_exec *data, int i);	
 void	*testing(t_exec *data);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data);
@@ -25,39 +25,31 @@ int	execution(t_parser_list **p_list)
 {
 	int				i;
 	t_exec			*data;
+	t_parser_list	*parser;
 
 	data = prepare(*p_list);
 	data = testing(data);
 	create_cmd_table(p_list);
-	// while((*p_list))
-	// {
-	// 	i = 0;
-	// 	// printf("%s\n", (*p_list)->lst->str);
-	// 	while ((*p_list)->cmd_table[i])
-	// 	{
-	// 		printf("%s\n", (*p_list)->cmd_table[i]);
-	// 		i++;
-	// 	}
-	// 	(*p_list) = (*p_list)->next;
-	// }
-	redirection(data);
 	i = 0;
 	if (check_builtins(data->test_cmd[0], &data))
 		i++;
 	create_pipes(data, data->num_commands - i);
+	parser = *p_list;
 	while (i < data->num_commands)
 	{
 		data->fork_pid[i] = fork();
 		if (data->fork_pid[i] == -1)
 			error_exit("operation failure", errno);
+		redirection(parser, data, i);
 		if (data->num_commands == 1 && data->fork_pid[i] == 0)
-			execute(data, data->fdin, data->fdout, i);
+			execute(data, i);
 		else if (i == 0 && data->fork_pid[i] == 0)
-			execute(data, data->fdin, data->pipe_fd[i][1], i);
+			execute(data, i);
 		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->fdout, i);
+			execute(data, i);
 		else if (data->fork_pid[i] == 0)
-			execute(data, data->pipe_fd[i - 1][0], data->pipe_fd[i][1], i);
+			execute(data, i);
+		parser = parser->next;
 		i++;
 	}
 	close_pipes_files(data);
@@ -126,8 +118,6 @@ void	*prepare(t_parser_list *p_list)
 
 	data = null_check(malloc (1 * sizeof(t_exec)));
 	data->num_commands = lst_size_p(p_list);
-	data->infile = 0;
-	data->outfile = 0;
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
 	data->pipe_fd = null_check(malloc ((data->num_commands - 1) * sizeof(int *)));
 	i = -1;
@@ -137,40 +127,45 @@ void	*prepare(t_parser_list *p_list)
 	return (data);
 }
 
-void	redirection(t_exec *data)
+void	redirection(t_parser_list *p_list, t_exec *data, int i)
 {
-	if (data->infile)
+	if (data->num_commands == 1 && data->fork_pid[i] == 0)
 	{
-		data->fdin = open("test_in", O_RDONLY);
-		if (!data->fdin)
-			error_exit("ADD INFILE", errno);
-	}
-	else
 		data->fdin = STDIN_FILENO;
-	if (data->outfile)
-	{
-		data->fdout = open("test", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (!data->fdout)
-			error_exit("ADD OUTFILE", errno);
-	}
-	else
 		data->fdout = STDOUT_FILENO;
+	}
+	else if (i == 0 && data->fork_pid[i] == 0)
+	{
+		data->fdin = STDIN_FILENO;
+		data->fdout = data->pipe_fd[i][1];
+	}
+	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+	{
+		data->fdin = data->pipe_fd[i - 1][0];
+		data->fdout = STDOUT_FILENO;
+	}
+	else if (data->fork_pid[i] == 0)
+	{
+		data->fdin = data->pipe_fd[i - 1][0];
+		data->fdout = data->pipe_fd[i][1];
+	}
+	data->cmd_table = p_list->cmd_table;
 }
 
-void	execute(t_exec *data, int fdin, int fdout, int i)
+void	execute(t_exec *data, int i)
 {
-	if (dup2(fdin, STDIN_FILENO) < 0)
+	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);
-	if (dup2(fdout, STDOUT_FILENO) < 0)
+	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
 	close_pipes_files(data);
-	if (check_builtins(data->test_cmd[i], &data))
+	if (check_builtins(data->cmd_table, &data))
 		exit (data->exit_status);
-	execve(path_cmd(data->test_cmd[i][0], data->env), \
-	data->test_cmd[i], data->env);
+	execve(path_cmd(data->cmd_table[0], data->env), \
+	data->cmd_table, data->env);
 	if (errno != EACCES)
-		error_exit(data->test_cmd[i][0], ERR_NO_CMD);
-	error_exit(data->test_cmd[i][0], errno);
+		error_exit(data->cmd_table[0], ERR_NO_CMD);
+	error_exit(data->cmd_table[0], errno);
 }
 
 char	*path_cmd(char *command, char **env)
@@ -229,20 +224,4 @@ int	check_builtins(char **cmd_table, t_exec **data)
 		return (0);
 	(*data)->exit_status = status;
 	return (1);
-}
-
-void	*testing(t_exec *data)
-{
-	data->test_cmd[0][0] = ft_strdup("bash");
-	data->test_cmd[0][1] = NULL;
-	data->test_cmd[0][2] = NULL;
-	data->test_cmd[0][3] = NULL;
-	data->test_cmd[1][0] = ft_strdup("export");
-	data->test_cmd[1][1] = NULL;
-	data->test_cmd[1][2] = NULL;
-	// data->test_cmd[2][0] = ft_strdup("export");
-	// data->test_cmd[2][1] = ft_strdup("S=46");
-	// data->test_cmd[2][2] = ft_strdup("S=48");
-	// data->test_cmd[2][3] = NULL;
-	return (data);
 }

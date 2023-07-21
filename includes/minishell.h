@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/19 16:19:38 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 10:37:05 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,13 @@ typedef struct s_funcstruc
 
 typedef struct s_exec_struc
 {
-	int		infile;
-	int		outfile;
 	int		fdin;
 	int		fdout;
 	int		num_commands;
 	int		exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
+	char	**cmd_table;
 	t_func	*builtin_func[7];
 	char	*test_cmd[3][4];
 	char	**env;
