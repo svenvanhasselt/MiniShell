@@ -6,19 +6,20 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 12:43:26 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 13:52:05 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int		redirect(t_parser_list *parser, int fd, bool STDIN)
+int	redirect(t_parser_list *parser, int fd, bool STDIN)
 {
-	// int	fd_in;
 	int	fd_out;
+	int	fd_in;
 
 	if (STDIN == true)
 	{
+		fd_in = 1;
 		return (fd);
 	}
 	else

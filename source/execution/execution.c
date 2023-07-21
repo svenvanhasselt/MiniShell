@@ -6,19 +6,16 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 12:52:37 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 14:03:04 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	redirection(t_parser_list *p_list, t_exec *data, int i);
-void	*prepare(t_parser_list *parser);
 void	execute(t_exec *data);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data);
-void	create_cmd_table(t_parser_list *parser);
 
 int	execution(t_parser_list **p_list)
 {
@@ -55,37 +52,7 @@ int	execution(t_parser_list **p_list)
 	ft_putstr_fd("-----------MiniShell Output-------------\n\nReturn code: ", 1);
 	ft_putnbr_fd(data->exit_status, 1);
 	ft_putstr_fd("\n\n\n", 1);
-	return(data->exit_status);
-}
-
-int	lst_size(t_parser_node	*lst)
-{
-	int				count;
-	t_parser_node	*current;
-
-	current = lst;
-	count = 0;
-	while (current != NULL)
-	{
-		current = current->nxt_node;
-		count++;
-	}
-	return (count);
-}
-
-int	lst_size_p(t_parser_list	*lst)
-{
-	int				count;
-	t_parser_list	*current;
-
-	current = lst;
-	count = 0;
-	while (current != NULL)
-	{
-		current = current->next;
-		count++;
-	}
-	return (count);
+	return (data->exit_status);
 }
 
 void	create_cmd_table(t_parser_list *parser)
@@ -95,38 +62,20 @@ void	create_cmd_table(t_parser_list *parser)
 	t_parser_list	*head;
 
 	head = parser;
-	while(head)
+	while (head)
 	{
 		i = 0;
-		size = lst_size(head->lst);
+		size = ft_sizelist_parser(head->lst);
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head->lst)
 		{
 			head->cmd_table[i] = head->lst->str;
-			head->lst = head->lst->nxt_node;
+			head->lst = head->lst->next;
 			i++;
 		}
 		head->cmd_table[i] = NULL;
 		head = head->next;
 	}
-}
-
-void	*prepare(t_parser_list *parser)
-{
-	int			i;
-	t_exec		*data;
-	extern char	**environ;
-
-	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = lst_size_p(parser);
-	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
-	data->pipe_fd = null_check(malloc ((data->num_commands - 1) * sizeof(int *)));
-	i = -1;
-	while (++i < data->num_commands - 1)
-		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
-	data->env = copy_environment_list(environ);
-	create_cmd_table(parser);
-	return (data);
 }
 
 void	execute(t_exec *data)
@@ -158,15 +107,14 @@ char	*path_cmd(char *command, char **env)
 		paths = null_check(ft_split(env[i] + find_value(env[i]) + 1, ':'));
 	else
 		return (NULL);
-	i = 0;
-	while (paths[i])
+	i = -1;
+	while (paths[++i])
 	{
 		cmd_path = null_check(ft_strjoin(paths[i], "/"));
 		cmd_path = null_check(ft_strjoin_free(cmd_path, command));
 		if (access(cmd_path, X_OK) == 0)
 			return (cmd_path);
 		free(cmd_path);
-		i++;
 	}
 	i = -1;
 	while (paths[++i])

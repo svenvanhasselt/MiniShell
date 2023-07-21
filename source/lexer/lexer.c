@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 14:16:37 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/21 14:24:14 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,11 @@ char	*ft_readline(char *prompt)
 			make_parser(&lst, &p_list);
 			add_history(line);
 			execution(&p_list);
+			ft_putstr_fd("-----------Bash Output-------------\n", 1);
+			system(line);
+			ft_putstr_fd("-----------Bash Output-------------\n\nReturn code: ", 1);
+			system("echo $?");
+			ft_putstr_fd("\n\n\n", 1);
 		}
 	}
 	return (line);

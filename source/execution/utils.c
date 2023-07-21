@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 10:53:20 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 13:50:01 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	waitpid_forks(t_exec *data)
 	{
 		waitpid(data->fork_pid[i], &data->exit_status, 0);
 		if (WIFEXITED(data->exit_status))
-        	data->exit_status = WEXITSTATUS(data->exit_status);
+			data->exit_status = WEXITSTATUS(data->exit_status);
 		i++;
 	}
 }
@@ -87,9 +87,6 @@ int	array_size(char **array)
 	if (!array)
 		return (-1);
 	count = 0;
-	int i = 0;
-	while(array[i])
-		i++;
 	while (array[count])
 		count++;
 	return (count);
