@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:13:46 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 11:17:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,13 +230,8 @@ char	*ft_readline(char *prompt)
 			printf("compare new and line = %d\n", strcmp(new, line));
 			check_line(new, &lst);
 			make_parser(&lst, &p_list);
-<<<<<<< HEAD
-			print_list_lparser(&p_list);
 			add_history(line);
 			execution(&p_list);
-=======
-			add_history(new);
->>>>>>> 81dd5b57e6db1c78fd2dd0e85971ff8a9f6f14e1
 		}
 	}
 	return (line);

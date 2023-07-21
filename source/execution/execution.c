@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:10:09 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 12:52:37 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 #include <fcntl.h>
 
 void	redirection(t_parser_list *p_list, t_exec *data, int i);
-void	*prepare(t_parser_list *p_list);
-void	execute(t_exec *data, int i);	
-void	*testing(t_exec *data);
+void	*prepare(t_parser_list *parser);
+void	execute(t_exec *data);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data);
-void	create_cmd_table(t_parser_list **p_list);
+void	create_cmd_table(t_parser_list *parser);
 
 int	execution(t_parser_list **p_list)
 {
@@ -27,14 +26,13 @@ int	execution(t_parser_list **p_list)
 	t_exec			*data;
 	t_parser_list	*parser;
 
-	data = prepare(*p_list);
-	data = testing(data);
-	create_cmd_table(p_list);
+	ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+	parser = *p_list;
+	data = prepare(parser);
 	i = 0;
-	if (check_builtins(data->test_cmd[0], &data))
+	if (check_builtins(parser->cmd_table, &data))
 		i++;
 	create_pipes(data, data->num_commands - i);
-	parser = *p_list;
 	while (i < data->num_commands)
 	{
 		data->fork_pid[i] = fork();
@@ -42,18 +40,21 @@ int	execution(t_parser_list **p_list)
 			error_exit("operation failure", errno);
 		redirection(parser, data, i);
 		if (data->num_commands == 1 && data->fork_pid[i] == 0)
-			execute(data, i);
+			execute(data);
 		else if (i == 0 && data->fork_pid[i] == 0)
-			execute(data, i);
+			execute(data);
 		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-			execute(data, i);
+			execute(data);
 		else if (data->fork_pid[i] == 0)
-			execute(data, i);
+			execute(data);
 		parser = parser->next;
 		i++;
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
+	ft_putstr_fd("-----------MiniShell Output-------------\n\nReturn code: ", 1);
+	ft_putnbr_fd(data->exit_status, 1);
+	ft_putstr_fd("\n\n\n", 1);
 	return(data->exit_status);
 }
 
@@ -87,13 +88,13 @@ int	lst_size_p(t_parser_list	*lst)
 	return (count);
 }
 
-void	create_cmd_table(t_parser_list **p_list)
+void	create_cmd_table(t_parser_list *parser)
 {
-	int	i;
-	int	size;
-	t_parser_list *head;
+	int				i;
+	int				size;
+	t_parser_list	*head;
 
-	head = *p_list;
+	head = parser;
 	while(head)
 	{
 		i = 0;
@@ -110,49 +111,25 @@ void	create_cmd_table(t_parser_list **p_list)
 	}
 }
 
-void	*prepare(t_parser_list *p_list)
+void	*prepare(t_parser_list *parser)
 {
 	int			i;
 	t_exec		*data;
 	extern char	**environ;
 
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = lst_size_p(p_list);
+	data->num_commands = lst_size_p(parser);
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
 	data->pipe_fd = null_check(malloc ((data->num_commands - 1) * sizeof(int *)));
 	i = -1;
 	while (++i < data->num_commands - 1)
 		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
 	data->env = copy_environment_list(environ);
+	create_cmd_table(parser);
 	return (data);
 }
 
-void	redirection(t_parser_list *p_list, t_exec *data, int i)
-{
-	if (data->num_commands == 1 && data->fork_pid[i] == 0)
-	{
-		data->fdin = STDIN_FILENO;
-		data->fdout = STDOUT_FILENO;
-	}
-	else if (i == 0 && data->fork_pid[i] == 0)
-	{
-		data->fdin = STDIN_FILENO;
-		data->fdout = data->pipe_fd[i][1];
-	}
-	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-	{
-		data->fdin = data->pipe_fd[i - 1][0];
-		data->fdout = STDOUT_FILENO;
-	}
-	else if (data->fork_pid[i] == 0)
-	{
-		data->fdin = data->pipe_fd[i - 1][0];
-		data->fdout = data->pipe_fd[i][1];
-	}
-	data->cmd_table = p_list->cmd_table;
-}
-
-void	execute(t_exec *data, int i)
+void	execute(t_exec *data)
 {
 	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);

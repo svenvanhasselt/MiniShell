@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:14:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 12:51:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,13 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			break;
 	}
 	printf("I got here\n");
-	print_list_lparser(p_list);
+	// print_list_lparser(p_list);
 	printf("its finished\n");
 }
 
 
 //fd leaks
+
 //check syntax error at first
 
 // I should take care of redirection in!

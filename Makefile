@@ -6,7 +6,7 @@
 #    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/07/21 11:14:18 by svan-has      ########   odam.nl          #
+#    Updated: 2023/07/21 12:43:52 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC := \
 		execution/execution.c\
 		execution/utils.c\
 		execution/error_handling.c\
+		execution/redirection.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		builtins/pwd.c\

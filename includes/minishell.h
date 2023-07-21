@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 10:37:05 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 11:18:35 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ typedef struct s_exec_struc
 	int		*fork_pid;
 	char	**cmd_table;
 	t_func	*builtin_func[7];
-	char	*test_cmd[3][4];
 	char	**env;
 }	t_exec;
 
