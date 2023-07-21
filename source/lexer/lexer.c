@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 14:24:14 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/21 18:14:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,10 @@ char	*ft_readline(char *prompt)
 	t_node	*lst;
 	char	*new;
 	t_parser_list *p_list;
-
+	extern char	**environ;
+	char	**env;
+	
+	env = copy_environment_list(environ);
 	p_list = NULL;
 	
 	lst = NULL;
@@ -256,12 +259,13 @@ char	*ft_readline(char *prompt)
 			check_line(new, &lst);
 			make_parser(&lst, &p_list);
 			add_history(line);
-			execution(&p_list);
+			execution(&p_list, &env);
 			ft_putstr_fd("-----------Bash Output-------------\n", 1);
-			system(line);
-			ft_putstr_fd("-----------Bash Output-------------\n\nReturn code: ", 1);
-			system("echo $?");
+			char *bash = ft_strjoin(line, " && echo Return code: $?");
+			system(bash);
+			ft_putstr_fd("-----------Bash Output-------------", 1);
 			ft_putstr_fd("\n\n\n", 1);
+			free(bash);
 		}
 	}
 	return (line);
