@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:13:55 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 13:40:47 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ void	ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new)
 int	ft_sizelist_lparser(t_parser_list *lst)
 {
 	int	count;
+	t_parser_list *head;
 
 	count = 0;
 	if (!lst)
 		return (0);
-	while (lst != NULL)
+	head = lst;
+	while (head != NULL)
 	{
-		lst = lst->next;
+		head = head->next;
 		count++;
 	}
 	return (count);

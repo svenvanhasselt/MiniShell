@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 11:18:35 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 13:47:45 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ enum e_node_type
 typedef struct s_parser_node
 {
 	// enum e_node_type n_type;
-	struct s_parser_node	*nxt_node;
-	struct s_parser_node	*prev_node;
+	struct s_parser_node	*next;
+	struct s_parser_node	*prev;
 	char			*str;
 }				t_parser_node;
 
@@ -153,6 +153,9 @@ typedef struct s_exec_struc
 
 /*	Main execution functions */
 int		execution(t_parser_list **p_list);
+void	*prepare(t_parser_list *parser);
+void	create_cmd_table(t_parser_list *parser);
+void	redirection(t_parser_list *p_list, t_exec *data, int i);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
