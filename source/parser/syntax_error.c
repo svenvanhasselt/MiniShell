@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 14:06:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/18 17:28:32 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/20 17:54:41 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	syntax_error(t_node *tokens)
 	{
 		if (tokens->type == PIPE)
 		{
+			if (tokens->next == NULL)
+			{
+				write(2, "sorry we can not handle this\n", 30);
+				exit(3);
+			}
 			while(tokens->next->type == SPACE && tokens->next != NULL)
 				tokens = tokens->next;
 			if (!(tokens->next->type == WORD ||\

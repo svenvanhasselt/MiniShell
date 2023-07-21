@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/20 12:50:31 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 11:14:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,40 @@
 
 void	make_parser(t_node **tokens, t_parser_list **p_list)
 {
-	// t_parser_list *p_list;
 	t_parser_list *last;
 	t_parser_node	*n_list;
-	// t_parser_list *head;
+	t_node	*head;
 
-	// p_list = NULL;
 	n_list = NULL;
 	last = NULL;
-	// head = *tokens;
 	
-	// if ((*tokens)->type == PIPE)
-	// {
-	// 	write(2, "syntax error near unexpected token `|'\n", 40);
-	// 	exit(404);
-	// }
 	syntax_error(*tokens);
 	printf("first token = %s\n", (*tokens)->str);
+	head = *tokens;
 	while((*tokens) != NULL)
 	{
 		if ((*tokens)->next != NULL)
 		{
-			printf("or here?\n");
 			n_list = make_node_parser(*tokens);
-			// head = *tokens;
 			printf("the token for parser list = %s\n", (*tokens)->str);
 			ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
 			last = ft_lastlist_lparser(*p_list);
-			(*tokens) = (*tokens)->next;
+			if ((*tokens)->next != NULL)
+				(*tokens) = (*tokens)->next;
 		}
 		else
-			break;
-		//while((*tokens)->type != PIPE && (*tokens)->type != SPACE && (*tokens) != NULL)
+		{
+			if ((head)->next == NULL && ft_sizelist(head) == 1)
+			{
+				n_list = make_node_parser(head);
+				printf("if only one --> the token for parser list = %s\n", head->str);
+				ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
+				last = ft_lastlist_lparser(*p_list);
+				break;
+			}
+			else
+				break;
+		}
 		while((*tokens)->type != PIPE && (*tokens) != NULL)
 		{
 			while ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
@@ -60,7 +62,6 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			}
 			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && last->rd_out == true))
 				break;
-			// we have the proplem that if we get a pipe after redirections we can not make a node anymore and it will ruin the parsing -> I THINK THIS IS SOLVED
 			ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
 			if ((*tokens)->next != NULL)
 				(*tokens) = (*tokens)->next;
@@ -69,9 +70,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		}
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
 		{
-			if ((*tokens)->type == SPACE && (*tokens)->next == NULL)
-				break;
 			(*tokens) = (*tokens)->next;
+			head = (*tokens);
 		}
 		if (*tokens == NULL)
 			break;
