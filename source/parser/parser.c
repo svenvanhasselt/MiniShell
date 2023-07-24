@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 14:56:07 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 16:11:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 				*tokens = rd_managment_in(*tokens, p_list);
 				printf("going out of rd_managment_in function\n");
 				last = ft_lastlist_lparser(*p_list);
+				if (last->fd_in == -1)
+					break;
 			}
 			else
 			{
@@ -66,10 +68,13 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 				printf("this should be the rest of the list = ");
 				print_list(*tokens);
 				*tokens = rd_managment(*tokens, p_list);
-				if ((*tokens)->type == PIPE || (*tokens)->next == NULL)
+				printf("we are here after rd managment = %s\n", (*tokens)->str);
+				if ((*tokens)->type == PIPE || (*tokens)->next == NULL || last->fd_in == -1 || last->fd_out == -1)
 					break;
 				printf("I got out of the rd while\n");
 			}
+			if (last->fd_in == -1 || last->fd_out == -1)
+				break;
 			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && last->rd_out == true))
 				break;
 			ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
@@ -78,6 +83,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			else
 				break;
 		}
+		if (last->fd_in == -1 || last->fd_out == -1)
+			break;
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
 		{
 			(*tokens) = (*tokens)->next;

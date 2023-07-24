@@ -6,11 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/07/24 13:20:28 by psadeghi      ########   odam.nl         */
-=======
-/*   Updated: 2023/07/21 18:15:53 by svan-has      ########   odam.nl         */
->>>>>>> 1aaa1eee950f2f4abd2f101b852f4fdef36f67f4
+/*   Updated: 2023/07/24 15:47:06 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +90,7 @@ typedef struct s_parser_list
 	int				fd_out;
 	char			*file_out;
 	int				errno_out;
+	bool			rd_out_append;
 }				t_parser_list;
 
 int		main();
