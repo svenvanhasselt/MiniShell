@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 13:52:05 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/24 14:16:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ int	redirect(t_parser_list *parser, int fd, bool STDIN)
 
 	if (STDIN == true)
 	{
-		fd_in = 1;
-		return (fd);
+		if (parser->rd_in)
+			fd_in = parser->fd_in;
+		else
+			return (fd);
+		if (parser->rd_in && fd_in < 0)
+			error_exit(parser->file_in, parser->errno_in);
+		return (fd_in);
 	}
 	else
 	{
