@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 14:06:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 16:15:26 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 16:30:36 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	syntax_error(t_node *tokens)
 			if (tokens->type == REDIRECT_OUT)
 				rd_out_count++;
 			printf("rd_out_count = %d\n", rd_out_count);
-			printf("hiiiiiiii\n");
 			printf("tokens->str = \"%s\" and type = %d and next = %p\n", tokens->str, tokens->type, tokens->next);
 			while(tokens->next && tokens->next->type == SPACE && tokens->next != NULL)
 			{
@@ -75,7 +74,6 @@ void	syntax_error(t_node *tokens)
 			if (tokens->type == REDIRECT_IN)
 				rd_in_count++;
 			printf("rd_in_count = %d\n", rd_in_count);
-			printf("hiiiiiiii\n");
 			printf("tokens->str = \"%s\" and type = %d and next = %p\n", tokens->str, tokens->type, tokens->next);
 			while(tokens->next && tokens->next->type == SPACE && tokens->next != NULL)
 			{
