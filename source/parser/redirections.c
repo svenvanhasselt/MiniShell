@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 16:08:40 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 19:16:06 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,20 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 	t_parser_node	*n_list;
 	t_parser_list	*node;
 	t_node			*first_command;
+	bool			here_doc;
 
 	head = tokens;
 	n_list = NULL;
+	here_doc = false;
 
 	while (tokens->type == REDIRECT_IN && tokens->next != NULL)
 	{
 		tokens = tokens->next;
+		if (tokens->type == REDIRECT_IN)
+		{
+			here_doc = true;
+			tokens = tokens->next;
+		}
 		while(tokens->type != WORD && tokens->next != NULL)
 			tokens = tokens->next;
 		if (tokens->type == WORD)
@@ -41,9 +48,15 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 		// else if ((tokens)->next != NULL)
 		// 		(tokens) = (tokens)->next;
 	}
+	node = ft_lastlist_lparser(*p_list);
 	while (head->type == REDIRECT_IN && head != first_command)
 	{
 		head = head->next;
+		if (head->type == REDIRECT_IN)
+		{
+			node->rd_in_heredoc = true;
+			head = head->next;
+		}
 		while(head->type == SPACE && head->type != PIPE && head != NULL)
 		{
 			printf("i\n");
@@ -58,12 +71,23 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 		printf("after the space in rd managment = %s and type = %d\n", head->str, head->type);
 		if (head->type == WORD || head->type == SINGLE_QOUTE || head->type == DOUBLE_QOUTE)
 		{
-			printf("I got here! where are you segfaul!");
-			node = ft_lastlist_lparser(*p_list);
+			printf("I got here! where are you segfaul!\n");
+			// node = ft_lastlist_lparser(*p_list);
 			node->rd_in = true;
-			node->file_in = head->str;
+			if (node->rd_in_heredoc == false)
+				node->file_in = head->str;
+			if (node->rd_in_heredoc == true)
+			{
+				node->delimiter = ft_strjoin(head->str, "\n");
+				printf("this is delimiter = %s\n", node->delimiter);
+				node->file_in = "here_doc";
+				printf("this is the file_in = %s\n", node->file_in);
+			}
 			close(node->fd_in);
-			node->fd_in = open(head->str, O_RDONLY);
+			if (node->rd_in_heredoc == true)
+				node->fd_in = open("here_doc", O_CREAT | O_RDWR , 0777);
+			if (node->rd_in_heredoc == false)
+				node->fd_in = open(head->str, O_RDONLY);
 			if (node->fd_in == -1)
 			{
 				node->errno_in = errno;
@@ -129,6 +153,11 @@ t_node	*rd_managment(t_node *tokens, t_parser_list **p_list)
 	else if (tokens->type == REDIRECT_IN)
 	{
 		tokens = tokens->next;
+		if (tokens->type == REDIRECT_IN)
+		{
+			node->rd_in_heredoc = true;
+			tokens = tokens->next;
+		}
 		while(tokens->type == SPACE && tokens->type != PIPE && tokens != NULL)
 		{
 			printf("i\n");
@@ -139,9 +168,19 @@ t_node	*rd_managment(t_node *tokens, t_parser_list **p_list)
 		{
 			node = ft_lastlist_lparser(*p_list);
 			node->rd_in = true;
-			node->file_in = tokens->str;
+			//node->file_in = tokens->str;
+			if (node->rd_in_heredoc == false)
+				node->file_in = tokens->str;
+			if (node->rd_in_heredoc == true)
+			{
+				node->delimiter = tokens->str;
+				node->file_in = "here_doc";
+			}
 			close(node->fd_in);
-			node->fd_in = open(tokens->str, O_RDONLY);
+			if (node->rd_in_heredoc == true)
+				node->fd_in = open("here_doc", O_RDONLY);
+			if (node->rd_in_heredoc == false)
+				node->fd_in = open(tokens->str, O_RDONLY);
 			if (node->fd_in == -1)
 			{
 				node->errno_in = errno;

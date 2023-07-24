@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 15:47:06 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 18:14:51 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_parser_list
 	char			*file_out;
 	int				errno_out;
 	bool			rd_out_append;
+	bool			rd_in_heredoc;
+	char			*delimiter;
 }				t_parser_list;
 
 int		main();

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 15:47:30 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 18:17:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_parser_list	*make_node_lparser(t_parser_node *small_list)
 	node->file_out = NULL;
 	node->errno_out = 0;
 	node->rd_out_append = false;
+	node->rd_in_heredoc = false;
+	node->delimiter = NULL;
 	return (node);
 }
 

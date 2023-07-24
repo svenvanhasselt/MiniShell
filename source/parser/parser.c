@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 16:11:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/24 19:14:41 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 	t_parser_list *last;
 	t_parser_node	*n_list;
 	t_node	*head;
+	char			*line;
 
 	n_list = NULL;
 	last = NULL;
+	line = 0;
 	
 	syntax_error(*tokens);
 	printf("first token = %s\n", (*tokens)->str);
@@ -60,8 +62,11 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			else
 				break;
 		}
+		if (*tokens == NULL)
+			printf("I am NULL!\n");
 		while((*tokens)->type != PIPE && (*tokens) != NULL)
 		{
+			printf("5 after the break\n");
 			while ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
 			{
 				printf("got ya = %s\n", (*tokens)->str);
@@ -85,6 +90,23 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		}
 		if (last->fd_in == -1 || last->fd_out == -1)
 			break;
+		if (last->rd_in_heredoc == true)
+		{
+			printf("I am getting here in heredoc and this is delimeter = .%s.\n", last->delimiter);
+			while(1)
+			{
+				line = get_next_line(1);
+				//printf("line= %s\n", line);
+				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
+				{
+					//printf("got here\n");
+					write(last->fd_in, line, ft_strlen(line));
+					free(line);
+				}
+				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
+					break;
+			}
+		}
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
 		{
 			(*tokens) = (*tokens)->next;
