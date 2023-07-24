@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 12:51:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/24 14:19:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,22 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 	{
 		if ((*tokens)->next != NULL)
 		{
-			n_list = make_node_parser(*tokens);
-			printf("the token for parser list = %s\n", (*tokens)->str);
-			ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
-			last = ft_lastlist_lparser(*p_list);
-			if ((*tokens)->next != NULL)
-				(*tokens) = (*tokens)->next;
+			if ((*tokens)->type == REDIRECT_IN)
+			{
+				printf("going into rd_managment_in function\n");
+				*tokens = rd_managment_in(*tokens, p_list);
+				printf("going out of rd_managment_in function\n");
+				last = ft_lastlist_lparser(*p_list);
+			}
+			else
+			{
+				n_list = make_node_parser(*tokens);
+				printf("the token for parser list = %s\n", (*tokens)->str);
+				ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
+				last = ft_lastlist_lparser(*p_list);
+				if ((*tokens)->next != NULL)
+					(*tokens) = (*tokens)->next;
+			}
 		}
 		else
 		{
@@ -76,8 +86,9 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		if (*tokens == NULL)
 			break;
 	}
+	// among us
 	printf("I got here\n");
-	// print_list_lparser(p_list);
+	print_list_lparser(p_list);
 	printf("its finished\n");
 }
 
@@ -87,3 +98,5 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 //check syntax error at first
 
 // I should take care of redirection in!
+
+//echo < file2 is not working properly
