@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 14:03:04 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 18:21:02 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ void	execute(t_exec *data);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data);
 
-int	execution(t_parser_list **p_list)
+int	execution(t_parser_list **p_list, char ***env)
 {
 	int				i;
 	t_exec			*data;
 	t_parser_list	*parser;
-
+	
 	ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 	parser = *p_list;
-	data = prepare(parser);
+	data = prepare(parser, (*env));
 	i = 0;
 	if (check_builtins(parser->cmd_table, &data))
 		i++;
@@ -49,9 +49,9 @@ int	execution(t_parser_list **p_list)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	ft_putstr_fd("-----------MiniShell Output-------------\n\nReturn code: ", 1);
+	ft_putstr_fd("Return code: ", 1);
 	ft_putnbr_fd(data->exit_status, 1);
-	ft_putstr_fd("\n\n\n", 1);
+	ft_putstr_fd("\n-----------MiniShell Output-------------\n\n\n", 1);
 	return (data->exit_status);
 }
 
@@ -138,7 +138,7 @@ int	check_builtins(char **cmd_table, t_exec **data)
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
 		status = env_builtin((*data)->env);
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		status = exit_builtin(666);
+		status = exit_builtin();
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		status = export_builtin(cmd_table, &(*data)->env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)

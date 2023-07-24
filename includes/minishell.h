@@ -6,7 +6,11 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/07/24 13:20:28 by psadeghi      ########   odam.nl         */
+=======
+/*   Updated: 2023/07/21 18:15:53 by svan-has      ########   odam.nl         */
+>>>>>>> 1aaa1eee950f2f4abd2f101b852f4fdef36f67f4
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,8 +157,8 @@ typedef struct s_exec_struc
 }	t_exec;
 
 /*	Main execution functions */
-int		execution(t_parser_list **p_list);
-void	*prepare(t_parser_list *parser);
+int		execution(t_parser_list **p_list, char ***env);
+void	*prepare(t_parser_list *parser, char **env);
 void	create_cmd_table(t_parser_list *parser);
 void	redirection(t_parser_list *p_list, t_exec *data, int i);
 void	close_pipes_files(t_exec *data);
@@ -170,7 +174,7 @@ int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
-int		exit_builtin(int status);
+int		exit_builtin(void);
 
 /*	Tools */
 char	**copy_environment_list(char **env);
