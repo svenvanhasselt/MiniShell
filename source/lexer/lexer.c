@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 16:52:21 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/26 15:31:58 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,7 @@ char	*ft_readline(char *prompt)
 			make_parser(&lst, &p_list);
 			add_history(line);
 			execution(&p_list, &env);
+			unlink("here_doc");
 			ft_putstr_fd("-----------Bash Output-------------\n", 1);
 			char *bash = ft_strjoin(line, " && echo Return code: $?");
 			system(bash);

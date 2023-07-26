@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 19:14:41 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/26 15:35:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
 					break;
 			}
+			close(last->fd_in);
+			last->fd_in = open("here_doc", O_RDONLY);
 		}
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
 		{

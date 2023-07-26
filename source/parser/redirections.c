@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 19:16:06 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/26 15:37:59 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,6 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 			printf("i\n");
 			head = head->next;
 		}
-		//CHECK if I have added this in my syntax error check
-		// if (head->type == PIPE)
-		// {
-		// 	write(2, "syntax error near unexpected token `|'\n", 40);
-		// 	exit(3);
-		// }
 		printf("after the space in rd managment = %s and type = %d\n", head->str, head->type);
 		if (head->type == WORD || head->type == SINGLE_QOUTE || head->type == DOUBLE_QOUTE)
 		{
@@ -85,8 +79,8 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 			}
 			close(node->fd_in);
 			if (node->rd_in_heredoc == true)
-				node->fd_in = open("here_doc", O_CREAT | O_RDWR , 0777);
-			if (node->rd_in_heredoc == false)
+				node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
+			else if (node->rd_in_heredoc == false)
 				node->fd_in = open(head->str, O_RDONLY);
 			if (node->fd_in == -1)
 			{
@@ -97,13 +91,11 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 			if (head->next != NULL)
 				head = head->next;
 		}
-		printf("1 this is the str = \"%s\"\n", head->str);
 		while(head->type == SPACE && head->next != NULL)
 		{
 			printf("i\n");
 			head = head->next;
 		}
-		printf("2 this is the str = \"%s\"\n", head->str);
 	}
 	return (tokens);
 }
