@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ll_list_parser.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 11:55:38 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/07/27 13:27:50 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   ll_list_parser.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/07/28 15:01:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ t_parser_list	*make_node_lparser(t_parser_node *small_list)
 	node->fd_out = -5;
 	node->file_out = NULL;
 	node->errno_out = 0;
+	node->rd_out_append = false;
+	node->rd_in_heredoc = false;
+	node->delimiter = NULL;
 	return (node);
 }
 

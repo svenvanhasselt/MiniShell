@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 17:33:17 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/07/25 08:57:19 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/07/28 15:01:25 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ typedef struct s_parser_list
 	int				fd_out;
 	char			*file_out;
 	int				errno_out;
+	bool			rd_out_append;
+	bool			rd_in_heredoc;
+	char			*delimiter;
 }				t_parser_list;
 
 int		main();
@@ -115,6 +118,7 @@ void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
 int				ft_sizelist_lparser(t_parser_list *lst);
 void			print_list_lparser(t_parser_list **plist);
 t_node			*rd_managment(t_node *tokens, t_parser_list **p_list);
+t_node			*rd_managment_in(t_node *tokens, t_parser_list **p_list);
 void			free_llist(t_parser_list **p_list);
 //-----Parser
 void	make_parser(t_node **tokens, t_parser_list **p_list);
