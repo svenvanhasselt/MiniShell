@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 15:51:49 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/07/26 13:29:33 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   lexer.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/07/28 13:35:11 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,10 @@ char	*ft_readline(char *prompt)
 			check_line(new, &lst);
 			make_parser(&lst, &p_list);
 			add_history(line);
+			ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 			execution(&p_list, &env);
-			ft_putstr_fd("-----------Bash Output-------------\n", 1);
+			ft_putstr_fd("-----------MiniShell Output-------------\n", 1);
+			ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
 			char *bash = ft_strjoin(line, " && echo Return code: $?");
 			system(bash);
 			ft_putstr_fd("-----------Bash Output-------------", 1);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 14:35:16 by svan-has          #+#    #+#             */
-/*   Updated: 2023/07/27 15:05:36 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   execution.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/07/28 13:36:29 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	execution(t_parser_list **p_list, char ***env)
 	t_exec			*data;
 	t_parser_list	*parser;
 	
-	ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 	parser = *p_list;
 	data = prepare(parser, env);
 	i = 0;
@@ -37,12 +36,22 @@ int	execution(t_parser_list **p_list, char ***env)
 			error_exit("operation failure", errno);
 		if (dup2(data->fdout, STDOUT_FILENO) < 0)
 			error_exit("operation failure", errno);
-		check_builtins(parser->cmd_table, &data, env);
+		if (check_builtins(parser->cmd_table, &data, env))
+		{
+			if (dup2(in, STDIN_FILENO) < 0)
+				error_exit("operation failure", errno);
+			if (dup2(out, STDOUT_FILENO) < 0)
+				error_exit("operation failure", errno);
+			ft_putstr_fd("Return code: ", 1);
+			ft_putnbr_fd(data->exit_status, 1);
+			ft_putstr_fd("\n", 1);
+			return (data->exit_status);
+		}
 		if (dup2(in, STDIN_FILENO) < 0)
 			error_exit("operation failure", errno);
 		if (dup2(out, STDOUT_FILENO) < 0)
 			error_exit("operation failure", errno);
-		return (data->exit_status);
+		
 	}
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
@@ -57,7 +66,7 @@ int	execution(t_parser_list **p_list, char ***env)
 			execute(data, env);
 		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
 			execute(data, env);
-		else if (data->fork_pid[i] == 0)
+		else if (data->fork_pid[i] == 0)	
 			execute(data, env);
 		parser = parser->next;
 		i++;
@@ -66,7 +75,7 @@ int	execution(t_parser_list **p_list, char ***env)
 	waitpid_forks(data);
 	ft_putstr_fd("Return code: ", 1);
 	ft_putnbr_fd(data->exit_status, 1);
-	ft_putstr_fd("\n-----------MiniShell Output-------------\n\n\n", 1);
+	ft_putstr_fd("\n", 1);
 	return (data->exit_status);
 }
 
