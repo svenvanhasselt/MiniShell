@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:01:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/28 16:20:06 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ typedef struct s_exec_struc
 {
 	int		fdin;
 	int		fdout;
+	int		fdin_old;
+	int		fdout_old;
 	int		num_commands;
 	int		exit_status;
 	int		**pipe_fd;

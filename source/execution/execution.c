@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:01:32 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/28 16:23:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,44 +16,30 @@
 void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data, char ***env);
+void	dup2_stdin_stdout(int fdin, int fdout);
 
 int	execution(t_parser_list **p_list, char ***env)
 {
 	int				i;
 	t_exec			*data;
 	t_parser_list	*parser;
-	
+
 	parser = *p_list;
 	data = prepare(parser, env);
-	
-	i = 0;
-	int in = dup(STDIN_FILENO);
-	int out = dup(STDOUT_FILENO);
-	
 	if (data->num_commands == 1)
 	{
+		data->fdin_old = dup(STDIN_FILENO);
+		data->fdout_old = dup(STDOUT_FILENO);
 		redirection(parser, data, i);
-		if (dup2(data->fdin, STDIN_FILENO) < 0)
-			error_exit("operation failure", errno);
-		if (dup2(data->fdout, STDOUT_FILENO) < 0)
-			error_exit("operation failure", errno);
+		dup2_stdin_stdout(data->fdin, data->fdout);
 		if (check_builtins(parser->cmd_table, &data, env))
 		{
-			if (dup2(in, STDIN_FILENO) < 0)
-				error_exit("operation failure", errno);
-			if (dup2(out, STDOUT_FILENO) < 0)
-				error_exit("operation failure", errno);
-			ft_putstr_fd("Return code: ", 1);
-			ft_putnbr_fd(data->exit_status, 1);
-			ft_putstr_fd("\n", 1);
+			dup2_stdin_stdout(data->fdin_old, data->fdout_old);
 			return (data->exit_status);
 		}
-		if (dup2(in, STDIN_FILENO) < 0)
-			error_exit("operation failure", errno);
-		if (dup2(out, STDOUT_FILENO) < 0)
-			error_exit("operation failure", errno);
-		
+		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
 	}
+	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{
@@ -171,4 +157,13 @@ int	check_builtins(char **cmd_table, t_exec **data, char ***env)
 		return (0);
 	(*data)->exit_status = status;
 	return (1);
+}
+
+void	dup2_stdin_stdout(int fdin, int fdout)
+{
+	if (dup2(fdin, STDIN_FILENO) < 0)
+		error_exit("operation failure", errno);
+	if (dup2(fdout, STDOUT_FILENO) < 0)
+		error_exit("operation failure", errno);
+
 }
