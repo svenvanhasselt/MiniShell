@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/28 13:36:29 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/28 13:54:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	execution(t_parser_list **p_list, char ***env)
 	
 	parser = *p_list;
 	data = prepare(parser, env);
+	
 	i = 0;
 	int in = dup(STDIN_FILENO);
 	int out = dup(STDOUT_FILENO);
@@ -73,9 +74,6 @@ int	execution(t_parser_list **p_list, char ***env)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	ft_putstr_fd("Return code: ", 1);
-	ft_putnbr_fd(data->exit_status, 1);
-	ft_putstr_fd("\n", 1);
 	return (data->exit_status);
 }
 
