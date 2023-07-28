@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 18:15:53 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/14 17:33:17 by psadeghi          #+#    #+#             */
+/*   Updated: 2023/07/25 08:57:19 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ typedef struct s_exec_struc
 
 /*	Main execution functions */
 int		execution(t_parser_list **p_list, char ***env);
-void	*prepare(t_parser_list *parser, char **env);
+void	*prepare(t_parser_list *parser, char ***env);
 void	create_cmd_table(t_parser_list *parser);
 void	redirection(t_parser_list *p_list, t_exec *data, int i);
 void	close_pipes_files(t_exec *data);

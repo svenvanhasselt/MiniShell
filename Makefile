@@ -1,18 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: svan-has <svan-has@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/07/21 16:10:05 by svan-has      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
+#    Updated: 2023/07/25 07:15:21 by sven             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -Werror -Wall -Wextra -g -fsanitize=address
+#CFLAGS := -Werror -Wall -Wextra -g -fsanitize=address
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
@@ -51,7 +51,7 @@ libft:
 	@$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) -lreadline $(OBJ) $(LIB) $(HEADERS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB) $(HEADERS) -o $(NAME) -lreadline
 	$(info minishell Compiled)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

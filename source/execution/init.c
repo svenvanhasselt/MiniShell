@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   init.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 18:16:17 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/21 13:45:46 by svan-has          #+#    #+#             */
+/*   Updated: 2023/07/25 08:57:58 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*prepare(t_parser_list *parser, char **env)
+void	*prepare(t_parser_list *parser, char ***env)
 {
 	int			i;
 	t_exec		*data;
@@ -25,7 +25,7 @@ void	*prepare(t_parser_list *parser, char **env)
 	i = -1;
 	while (++i < data->num_commands - 1)
 		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
-	data->env = env;
+	data->env = (*env);
 	create_cmd_table(parser);
 	return (data);
 }

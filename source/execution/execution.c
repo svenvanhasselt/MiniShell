@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   execution.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 18:21:02 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   execution.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/15 14:35:16 by svan-has          #+#    #+#             */
+/*   Updated: 2023/07/27 15:05:36 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	execute(t_exec *data);
+void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
-int		check_builtins(char **cmd_table, t_exec **data);
+int		check_builtins(char **cmd_table, t_exec **data, char ***env);
 
 int	execution(t_parser_list **p_list, char ***env)
 {
@@ -25,11 +25,26 @@ int	execution(t_parser_list **p_list, char ***env)
 	
 	ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 	parser = *p_list;
-	data = prepare(parser, (*env));
+	data = prepare(parser, env);
 	i = 0;
-	if (check_builtins(parser->cmd_table, &data))
-		i++;
-	create_pipes(data, data->num_commands - i);
+	int in = dup(STDIN_FILENO);
+	int out = dup(STDOUT_FILENO);
+	
+	if (data->num_commands == 1)
+	{
+		redirection(parser, data, i);
+		if (dup2(data->fdin, STDIN_FILENO) < 0)
+			error_exit("operation failure", errno);
+		if (dup2(data->fdout, STDOUT_FILENO) < 0)
+			error_exit("operation failure", errno);
+		check_builtins(parser->cmd_table, &data, env);
+		if (dup2(in, STDIN_FILENO) < 0)
+			error_exit("operation failure", errno);
+		if (dup2(out, STDOUT_FILENO) < 0)
+			error_exit("operation failure", errno);
+		return (data->exit_status);
+	}
+	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{
 		data->fork_pid[i] = fork();
@@ -37,13 +52,13 @@ int	execution(t_parser_list **p_list, char ***env)
 			error_exit("operation failure", errno);
 		redirection(parser, data, i);
 		if (data->num_commands == 1 && data->fork_pid[i] == 0)
-			execute(data);
+			execute(data, env);
 		else if (i == 0 && data->fork_pid[i] == 0)
-			execute(data);
+			execute(data, env);
 		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-			execute(data);
+			execute(data, env);
 		else if (data->fork_pid[i] == 0)
-			execute(data);
+			execute(data, env);
 		parser = parser->next;
 		i++;
 	}
@@ -78,14 +93,14 @@ void	create_cmd_table(t_parser_list *parser)
 	}
 }
 
-void	execute(t_exec *data)
+void	execute(t_exec *data, char ***env)
 {
 	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
 	close_pipes_files(data);
-	if (check_builtins(data->cmd_table, &data))
+	if (check_builtins(data->cmd_table, &data, env))
 		exit (data->exit_status);
 	execve(path_cmd(data->cmd_table[0], data->env), \
 	data->cmd_table, data->env);
@@ -123,7 +138,7 @@ char	*path_cmd(char *command, char **env)
 	return (command);
 }
 
-int	check_builtins(char **cmd_table, t_exec **data)
+int	check_builtins(char **cmd_table, t_exec **data, char ***env)
 {
 	int	i;
 	int	status;
@@ -132,19 +147,19 @@ int	check_builtins(char **cmd_table, t_exec **data)
 	while (cmd_table[0][++i])
 		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
 	if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
-		status = cd_builtin(cmd_table, &(*data)->env);
+		status = cd_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
 		status = echo_builtin(cmd_table);
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
-		status = env_builtin((*data)->env);
+		status = env_builtin((*env));
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
 		status = exit_builtin();
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
-		status = export_builtin(cmd_table, &(*data)->env);
+		status = export_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
 		status = pwd_builtin();
 	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
-		status = unset_builtin(cmd_table[1], &(*data)->env);
+		status = unset_builtin(cmd_table[1], env);
 	else
 		return (0);
 	(*data)->exit_status = status;
