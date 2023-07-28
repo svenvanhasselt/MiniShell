@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:01:37 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/28 15:03:29 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,18 +318,13 @@ char	*ft_readline(char *prompt)
 			check_line(new, &lst);
 			make_parser(&lst, &p_list);
 			add_history(line);
-<<<<<<< HEAD
 			ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 			int ret = execution(&p_list, &env);
+			unlink("here_doc");
 			ft_putstr_fd("Return code: ", 1);
 			ft_putnbr_fd(ret, 1);
 			ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
-=======
-			execution(&p_list, &env);
-			unlink("here_doc");
-			ft_putstr_fd("-----------Bash Output-------------\n", 1);
->>>>>>> main
 			char *bash = ft_strjoin(line, " && echo Return code: $?");
 			system(bash);
 			ft_putstr_fd("-----------Bash Output-------------", 1);
