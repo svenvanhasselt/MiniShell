@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ll_list_parser.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/24 18:17:54 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/28 15:01:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void	free_llist(t_parser_list **p_list)
 	}
 	while ((*p_list))
 	{
-		printf("test\n");
 		temp = *p_list;
 		free_list((*p_list)->lst);
 		(*p_list) = (*p_list)->next;
