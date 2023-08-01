@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/28 16:23:12 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/01 12:21:16 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	execution(t_parser_list **p_list, char ***env)
 	t_parser_list	*parser;
 
 	parser = *p_list;
+	i = 0;
 	data = prepare(parser, env);
 	if (data->num_commands == 1)
 	{
@@ -39,7 +40,6 @@ int	execution(t_parser_list **p_list, char ***env)
 		}
 		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
 	}
-	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{
