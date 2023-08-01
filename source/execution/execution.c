@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 12:21:16 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/01 14:27:42 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,14 @@ char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
 
-int	execution(t_parser_list **p_list, char ***env)
+int	builtins_redirect(t_exec *data, t_parser_list *parser, char ***env)
 {
-	int				i;
-	t_exec			*data;
-	t_parser_list	*parser;
-
-	parser = *p_list;
-	i = 0;
-	data = prepare(parser, env);
 	if (data->num_commands == 1)
 	{
 		data->fdin_old = dup(STDIN_FILENO);
 		data->fdout_old = dup(STDOUT_FILENO);
-		redirection(parser, data, i);
+		data->fdin = redirect(parser, STDIN_FILENO, true);
+		data->fdout = redirect(parser, STDOUT_FILENO, false);
 		dup2_stdin_stdout(data->fdin, data->fdout);
 		if (check_builtins(parser->cmd_table, &data, env))
 		{
@@ -40,6 +34,20 @@ int	execution(t_parser_list **p_list, char ***env)
 		}
 		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
 	}
+	return (-1);
+}
+
+int	execution(t_parser_list **p_list, char ***env)
+{
+	int				i;
+	t_exec			*data;
+	t_parser_list	*parser;
+
+	parser = *p_list;
+	data = prepare(parser, env);
+	if (builtins_redirect(data, parser, env) >= 0)
+		return (data->exit_status);
+	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{

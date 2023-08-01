@@ -6,7 +6,11 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
+<<<<<<< HEAD
+/*   Updated: 2023/08/01 13:49:15 by svan-has      ########   odam.nl         */
+=======
 /*   Updated: 2023/07/31 16:37:28 by psadeghi      ########   odam.nl         */
+>>>>>>> 10cc4ec802ddc52c55417f63e32266ec0ea7c3e2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +167,7 @@ int		execution(t_parser_list **p_list, char ***env);
 void	*prepare(t_parser_list *parser, char ***env);
 void	create_cmd_table(t_parser_list *parser);
 void	redirection(t_parser_list *p_list, t_exec *data, int i);
+int		redirect(t_parser_list *parser, int fd, bool STDIN);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
