@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 14:02:07 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/01 16:17:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,11 @@ void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, t_exec **data, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
+int		builtins_redirect(t_exec *data, t_parser_list *parser, char ***env);
 
-int	builtins_redirect(t_exec *data, t_parser_list *parser, char ***env)
+void	expansion(t_exec *data, t_parser_list *parser, char ***env)
 {
-	if (data->num_commands == 1)
-	{
-		data->fdin_old = dup(STDIN_FILENO);
-		data->fdout_old = dup(STDOUT_FILENO);
-		data->fdin = redirect(parser, STDIN_FILENO, true);
-		data->fdout = redirect(parser, STDOUT_FILENO, false);
-		dup2_stdin_stdout(data->fdin, data->fdout);
-		if (check_builtins(parser->cmd_table, &data, env))
-		{
-			dup2_stdin_stdout(data->fdin_old, data->fdout_old);
-			return (data->exit_status);
-		}
-		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
-	}
-	return (-1);
+	
 }
 
 int	execution(t_parser_list **p_list, char ***env)
@@ -45,6 +32,7 @@ int	execution(t_parser_list **p_list, char ***env)
 
 	parser = *p_list;
 	data = prepare(parser, env);
+	expansion(data, parser, env);
 	if (builtins_redirect(data, parser, env) >= 0)
 		return (data->exit_status);
 	i = 0;
@@ -85,7 +73,10 @@ void	create_cmd_table(t_parser_list *parser)
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head->lst)
 		{
-			head->cmd_table[i] = head->lst->str;
+			if (head->lst->str)
+				head->cmd_table[i] = head->lst->str;
+			else
+				head->cmd_table[i] = NULL;
 			head->lst = head->lst->next;
 			i++;
 		}
@@ -145,6 +136,8 @@ int	check_builtins(char **cmd_table, t_exec **data, char ***env)
 	int	status;
 
 	i = -1;
+	if (!cmd_table[0])
+		return (-1);
 	while (cmd_table[0][++i])
 		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
 	if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
@@ -173,5 +166,23 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 	if (dup2(fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
+}
 
+int	builtins_redirect(t_exec *data, t_parser_list *parser, char ***env)
+{
+	if (data->num_commands == 1)
+	{
+		data->fdin_old = dup(STDIN_FILENO);
+		data->fdout_old = dup(STDOUT_FILENO);
+		data->fdin = redirect(parser, STDIN_FILENO, true);
+		data->fdout = redirect(parser, STDOUT_FILENO, false);
+		dup2_stdin_stdout(data->fdin, data->fdout);
+		if (check_builtins(parser->cmd_table, &data, env))
+		{
+			dup2_stdin_stdout(data->fdin_old, data->fdout_old);
+			return (data->exit_status);
+		}
+		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
+	}
+	return (-1);
 }

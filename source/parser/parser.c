@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/31 16:24:39 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/01 16:18:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 	head = *tokens;
 	while((*tokens) != NULL)
 	{
-		if ((*tokens)->next != NULL)
+		if ((*tokens)->next != NULL && (*tokens) == head)
 		{
 			if ((*tokens)->type == REDIRECT_IN)
 			{
@@ -41,7 +41,7 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 					break;
 				printf("hi 6\n");
 			}
-			if ((*tokens)->type == REDIRECT_OUT)
+			else if ((*tokens)->type == REDIRECT_OUT)
 			{
 				printf("going into rd_managment_out function\n");
 				*tokens = rd_managment_out(*tokens, p_list);
