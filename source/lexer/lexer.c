@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:03:29 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/31 16:37:20 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	check_line(char *line, t_node **lst)
 	int		sq_start;
 
 	i = 0;
-	while(line[i] != '\0')
+	while (line[i] != '\0')
 	{
 		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 		{
@@ -66,30 +66,16 @@ void	check_line(char *line, t_node **lst)
 			{
 				dq_start = i;
 				i++;
-				while(line[i] != '\0' && line[i] != '\"')
+				while (line[i] != '\0' && line[i] != '\"')
 					i++;
 				if (line[i] == '\"')
 					i++;
 				size = i - dq_start;
-				// new = ft_substr(line, start, (size_t)(size));
-				// printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
-				// ft_add_back_list(lst, make_node(new, size, line[dq_start], IN_DOUBLEQ));
-				// print_list(*lst);
-				// if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-				// {
-				// 	size = 1;
-				// 	new = ft_substr(line, i, (size_t)(size));
-				// 	printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
-				// 	ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				// }
 				if (line[i] == '\0')
 				{
 					printf("this is the size in if in double qoute %d\n", size);
 					new = ft_substr(line, dq_start, (size_t)(size));
 					printf("this is new string in if in dq = \"%s\" and the char '%d'\n", new, line[i]);
-					// if (line[start] == '$')
-					// 	ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
-					// else
 					ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
 					break;
 				}
@@ -105,30 +91,16 @@ void	check_line(char *line, t_node **lst)
 			{
 				sq_start = i;
 				i++;
-				while(line[i] != '\0' && line[i] != '\'')
+				while (line[i] != '\0' && line[i] != '\'')
 					i++;
 				if (line[i] == '\'')
 					i++;
 				size = i - sq_start;
-				// new = ft_substr(line, start, (size_t)(size));
-				// printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
-				// ft_add_back_list(lst, make_node(new, size, line[dq_start], IN_DOUBLEQ));
-				// print_list(*lst);
-				// if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-				// {
-				// 	size = 1;
-				// 	new = ft_substr(line, i, (size_t)(size));
-				// 	printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
-				// 	ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				// }
 				if (line[i] == '\0')
 				{
 					printf("this is the size in if in double qoute %d\n", size);
 					new = ft_substr(line, sq_start, (size_t)(size));
 					printf("this is new string in if in dq = \"%s\" and the char '%d'\n", new, line[i]);
-					// if (line[start] == '$')
-					// 	ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
-					// else
 					ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
 					break;
 				}
@@ -139,41 +111,11 @@ void	check_line(char *line, t_node **lst)
 					printf("this is new string in else in double qoute = \"%s\" and the char '%d'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
 				}
-				// while(line[i] != '\0' && line[i] != '\'')
-				// 	i++;
-				// if (line[i] == '\'')
-				// 	i++;
-				// size = i - sq_start;
-				// if (line[sq_start] == '\0' && line[i] == '\0')
-				// {
-				// 	printf("it was me! sorry :D \n");
-				// 	break;
-				// }
-				// new = ft_substr(line, start, (size_t)(size));
-				// printf("this is string in single qoute= \"%s\" and the char '%d'\n", new, line[i]);
-				// ft_add_back_list(lst, make_node(new, size, line[sq_start], IN_SINGLEQ));
-				// print_list(*lst);
-				// if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-				// {
-				// 	size = 1;
-				// 	new = ft_substr(line, i, (size_t)(size));
-				// 	printf("this is new string after sq= \"%s\" and the char '%c'\n", new, line[i]);
-				// 	ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				// }
 			}
-			//else if (line[i] != '\0')
-			//for which case I have added the previous line?
-			// it was for this "ls -l >"
 			else
 			{
 				size = i - start;
 				printf("second = this is the start char = %d\n", line[start]);
-				//test different things to see if this changed things
-				// if (size == 0 && line[i] == '\0')
-				// {
-				// 	printf("I will get here for %d this\n", line[i]);
-				// 	break;
-				// }
 				if (line[start] == '\0' && line[i] == '\0')
 				{
 					printf("it was me! sorry :D \n");

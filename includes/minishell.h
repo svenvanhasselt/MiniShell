@@ -6,7 +6,11 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/08/01 13:49:15 by svan-has      ########   odam.nl         */
+=======
+/*   Updated: 2023/07/31 16:37:28 by psadeghi      ########   odam.nl         */
+>>>>>>> 10cc4ec802ddc52c55417f63e32266ec0ea7c3e2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +123,7 @@ int				ft_sizelist_lparser(t_parser_list *lst);
 void			print_list_lparser(t_parser_list **plist);
 t_node			*rd_managment(t_node *tokens, t_parser_list **p_list);
 t_node			*rd_managment_in(t_node *tokens, t_parser_list **p_list);
+t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
 void			free_llist(t_parser_list **p_list);
 //-----Parser
 void	make_parser(t_node **tokens, t_parser_list **p_list);

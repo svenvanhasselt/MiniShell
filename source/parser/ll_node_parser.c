@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/21 13:23:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/31 13:03:33 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@ t_parser_node	*make_node_parser(t_node *token)
 {
 	t_parser_node	*node;
 
-	if (token->type == SPACE)
-		return (NULL);
+	// I changed this : 	if (token->type == SPACE)
+	//	return (NULL); to the one below and then I commented it! why?
+	// if (token != NULL && token->type == SPACE)
+	// 	return (NULL);
 	node = (t_parser_node *)malloc(sizeof(t_parser_node));
 	if (node == NULL)
 		exit(1);
-	node->str = token->str;
+	if (token == NULL)
+		node->str = NULL;
+	else
+		node->str = token->str;
 	node->next = NULL;
 	node->prev = NULL;
-	printf("the str= \"%s\" and Type = %d\n", node->str, token->type);
+	if (token == NULL)
+		printf("the str= \"NULL\" and Type = 0\n");
+	else
+		printf("the str= \"%s\" and Type = %d\n", node->str, token->type);
 	//sleep(2);
 	return (node);
 }
@@ -79,11 +87,9 @@ void	print_list_parser(t_parser_node *lst)
 	while (lst->next != NULL)
 	{
 		printf("str= %s, ", lst->str);
-		// printf("type= %d ,", lst->n_type);
 		lst = lst->next;
 	}
 	printf("str= %s\n", lst->str);
-	// printf("type= %d\n", lst->n_type);
 }
 
 void	free_list(t_parser_node *lst)

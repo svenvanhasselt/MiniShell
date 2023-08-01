@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/26 15:35:23 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/07/31 16:24:39 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,21 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 				*tokens = rd_managment_in(*tokens, p_list);
 				printf("going out of rd_managment_in function\n");
 				last = ft_lastlist_lparser(*p_list);
+				printf("HI 4\n");
 				if (last->fd_in == -1)
 					break;
+				printf("hi 6\n");
+			}
+			if ((*tokens)->type == REDIRECT_OUT)
+			{
+				printf("going into rd_managment_out function\n");
+				*tokens = rd_managment_out(*tokens, p_list);
+				printf("going out of rd_managment_out function\n");
+				last = ft_lastlist_lparser(*p_list);
+				printf("HI out 4\n");
+				if (last->fd_out == -1)
+					break;
+				printf("hi out 6\n");
 			}
 			else
 			{
@@ -66,7 +79,11 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			printf("I am NULL!\n");
 		while((*tokens)->type != PIPE && (*tokens) != NULL)
 		{
-			printf("5 after the break\n");
+			printf("5 after the break str = %s and type = %d\n", (*tokens)->str, (*tokens)->type);
+			while ((*tokens)->type == SPACE && (*tokens)->next != NULL)
+			{
+				(*tokens) = (*tokens)->next;
+			}
 			while ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
 			{
 				printf("got ya = %s\n", (*tokens)->str);
@@ -78,9 +95,9 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 					break;
 				printf("I got out of the rd while\n");
 			}
-			if (last->fd_in == -1 || last->fd_out == -1)
+			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true))) //|| ((*tokens)->next == NULL && last->rd_in == true))
 				break;
-			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && last->rd_out == true))
+			if (last->fd_in == -1 || last->fd_out == -1)
 				break;
 			ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
 			if ((*tokens)->next != NULL)
@@ -88,27 +105,30 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			else
 				break;
 		}
-		if (last->fd_in == -1 || last->fd_out == -1)
-			break;
-		if (last->rd_in_heredoc == true)
-		{
-			printf("I am getting here in heredoc and this is delimeter = .%s.\n", last->delimiter);
-			while(1)
+		// if (last != NULL)
+		// {
+			if (last->fd_in == -1 || last->fd_out == -1)
+				break;
+			if (last->rd_in_heredoc == true)
 			{
-				line = get_next_line(1);
-				//printf("line= %s\n", line);
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
+				printf("I am getting here in heredoc and this is delimeter = .%s.\n", last->delimiter);
+				while(1)
 				{
-					//printf("got here\n");
-					write(last->fd_in, line, ft_strlen(line));
-					free(line);
+					line = get_next_line(1);
+					//printf("line= %s\n", line);
+					if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
+					{
+						//printf("got here\n");
+						write(last->fd_in, line, ft_strlen(line));
+						free(line);
+					}
+					if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
+						break;
 				}
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
-					break;
+				close(last->fd_in);
+				last->fd_in = open("here_doc", O_RDONLY);
 			}
-			close(last->fd_in);
-			last->fd_in = open("here_doc", O_RDONLY);
-		}
+		// }
 		while (((*tokens)->type == PIPE || (*tokens)->type == SPACE) && (*tokens) != NULL)
 		{
 			(*tokens) = (*tokens)->next;
@@ -117,7 +137,6 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		if (*tokens == NULL)
 			break;
 	}
-	// among us
 	printf("I got here\n");
 	print_list_lparser(p_list);
 	printf("its finished\n");
