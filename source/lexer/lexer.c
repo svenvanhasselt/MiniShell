@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/31 16:37:20 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/01 18:26:24 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,9 +257,13 @@ char	*ft_readline(char *prompt)
 		{
 			printf("line = \"%s\"\n", line);
 			printf("compare new and line = %d\n", strcmp(new, line));
+
 			check_line(new, &lst);
+			expansion(&lst, &env);
 			make_parser(&lst, &p_list);
 			add_history(line);
+
+
 			ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 			int ret = execution(&p_list, &env);
 			unlink("here_doc");

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 16:17:36 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/01 16:42:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ int		check_builtins(char **cmd_table, t_exec **data, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
 int		builtins_redirect(t_exec *data, t_parser_list *parser, char ***env);
 
-void	expansion(t_exec *data, t_parser_list *parser, char ***env)
-{
-	
-}
-
 int	execution(t_parser_list **p_list, char ***env)
 {
 	int				i;
@@ -32,7 +27,6 @@ int	execution(t_parser_list **p_list, char ***env)
 
 	parser = *p_list;
 	data = prepare(parser, env);
-	expansion(data, parser, env);
 	if (builtins_redirect(data, parser, env) >= 0)
 		return (data->exit_status);
 	i = 0;
