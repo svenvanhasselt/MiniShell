@@ -6,7 +6,7 @@
 #    By: sven <sven@student.42.fr>                    +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/02 12:45:45 by svan-has      ########   odam.nl          #
+#    Updated: 2023/08/02 16:59:56 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ OBJ_DIR := object
 SRC := \
 		main.c\
 		lexer/lexer.c\
+		lexer/ll_lexer.c\
 		expansion/expansion.c\
 		expansion/utils.c\
 		parser/parser.c\
@@ -29,6 +30,7 @@ SRC := \
 		parser/ll_node_parser.c\
 		parser/redirections.c\
 		parser/syntax_error.c\
+		parser/qoute_trim.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\

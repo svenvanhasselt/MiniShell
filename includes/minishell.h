@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 13:00:40 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/02 18:00:28 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,19 @@ typedef struct s_parser_list
 
 int		main();
 char	*ft_readline(char *prompt);
-void	check_line(char *line, t_node **lst);
+//-----------Lexer
+void	make_tokens(char *line, t_node **lst);
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
 t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
 void	free_tokens(t_node **lst);
+int		dq_tokens(t_node **lst, char *line, int i);
+int		sq_tokens(t_node **lst, char *line, int i);
+//--------Syntax check
+int		syntax_error(t_node **tokens);
+int		qoute_check(t_node *tokens);
 //--------Parser Node functions
 t_parser_node	*make_node_parser(t_node *tokens);
 t_parser_node	*ft_lastlist_parser(t_parser_node *lst);
@@ -124,7 +130,8 @@ t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
 void			free_llist(t_parser_list **p_list);
 //-----Parser
 void	make_parser(t_node **tokens, t_parser_list **p_list);
-int		syntax_error(t_node *tokens);
+void	qoute_trim(t_node *tokens);
+//void	combine_tokens(t_node *tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
