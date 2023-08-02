@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 18:00:44 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:34:57 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void	put_env(char *string, char ***env)
 	int			i;
 	char		**new_environ;
 
-printf("S\n");
 	new_environ = null_check(malloc (100 * sizeof(char *)));
 	i = 0;
 	while ((*env)[i])

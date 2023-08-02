@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/01 18:26:24 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:18:24 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	check_line(char *line, t_node **lst)
 				i++;
 				while (line[i] != '\0' && line[i] != '\"')
 					i++;
-				if (line[i] == '\"')
-					i++;
-				size = i - dq_start;
+				// if (line[i] == '\"')
+				// 	i++;
+				size = i - dq_start + 1;
 				if (line[i] == '\0')
 				{
 					printf("this is the size in if in double qoute %d\n", size);
@@ -93,9 +93,9 @@ void	check_line(char *line, t_node **lst)
 				i++;
 				while (line[i] != '\0' && line[i] != '\'')
 					i++;
-				if (line[i] == '\'')
-					i++;
-				size = i - sq_start;
+				// if (line[i] == '\'')
+				// 	i++;
+				size = i - sq_start + 1;
 				if (line[i] == '\0')
 				{
 					printf("this is the size in if in double qoute %d\n", size);
