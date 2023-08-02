@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/01 16:18:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 14:34:38 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		}
 		// if (last != NULL)
 		// {
-			if (last->fd_in == -1 || last->fd_out == -1)
-				break;
+			// if (last->fd_in == -1 || last->fd_out == -1)
+			// 	break;
 			if (last->rd_in_heredoc == true)
 			{
 				printf("I am getting here in heredoc and this is delimeter = .%s.\n", last->delimiter);
