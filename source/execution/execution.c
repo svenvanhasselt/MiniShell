@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 16:42:52 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 16:12:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,33 @@
 
 void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
-int		check_builtins(char **cmd_table, t_exec **data, char ***env);
+int		check_builtins(char **cmd_table, int *status, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
-int		builtins_redirect(t_exec *data, t_parser_list *parser, char ***env);
+int		builtins_redirect(t_exec **data, t_parser_list *parser, char ***env);
+
+void	execute_command(t_exec *data, char ***env, int i)
+{
+	if (data->num_commands == 1 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (i == 0 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (data->fork_pid[i] == 0)
+		execute(data, env);
+}
+
+int	redirection_error(t_exec *data, int i)
+{
+	if (data->fdin < 0 || data->fdout < 0)
+	{
+		data->exit_status = 1;
+		if (data->fork_pid[i] == 0)
+			exit (1);
+		return (1);
+	}
+	return (0);
+}
 
 int	execution(t_parser_list **p_list, char ***env)
 {
@@ -27,7 +51,7 @@ int	execution(t_parser_list **p_list, char ***env)
 
 	parser = *p_list;
 	data = prepare(parser, env);
-	if (builtins_redirect(data, parser, env) >= 0)
+	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
 	i = 0;
 	create_pipes(data, data->num_commands);
@@ -37,14 +61,8 @@ int	execution(t_parser_list **p_list, char ***env)
 		if (data->fork_pid[i] == -1)
 			error_exit("operation failure", errno);
 		redirection(parser, data, i);
-		if (data->num_commands == 1 && data->fork_pid[i] == 0)
-			execute(data, env);
-		else if (i == 0 && data->fork_pid[i] == 0)
-			execute(data, env);
-		else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-			execute(data, env);
-		else if (data->fork_pid[i] == 0)	
-			execute(data, env);
+		if (!redirection_error(data, i))
+			execute_command(data, env, i);
 		parser = parser->next;
 		i++;
 	}
@@ -86,7 +104,7 @@ void	execute(t_exec *data, char ***env)
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
 	close_pipes_files(data);
-	if (check_builtins(data->cmd_table, &data, env))
+	if (check_builtins(data->cmd_table, &data->exit_status, env))
 		exit (data->exit_status);
 	execve(path_cmd(data->cmd_table[0], data->env), \
 	data->cmd_table, data->env);
@@ -124,10 +142,9 @@ char	*path_cmd(char *command, char **env)
 	return (command);
 }
 
-int	check_builtins(char **cmd_table, t_exec **data, char ***env)
+int	check_builtins(char **cmd_table, int *status, char ***env)
 {
 	int	i;
-	int	status;
 
 	i = -1;
 	if (!cmd_table[0])
@@ -135,22 +152,21 @@ int	check_builtins(char **cmd_table, t_exec **data, char ***env)
 	while (cmd_table[0][++i])
 		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
 	if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
-		status = cd_builtin(cmd_table, env);
+		*status = cd_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
-		status = echo_builtin(cmd_table);
+		*status = echo_builtin(cmd_table);
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
-		status = env_builtin((*env));
+		*status = env_builtin((*env));
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		status = exit_builtin();
+		*status = exit_builtin();
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
-		status = export_builtin(cmd_table, env);
+		*status = export_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
-		status = pwd_builtin();
+		*status = pwd_builtin();
 	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
-		status = unset_builtin(cmd_table[1], env);
+		*status = unset_builtin(cmd_table[1], env);
 	else
 		return (0);
-	(*data)->exit_status = status;
 	return (1);
 }
 
@@ -162,21 +178,26 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec *data, t_parser_list *parser, char ***env)
+int	builtins_redirect(t_exec **data, t_parser_list *parser, char ***env)
 {
-	if (data->num_commands == 1)
+	int	*status;
+
+	status = &(*data)->exit_status;
+	if ((*data)->num_commands == 1)
 	{
-		data->fdin_old = dup(STDIN_FILENO);
-		data->fdout_old = dup(STDOUT_FILENO);
-		data->fdin = redirect(parser, STDIN_FILENO, true);
-		data->fdout = redirect(parser, STDOUT_FILENO, false);
-		dup2_stdin_stdout(data->fdin, data->fdout);
-		if (check_builtins(parser->cmd_table, &data, env))
+		(*data)->fdin_old = dup(STDIN_FILENO);
+		(*data)->fdout_old = dup(STDOUT_FILENO);
+		(*data)->fdin = redirect(parser, status, STDIN_FILENO, true);
+		(*data)->fdout = redirect(parser, status, STDOUT_FILENO, false);
+		if ((*data)->fdin < 0 || (*data)->fdout < 0)
+			return (*status);
+		dup2_stdin_stdout((*data)->fdin, (*data)->fdout);
+		if (check_builtins(parser->cmd_table, status, env))
 		{
-			dup2_stdin_stdout(data->fdin_old, data->fdout_old);
-			return (data->exit_status);
+			dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
+			return (*status);
 		}
-		dup2_stdin_stdout(data->fdin_old, data->fdout_old);
+		dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
 	}
 	return (-1);
 }
