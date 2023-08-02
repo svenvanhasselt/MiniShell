@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 18:23:11 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:34:57 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int	add_variable(char *string, char ***env)
 
 	if (string && !ft_isalpha(string[0]))
 		return (-1);
-	if (find_value(string) < 0)
-		return (0);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
 	join_value = check_variable(&variable);
 	if (join_value < 0)
