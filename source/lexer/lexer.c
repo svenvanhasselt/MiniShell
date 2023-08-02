@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/31 16:37:20 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:15:26 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	check_line(char *line, t_node **lst)
 				{
 					printf("this is the size in else in double qoute %d\n", size);
 					new = ft_substr(line, dq_start, (size_t)(size));
-					printf("this is new string in else in double qoute = \"%s\" and the char '%d'\n", new, line[i]);
+					printf("this is new string in else in double qoute = \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
 				}
 			}
@@ -93,14 +93,14 @@ void	check_line(char *line, t_node **lst)
 				i++;
 				while (line[i] != '\0' && line[i] != '\'')
 					i++;
-				if (line[i] == '\'')
-					i++;
-				size = i - sq_start;
+				// if (line[i] == '\'')
+				// 	i++;
+				size = i - sq_start + 1;
 				if (line[i] == '\0')
 				{
 					printf("this is the size in if in double qoute %d\n", size);
 					new = ft_substr(line, sq_start, (size_t)(size));
-					printf("this is new string in if in dq = \"%s\" and the char '%d'\n", new, line[i]);
+					printf("this is new string in if in dq = \"%s\" and the char '%c'\n", new, line[i]);
 					ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
 					break;
 				}

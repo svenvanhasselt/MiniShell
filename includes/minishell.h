@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/01 14:22:03 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:48:12 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_parser_list
 	bool			rd_out_append;
 	bool			rd_in_heredoc;
 	char			*delimiter;
+	int				exit_code;
 }				t_parser_list;
 
 int		main();
@@ -123,7 +124,7 @@ t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
 void			free_llist(t_parser_list **p_list);
 //-----Parser
 void	make_parser(t_node **tokens, t_parser_list **p_list);
-void	syntax_error(t_node *tokens);
+int		syntax_error(t_node *tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
