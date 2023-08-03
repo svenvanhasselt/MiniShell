@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:57:14 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/03 15:03:49 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*new_str(t_node *head, char ***env, int len)
 		{
 			i++;
 			variable = find_word(head, env, &i);
-			copy_variable(&new_str, variable, &i, &j);
+			copy_variable(&new_str, variable, &j);
 		}
 		else
 		{

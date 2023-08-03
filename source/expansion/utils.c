@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 12:36:31 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:54:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/03 15:03:16 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	new_length(t_node *head, char ***env)
 	return (len);
 }
 
-void	copy_variable(char **new_str, char *variable, int *i, int *j)
+void	copy_variable(char **new_str, char *variable, int *j)
 {
 	int		k;
 

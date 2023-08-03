@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 15:25:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/03 14:56:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ void	make_tokens(char *line, t_node **lst)
 			i++;
 		}
 		start = i;
-		printf("this is the start char = %d\n", line[start]);
+		printf("this is the start char = %c\n", line[start]);
 		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\''))
 		{
 			i++;
 		}
-		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
+		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\'')
 		{
 			size = i - start;
 			if (size != 0)
@@ -130,46 +130,44 @@ void	make_tokens(char *line, t_node **lst)
 			}
 			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 			{
+				printf("this is the size = %d\n", size);
 				new = ft_substr(line, i, (size_t)(1));
 				printf("this is new string in the same if= \"%s\" and the char '%c'\n", new, line[i]);
 				ft_add_back_list(lst, make_node(new, 1, line[i], NORMAL));
 			}
-		}
-		else
-		{
 			if (line[i] == '\"')
 				i = dq_tokens(lst, line, i);
 			else if (line[i] == '\'')
 				i = sq_tokens(lst, line, i);
+		}
+		else
+		{
+			size = i - start;
+			printf("second = this is the start char = %d\n", line[start]);
+			if (line[start] == '\0' && line[i] == '\0')
+			{
+				printf("it was me! sorry :D \n");
+				break;
+			}
 			else
 			{
-				size = i - start;
-				printf("second = this is the start char = %d\n", line[start]);
-				if (line[start] == '\0' && line[i] == '\0')
+				if (line[i] == '\0')
 				{
-					printf("it was me! sorry :D \n");
+					printf("this is the size in if in else %d\n", size);
+					new = ft_substr(line, start, (size_t)(size));
+					printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
+					if (line[start] == '$')
+						ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
+					else
+						ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
 					break;
 				}
 				else
 				{
-					if (line[i] == '\0')
-					{
-						printf("this is the size in if in else %d\n", size);
-						new = ft_substr(line, start, (size_t)(size));
-						printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
-						if (line[start] == '$')
-							ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
-						else
-							ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-						break;
-					}
-					else
-					{
-						printf("this is the size in else %d\n", size);
-						new = ft_substr(line, start, (size_t)(size));
-						printf("this is new string in else in else = \"%s\" and the char '%d'\n", new, line[i]);
-						ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-					}
+					printf("this is the size in else %d\n", size);
+					new = ft_substr(line, start, (size_t)(size));
+					printf("this is new string in else in else = \"%s\" and the char '%d'\n", new, line[i]);
+					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
 				}
 			}
 		}

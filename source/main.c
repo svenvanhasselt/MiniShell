@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:57:30 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/03 15:00:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*ft_readline(char *prompt)
 	while(1)
 	{
 		printf("each time\n");
+		unlink("here_doc");
 		free_llist(&p_list);
 		free_tokens(&lst);
 		line = readline(prompt);

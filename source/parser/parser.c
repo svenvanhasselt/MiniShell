@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 18:08:23 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/03 14:57:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 	line = 0;
 	//syntax_error(*tokens);
 	qoute_trim(*tokens);
-	//combine_tokens(*tokens);
+	combine_tokens(tokens);
+	printf("out of combine tokens\n");
 	printf("first token = %s\n", (*tokens)->str);
 	head = *tokens;
 	printf("hi i am in Parser!\n");
@@ -142,18 +143,14 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			else
 				break;
 		}
-		// if (last->fd_in == -1 || last->fd_out == -1)
-		// 	break;
 		if (last->rd_in_heredoc == true)
 		{
 			printf("I am getting here in heredoc and this is delimeter = .%s.\n", last->delimiter);
 			while(1)
 			{
 				line = get_next_line(1);
-				//printf("line= %s\n", line);
 				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
 				{
-					//printf("got here\n");
 					write(last->fd_in, line, ft_strlen(line));
 					free(line);
 				}
