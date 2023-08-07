@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:06:32 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/04 17:07:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,11 @@ typedef struct s_exec_struc
 	char	**env;
 }	t_exec;
 
+typedef struct s_status_struc
+{
+	int	exit_status;
+}	t_status;
+
 /*	Expansion */
 void	expansion(t_node **lst, char ***env);
 char	*find_word(t_node *head, char ***env, int *i);
@@ -193,5 +198,8 @@ void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
+
+/*	Signals */
+void	signals_init(void);
 
 #endif

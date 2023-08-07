@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:01:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/04 13:53:38 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	main()
 {
 	char *line;
-
+	
+	// signal(SIGINT, signal_act);
 	// while(1)
 	// {
 	// 	line = readline("minishell~> ");

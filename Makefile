@@ -6,9 +6,12 @@
 #    By: sven <sven@student.42.fr>                    +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/02 12:45:45 by svan-has      ########   odam.nl          #
+#    Updated: 2023/08/04 17:08:50 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
+
+
+READLINEFLAGS += -I/Users/svan-has/.brew/Cellar/readline/8.2.1/include
 
 NAME := minishell
 CC := cc
@@ -41,6 +44,7 @@ SRC := \
 		builtins/unset.c\
 		builtins/export.c\
 		builtins/exit.c\
+		signals/signals.c\
 		
 SRC := $(SRC:%=$(SRC_DIR)/%)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

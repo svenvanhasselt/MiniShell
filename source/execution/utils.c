@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/22 09:22:36 by svan-has          #+#    #+#             */
-/*   Updated: 2023/07/25 06:58:54 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/08/04 15:42:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	waitpid_forks(t_exec *data)
 		waitpid(data->fork_pid[i], &data->exit_status, 0);
 		if (WIFEXITED(data->exit_status))
 			data->exit_status = WEXITSTATUS(data->exit_status);
+		else if (WIFSIGNALED(data->exit_status))
+			data->exit_status = WTERMSIG(data->exit_status) + 128;
 		i++;
 	}
 }

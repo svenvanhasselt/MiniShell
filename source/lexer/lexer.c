@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:18:24 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/04 17:10:38 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,15 @@ void	print_list(t_node *lst)
 	printf("type= %d\n", lst->type);
 }
 
+void	signal_act(int signum)
+{
+	ft_putstr_fd("In parent!\n", 2);
+     write(2, "\n", 1);
+    // rl_replace_line("", 0);
+    // rl_on_new_line();
+    // rl_redisplay();
+}
+
 char	*ft_readline(char *prompt)
 {
 	char	*line;
@@ -236,10 +245,13 @@ char	*ft_readline(char *prompt)
 	t_parser_list *p_list;
 	extern char	**environ;
 	char	**env;
+	t_status status_data;
 	
 	env = copy_environment_list(environ);
 	p_list = NULL;
 	
+	if (signal(SIGINT, signal_act) == SIG_ERR)
+		error_exit("signal error", errno);
 	lst = NULL;
 	while(1)
 	{
@@ -248,7 +260,12 @@ char	*ft_readline(char *prompt)
 		free_tokens(&lst);
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
-		if (!line || line[0] == '\0')
+		if (!new)
+		{
+			printf("\b\b  \n");
+			exit(1);
+		}
+		if (line[0] == '\0')
 		{
 			line = readline(prompt);
 			new = ft_strtrim(line, " ");
@@ -262,7 +279,6 @@ char	*ft_readline(char *prompt)
 			expansion(&lst, &env);
 			make_parser(&lst, &p_list);
 			add_history(line);
-
 
 			ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 			int ret = execution(&p_list, &env);
