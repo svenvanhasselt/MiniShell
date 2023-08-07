@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   lexer.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/04 17:10:38 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/15 15:51:49 by psadeghi          #+#    #+#             */
+/*   Updated: 2023/08/07 10:22:33 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 void	check_line(char *line, t_node **lst)
 {
@@ -228,15 +229,6 @@ void	print_list(t_node *lst)
 	printf("type= %d\n", lst->type);
 }
 
-void	signal_act(int signum)
-{
-	ft_putstr_fd("In parent!\n", 2);
-     write(2, "\n", 1);
-    // rl_replace_line("", 0);
-    // rl_on_new_line();
-    // rl_redisplay();
-}
-
 char	*ft_readline(char *prompt)
 {
 	char	*line;
@@ -245,13 +237,12 @@ char	*ft_readline(char *prompt)
 	t_parser_list *p_list;
 	extern char	**environ;
 	char	**env;
-	t_status status_data;
+	int		exit_status;
 	
+	exit_status = 0;
+	signals_init();
 	env = copy_environment_list(environ);
 	p_list = NULL;
-	
-	if (signal(SIGINT, signal_act) == SIG_ERR)
-		error_exit("signal error", errno);
 	lst = NULL;
 	while(1)
 	{
@@ -276,15 +267,15 @@ char	*ft_readline(char *prompt)
 			printf("compare new and line = %d\n", strcmp(new, line));
 
 			check_line(new, &lst);
-			expansion(&lst, &env);
+			expansion(&lst, &env, exit_status);
 			make_parser(&lst, &p_list);
 			add_history(line);
 
 			ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
-			int ret = execution(&p_list, &env);
+			exit_status = execution(&p_list, &env);
 			unlink("here_doc");
 			ft_putstr_fd("Return code: ", 1);
-			ft_putnbr_fd(ret, 1);
+			ft_putnbr_fd(exit_status, 1);
 			ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
 			char *bash = ft_strjoin(line, " && echo Return code: $?");

@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: sven <sven@student.42.fr>                    +#+                      #
-#                                                    +#+                       #
-#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/04 17:08:50 by svan-has      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
+#    Updated: 2023/08/07 09:23:07 by sven             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ READLINEFLAGS += -I/Users/svan-has/.brew/Cellar/readline/8.2.1/include
 
 NAME := minishell
 CC := cc
-CFLAGS := -g -fsanitize=address
+#CFLAGS = -Wall -Werror -Wextra
+#CFLAGS := -g -fsanitize=address
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes

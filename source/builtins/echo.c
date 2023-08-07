@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   echo.c                                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/22 09:47:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:24:24 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/22 09:47:29 by svan-has          #+#    #+#             */
+/*   Updated: 2023/08/07 11:28:06 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	check_newline(char **cmd_table, int arguments)
 {
-	if (arguments >= 2 && !ft_strncmp(cmd_table[1], "-n", \
-	ft_strlen(cmd_table[1])))
+	if (arguments >= 2 && !ft_strncmp(cmd_table[1], "-n", 2))
 		return (1);
 	else
 		return (0);

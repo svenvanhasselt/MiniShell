@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/04 17:07:48 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/14 17:33:17 by psadeghi          #+#    #+#             */
+/*   Updated: 2023/08/07 10:22:47 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ typedef struct s_exec_struc
 	int		fdout_old;
 	int		num_commands;
 	int		exit_status;
+	int		prev_exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
@@ -158,13 +159,8 @@ typedef struct s_exec_struc
 	char	**env;
 }	t_exec;
 
-typedef struct s_status_struc
-{
-	int	exit_status;
-}	t_status;
-
 /*	Expansion */
-void	expansion(t_node **lst, char ***env);
+void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_word(t_node *head, char ***env, int *i);
 int		find_len(t_node *head, char ***env, int *i);
 int		new_length(t_node *head, char ***env);
