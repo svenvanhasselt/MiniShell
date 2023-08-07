@@ -6,12 +6,16 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/03 15:00:54 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/07 14:46:02 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// void	blah(void)
+// {
+// 	system("leaks minishell");
+// }
 char	*ft_readline(char *prompt)
 {
 	char	*line;
@@ -22,6 +26,7 @@ char	*ft_readline(char *prompt)
 	char	**env;
 	int		syntax_check;
 	
+	// atexit(blah);
 	env = copy_environment_list(environ);
 	p_list = NULL;
 	syntax_check = 0;
@@ -35,7 +40,8 @@ char	*ft_readline(char *prompt)
 		free_tokens(&lst);
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
-		if (!line || line[0] == '\0')
+		//if (!line || line[0] == '\0')
+		if (!new || new[0] == '\0')
 		{
 			line = readline(prompt);
 			new = ft_strtrim(line, " ");
@@ -43,6 +49,7 @@ char	*ft_readline(char *prompt)
 		else
 		{
 			printf("line = \"%s\"\n", line);
+			printf("new = .%s.\n", new);
 			printf("compare new and line = %d\n", strcmp(new, line));
 			make_tokens(new, &lst);
 			syntax_check = syntax_error(&lst);

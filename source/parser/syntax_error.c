@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 14:06:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:51:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/07 12:18:51 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	syntax_error(t_node **tokens)
 	if (head->type == PIPE)
 	{
 		write(2, "syntax error near unexpected token `|'\n", 40);
+		write(2, "hi6\n", 4);
 		return (258);
 	}
 	while (head != NULL)
@@ -79,60 +80,108 @@ int	syntax_error(t_node **tokens)
 			head->next->type == DOUBLE_QOUTE))
 			{
 				write(2, "syntax error near unexpected token `|'\n", 40);
+				write(2, "hi5\n", 4);
 				return (258);
 			}
 		}
 		//I am not sure about this syntax error and it needs more testing with bash
-		if (head->type == REDIRECT_OUT)
+		else if (head->type == REDIRECT_OUT)
 		{
 			if (head->type == REDIRECT_OUT)
 				rd_out_count++;
 			printf("rd_out_count = %d\n", rd_out_count);
-			printf("head->str = \"%s\" and type = %d and next = %p\n", head->str, head->type, head->next);
-			while (head->next && head->next->type == SPACE && head->next != NULL)
+			//printf("head->str = \"%s\" and type = %d and next = %p\n", head->str, head->type, head->next);
+			if (head->next == NULL)
 			{
-				printf("here  head->str = \"%s\" and type = %d\n", head->str, head->type);
-				rd_out_count = 0;
-				head = head->next;
+				write(2, "syntax error near unexpected token `newline'\n", 46);
+				return (258);
+			}
+			printf("head->str = \"%s\" and type = %d and next = %p\n", head->str, head->type, head->next);
+			if (head->next->type == SPACE)
+			{
+				while (head->next && head->next->type == SPACE && head->next != NULL)
+				{
+					printf("here  head->str = \"%s\" and type = %d\n", head->str, head->type);
+					// rd_out_count = 0;
+					head = head->next;
+				}
+				if (head->next->type == REDIRECT_IN || head->next->type == REDIRECT_OUT)
+				{
+					write(2, "syntax error near unexpected token `<'\n", 40);
+					return(258);
+				}
+				else
+					rd_out_count = 0;
 			}
 			printf("YEsssss\n");
+			if (head->next == NULL || rd_out_count > 2)
+			{
+				write(2, "syntax error near unexpected token `newline'\n", 46);
+				write(2, "hi4\n", 4);
+				return (258);
+			}
 			if (head->next && !(head->next->type == WORD || head->next->type == SINGLE_QOUTE ||\
 			head->next->type == DOUBLE_QOUTE || head->next->type == REDIRECT_OUT))
 			{
 				write(2, "syntax error near unexpected token `newline'\n", 46);
+				write(2, "hi3\n", 4);
 				return (258);
 			}
-			if (head->next == NULL || rd_out_count > 2)
+			// if (head->next == NULL || rd_out_count > 2)
+			// {
+			// 	write(2, "syntax error near unexpected token `newline'\n", 46);
+			// 	return (258);
+			// }
+		}
+		else if (head->type == REDIRECT_IN)
+		{
+			if (head->type == REDIRECT_IN)
+				rd_in_count++;
+			if (head->next == NULL)
 			{
 				write(2, "syntax error near unexpected token `newline'\n", 46);
 				return (258);
 			}
-		}
-		if (head->type == REDIRECT_IN)
-		{
-			if (head->type == REDIRECT_IN)
-				rd_in_count++;
 			printf("rd_in_count = %d\n", rd_in_count);
 			printf("head->str = \"%s\" and type = %d and next = %p\n", head->str, head->type, head->next);
-			while (head->next && head->next->type == SPACE && head->next != NULL)
+			if (head->next->type == SPACE)
 			{
-				printf("here  head->str = \"%s\" and type = %d\n", head->str, head->type);
-				head = head->next;
+				while (head->next && head->next->type == SPACE && head->next != NULL)
+				{
+					printf("here  head->str = \"%s\" and type = %d\n", head->str, head->type);
+					// rd_out_count = 0;
+					head = head->next;
+				}
+				if (head->next->type == REDIRECT_IN || head->next->type == REDIRECT_OUT)
+				{
+					write(2, "syntax error near unexpected token `<'\n", 40);
+					return(258);
+				}
+				else
+					rd_in_count = 0;
 			}
+			// while (head->next && head->next->type == SPACE && head->next != NULL)
+			// {
+			// 	printf("here  head->str = \"%s\" and type = %d\n", head->str, head->type);
+			// 	rd_in_count = 0;
+			// 	head = head->next;
+			// }
 			printf("YEsssss\n");
 			if (head->next && !(head->next->type == WORD ||\
 			head->next->type == SINGLE_QOUTE || head->next->type == DOUBLE_QOUTE || head->next->type == REDIRECT_IN))
 			{
 				write(2, "syntax error near unexpected token `newline'\n", 46);
+				write(2, "hi1\n", 4);
 				return (258);
 			}
 			if (head->next == NULL || rd_in_count > 2)
 			{
 				write(2, "syntax error near unexpected token `newline'\n", 46);
+				write(2, "hi2\n", 4);
 				return (258);
 			}
 		}
-		if (head->state == IN_DOUBLEQ || head->state == IN_SINGLEQ)
+		else if (head->state == IN_DOUBLEQ || head->state == IN_SINGLEQ)
 		{
 			printf("and we found the qoute\n");
 			qoute_result = qoute_check(head);

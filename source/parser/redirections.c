@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:47:00 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/07 13:21:15 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 			head = head->next;
 		}
 	}
+	printf("this is the string in the managment in %s\n", tokens->str);
 	return (tokens);
 }
 
