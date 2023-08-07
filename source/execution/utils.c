@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/11 12:37:23 by svan-has      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/22 09:22:36 by svan-has          #+#    #+#             */
+/*   Updated: 2023/07/25 06:58:54 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
+#include <sys/wait.h>
 
 void	close_pipes_files(t_exec *data)
 {
@@ -24,10 +25,11 @@ void	close_pipes_files(t_exec *data)
 		close (data->pipe_fd[i][1]);
 		i++;
 	}
-	if (data->infile && i == 0)
-		close(data->fdin);
-	if (data->outfile && i == data->num_commands - 1)
-		close(data->fdout);
+	// Close FD's? Check!
+	// if (data->infile && i == 0)
+	// 	close(data->fdin);
+	// if (data->outfile && i == data->num_commands - 1)
+	// 	close(data->fdout);
 }
 
 void	waitpid_forks(t_exec *data)
@@ -39,7 +41,7 @@ void	waitpid_forks(t_exec *data)
 	{
 		waitpid(data->fork_pid[i], &data->exit_status, 0);
 		if (WIFEXITED(data->exit_status))
-        	data->exit_status = WEXITSTATUS(data->exit_status);
+			data->exit_status = WEXITSTATUS(data->exit_status);
 		i++;
 	}
 }
@@ -86,9 +88,6 @@ int	array_size(char **array)
 	if (!array)
 		return (-1);
 	count = 0;
-	int i = 0;
-	while(array[i])
-		i++;
 	while (array[count])
 		count++;
 	return (count);

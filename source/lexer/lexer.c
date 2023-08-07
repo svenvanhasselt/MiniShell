@@ -3,273 +3,179 @@
 /*                                                        ::::::::            */
 /*   lexer.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:04:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/03 14:56:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
-// int	ft_checkline(char *s)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while(s[i])
-// 	{
-// 		if (s[i] == '|' || s[i] == '<' || s[i] == '>'
-// 		|| s[i] == '$' || s[i] == '\'' || s[i] == '\"')
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-void	check_line(char *line, t_node **lst)
+int	dq_tokens(t_node **lst, char *line, int i)
 {
-	int	i;
-	int	start;
+	// dq_start = i;
+	// i++;
+	// while (line[i] != '\0' && line[i] != '\"')
+	// 	i++;
+	// size = i - dq_start + 1;
+	// // if (line[i] == '\0')
+	// // {
+	// // 	printf("this is the size in if in double qoute %d\n", size);
+	// // 	new = ft_substr(line, dq_start, (size_t)(size));
+	// // 	printf("this is new string in if in dq = \"%s\" and the char '%d'\n", new, line[i]);
+	// // 	ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
+	// // 	break;
+	// // }
+	// // else
+	// // {
+	// printf("this is the size in else in double qoute %d\n", size);
+	// new = ft_substr(line, dq_start, (size_t)(size));
+	// printf("this is new string in else in double qoute = \"%s\" and the char '%c'\n", new, line[i]);
+	// ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
+	// // }
+	int		dq_start;
+	int		size;
+	char	*new;
+
+	dq_start = i;
+	i++;
+	while (line[i] != '\0' && line[i] != '\"')
+		i++;
+	if (line[i] == '\0')
+		size = i - dq_start;
+	else
+		size = i - dq_start + 1;
+	printf("this is the size in else in double qoute %d\n", size);
+	new = ft_substr(line, dq_start, (size_t)(size));
+	printf("this is new string in else in double qoute = \"%s\" and the char '%c'\n", new, line[i]);
+	ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
+	return (i);
+}
+
+int	sq_tokens(t_node **lst, char *line, int i)
+{
+	// sq_start = i;
+	// i++;
+	// while (line[i] != '\0' && line[i] != '\'')
+	// 	i++;
+	// size = i - sq_start + 1;
+	// // if (line[i] == '\0')
+	// // {
+	// // 	printf("this is the size in if in double qoute %d\n", size);
+	// // 	new = ft_substr(line, sq_start, (size_t)(size));
+	// // 	printf("this is new string in if in dq = \"%s\" and the char '%c'\n", new, line[i]);
+	// // 	ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
+	// // 	break;
+	// // }
+	// // else
+	// // {
+	// printf("this is the size in else in double qoute %d\n", size);
+	// new = ft_substr(line, sq_start, (size_t)(size));
+	// printf("this is new string in else in double qoute = \"%s\" and the char '%d'\n", new, line[i]);
+	// ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
+	// // }
+	int		sq_start;
+	int		size;
+	char	*new;
+
+	sq_start = i;
+	i++;
+	while (line[i] != '\0' && line[i] != '\'')
+		i++;
+	size = i - sq_start + 1;
+	printf("this is the size in else in double qoute %d\n", size);
+	new = ft_substr(line, sq_start, (size_t)(size));
+	printf("this is new string in else in double qoute = \"%s\" and the char '%d'\n", new, line[i]);
+	ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
+	return (i);
+}
+
+void	make_tokens(char *line, t_node **lst)
+{
+	int		i;
+	int		start;
 	char	*new;
 	int		size;
-	int		dq_start;
-	int		sq_start;
-	// int		env_start;
-	// t_node	*lst;
 
 	i = 0;
-	while(line[i] != '\0')
+	while (line[i] != '\0')
 	{
 		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 		{
-			size = 1;
-			new = ft_substr(line, i, (size_t)(size));
-			// ft_add_back_list(&lst, make_node(new, size, line[i], NORMAL));
-			// print_list(lst);
+			new = ft_substr(line, i, (size_t)(1));
 			printf("this is new string first if= \"%s\" and the char '%c'\n", new, line[i]);
-			ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-			// print_list(*lst);
+			ft_add_back_list(lst, make_node(new, 1, line[i], NORMAL));
 			i++;
 		}
 		start = i;
+		printf("this is the start char = %c\n", line[start]);
 		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\''))
 		{
 			i++;
 		}
-		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
+		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\'')
 		{
 			size = i - start;
-			printf("this is the size in if %d\n", size);
 			if (size != 0)
 			{
 				new = ft_substr(line, start, (size_t)(size));
 				printf("this is new string in if= \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				if (line[start] == '$')
+					ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
+				else
+					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
 			}
 			if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 			{
-				size = 1;
-				new = ft_substr(line, i, (size_t)(size));
+				printf("this is the size = %d\n", size);
+				new = ft_substr(line, i, (size_t)(1));
 				printf("this is new string in the same if= \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
+				ft_add_back_list(lst, make_node(new, 1, line[i], NORMAL));
 			}
+			if (line[i] == '\"')
+				i = dq_tokens(lst, line, i);
+			else if (line[i] == '\'')
+				i = sq_tokens(lst, line, i);
 		}
 		else
 		{
-			if (line[i] == '\"')
+			size = i - start;
+			printf("second = this is the start char = %d\n", line[start]);
+			if (line[start] == '\0' && line[i] == '\0')
 			{
-				dq_start = i;
-				i++;
-				while(line[i] != '\0' && line[i] != '\"')
-					i++;
-				if (line[i] == '\"')
-					i++;
-				size = i - dq_start;
-				new = ft_substr(line, start, (size_t)(size));
-				printf("this is string in double qoute= \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, line[dq_start], IN_DOUBLEQ));
-				print_list(*lst);
-				if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-				{
-					size = 1;
-					new = ft_substr(line, i, (size_t)(size));
-					printf("this is new string after dq= \"%s\" and the char '%c'\n", new, line[i]);
-					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				}
-			}
-			else if (line[i] == '\'')
-			{
-				sq_start = i;
-				i++;
-				while(line[i] != '\0' && line[i] != '\'')
-					i++;
-				if (line[i] == '\'')
-					i++;
-				size = i - sq_start;
-				new = ft_substr(line, start, (size_t)(size));
-				printf("this is string in single qoute= \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, line[sq_start], IN_SINGLEQ));
-				print_list(*lst);
-				if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-				{
-					size = 1;
-					new = ft_substr(line, i, (size_t)(size));
-					printf("this is new string after sq= \"%s\" and the char '%c'\n", new, line[i]);
-					ft_add_back_list(lst, make_node(new, size, line[i], NORMAL));
-				}
+				printf("it was me! sorry :D \n");
+				break;
 			}
 			else
 			{
-				size = i - start;
-				printf("this is the size in else %d\n", size);
-				new = ft_substr(line, start, (size_t)(size));
-				printf("this is new string in else = \"%s\" and the char '%c'\n", new, line[i]);
-				ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				if (line[i] == '\0')
+				{
+					printf("this is the size in if in else %d\n", size);
+					new = ft_substr(line, start, (size_t)(size));
+					printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
+					if (line[start] == '$')
+						ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
+					else
+						ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+					break;
+				}
+				else
+				{
+					printf("this is the size in else %d\n", size);
+					new = ft_substr(line, start, (size_t)(size));
+					printf("this is new string in else in else = \"%s\" and the char '%d'\n", new, line[i]);
+					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
+				}
 			}
 		}
-		i++;
+		if (line[i] != '\0')
+			i++;
 	}
 	printf("this is the last result->");
 	print_list(*lst);
-	// make_node_parser(lst);
-	make_parser(lst);
+	printf("we got out from here\n");
 }
 
-t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state)
-{
-	t_node	*node;
-
-	node = (t_node *)malloc(sizeof(t_node));
-	if (node == NULL)
-		exit(1);
-	// printf("hi hi\n");
-	node->str = str;
-	node->len = len;
-	// printf("hi hi1\n");
-	node->type = type;
-	// printf("hi hi2\n");
-	node->state = state;
-	// printf("hi hi3\n");
-	node->next = NULL;
-	node->prev = NULL;
-	// printf("hi hi4\n");
-	return (node);
-}
-
-t_node	*ft_lastlist(t_node *lst)
-{
-	if (!lst)
-		return (0);
-	// printf("hi hi9\n");
-	while (lst->next)
-		lst = lst->next;
-	// printf("hi hi10\n");
-	return (lst);
-}
-
-void	ft_add_back_list(t_node **lst, t_node *new)
-{
-	t_node	*current;
-
-	if (!new || !lst)
-		return ;
-	// printf("hi hi5\n");
-	if (!*lst)
-	{
-		// printf("hi hi6\n");
-		*lst = new;
-		(*lst)->next = NULL;
-		return ;
-	}
-	// printf("hi hi7\n");
-	current = ft_lastlist(*lst);
-	// printf("hi hi8\n");
-	current->next = new;
-	current->next->next = NULL;
-}
-
-int	ft_sizelist(t_node *lst)
-{
-	int	count;
-
-	count = 0;
-	if (!lst)
-		return (0);
-	while (lst != NULL)
-	{
-		lst = lst->next;
-		count++;
-	}
-	return (count);
-}
-
-void	print_list(t_node *lst)
-{
-	if (!lst)
-		return ;
-	while (lst->next != NULL)
-	{
-		printf("str= %s, state= %u, ", lst->str, lst->state);
-		printf("type= %d ,", lst->type);
-		lst = lst->next;
-	}
-	printf("str= %s, state= %u ", lst->str, lst->state);
-	printf("type= %d\n", lst->type);
-}
-
-char	*ft_readline(char *prompt)
-{
-	char	*line;
-	t_node	*lst;
-	// int		res;
-	// int		words;
-	// int		prev_words;
-	// char	**new;
-	
-	lst = NULL;
-	while(1)
-	{
-		line = readline(prompt);
-		if (!line)
-		{
-			printf("exit\n");
-			exit(1);
-		}
-		else
-		{
-			printf("line = %s\n", line);
-			check_line(line, &lst);
-			add_history(line);
-		}
-	}
-	return (line);
-}
-
-// t_node	*make_node(char *line)
-// {
-// 	i
-// }
-
-// t_lst	make_list(char *line)
-// {
-// 	t_lst *list;
-// 	int	start;
-// 	int	i;
-
-// 	i = 0;
-// 	start = 0;
-// 	list = (t_lst *)malloc(sizeof(t_lst));
-// 	while(line)
-// 	{
-		
-// 	}
-// }
-
-// t_test {
-// 	e_token	type;
-// }
-
-// t_test test;
-
-// test->type = WORD;

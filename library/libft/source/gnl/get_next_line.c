@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/02 11:20:14 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/05/09 11:40:39 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 14:16:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	i = 0;
 	while (store[i] != '\n' && store[i])
-			i++;
+		i++;
 	ret_str = ft_substr_free(store, 0, i + 1, 0);
 	if (!ret_str)
 		return (free(store), NULL);

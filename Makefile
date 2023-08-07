@@ -6,13 +6,13 @@
 #    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
-#    Updated: 2023/07/25 09:36:32 by sven             ###   ########.fr        #
+#    Updated: 2023/08/07 17:39:46 by sven             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-#CFLAGS := -Werror -Wall -Wextra -g -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra #-g #-fsanitize=address
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
@@ -22,13 +22,20 @@ OBJ_DIR := object
 SRC := \
 		main.c\
 		lexer/lexer.c\
+		lexer/ll_lexer.c\
+		expansion/expansion.c\
+		expansion/utils.c\
 		parser/parser.c\
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\
 		parser/redirections.c\
+		parser/syntax_error.c\
+		parser/qoute_trim.c\
 		execution/execution.c\
 		execution/utils.c\
+		execution/init.c\
 		execution/error_handling.c\
+		execution/redirection.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		builtins/pwd.c\

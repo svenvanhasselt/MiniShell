@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/12 16:26:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/03 15:03:26 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ enum e_node_type
 typedef struct s_parser_node
 {
 	// enum e_node_type n_type;
-	struct s_parser_node	*nxt_node;
-	struct s_parser_node	*prev_node;
+	struct s_parser_node	*next;
+	struct s_parser_node	*prev;
 	char			*str;
 }				t_parser_node;
 
@@ -81,6 +81,7 @@ typedef struct s_parser_list
 {
 	t_parser_node	*lst;
 	struct s_parser_list *next;
+	char			**cmd_table;
 	bool			rd_in;
 	int				fd_in;
 	char			*file_in;
@@ -89,23 +90,34 @@ typedef struct s_parser_list
 	int				fd_out;
 	char			*file_out;
 	int				errno_out;
+	bool			rd_out_append;
+	bool			rd_in_heredoc;
+	char			*delimiter;
+	int				exit_code;
 }				t_parser_list;
 
 int		main();
 char	*ft_readline(char *prompt);
-void	check_line(char *line, t_node **lst);
+//-----------Lexer
+void	make_tokens(char *line, t_node **lst);
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
 t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
-
+void	free_tokens(t_node **lst);
+int		dq_tokens(t_node **lst, char *line, int i);
+int		sq_tokens(t_node **lst, char *line, int i);
+//--------Syntax check
+int		syntax_error(t_node **tokens);
+int		qoute_check(t_node *tokens);
 //--------Parser Node functions
 t_parser_node	*make_node_parser(t_node *tokens);
 t_parser_node	*ft_lastlist_parser(t_parser_node *lst);
 void			ft_add_back_list_parser(t_parser_node **lst, t_parser_node *new);
 int				ft_sizelist_parser(t_parser_node *lst);
 void			print_list_parser(t_parser_node *lst);
+void			free_list(t_parser_node *lst);
 //-----Parser list functions
 t_parser_list	*make_node_lparser(t_parser_node *small_list);
 t_parser_list	*ft_lastlist_lparser(t_parser_list *lst);
@@ -113,8 +125,13 @@ void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
 int				ft_sizelist_lparser(t_parser_list *lst);
 void			print_list_lparser(t_parser_list **plist);
 t_node			*rd_managment(t_node *tokens, t_parser_list **p_list);
+t_node			*rd_managment_in(t_node *tokens, t_parser_list **p_list);
+t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
+void			free_llist(t_parser_list **p_list);
 //-----Parser
-void	make_parser(t_node **tokens);
+void	make_parser(t_node **tokens, t_parser_list **p_list);
+void	qoute_trim(t_node *tokens);
+void	combine_tokens(t_node **tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
@@ -134,23 +151,34 @@ typedef struct s_funcstruc
 	void	(*func)(void*);
 }	t_func;
 
-typedef struct exec_struc
+typedef struct s_exec_struc
 {
-	int		infile;
-	int		outfile;
 	int		fdin;
 	int		fdout;
+	int		fdin_old;
+	int		fdout_old;
 	int		num_commands;
 	int		exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
+	char	**cmd_table;
 	t_func	*builtin_func[7];
-	char	*test_cmd[3][4];
 	char	**env;
 }	t_exec;
 
+/*	Expansion */
+void	expansion(t_node **lst, char ***env);
+char	*find_word(t_node *head, char ***env, int *i);
+int		find_len(t_node *head, char ***env, int *i);
+int		new_length(t_node *head, char ***env);
+void	copy_variable(char **new_str, char *variable, int *j);
+
 /*	Main execution functions */
-int		execution(void);
+int		execution(t_parser_list **p_list, char ***env);
+void	*prepare(t_parser_list *parser, char ***env);
+void	create_cmd_table(t_parser_list *parser);
+void	redirection(t_parser_list *p_list, t_exec *data, int i);
+int		redirect(t_parser_list *parser, int *status, int fd, bool STDIN);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
@@ -164,7 +192,7 @@ int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
-int		exit_builtin(int status);
+int		exit_builtin(void);
 
 /*	Tools */
 char	**copy_environment_list(char **env);

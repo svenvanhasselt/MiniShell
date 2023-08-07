@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/11 16:11:20 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/07/21 13:56:17 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <libft.h>
 #include <minishell.h>
 
-char	*strerror_minishell(int	error_no);
+char	*strerror_minishell(int error_no);
 int		exit_status(int error_no);
 
 void	*null_check(void *check)
@@ -55,7 +55,7 @@ int	error_seterrno(char *message, char *message2, int error_no)
 	return (1);
 }
 
-char	*strerror_minishell(int	error_no)
+char	*strerror_minishell(int error_no)
 {
 	if (error_no == ERR_NO_CMD)
 		return ("command not found");
@@ -68,10 +68,10 @@ char	*strerror_minishell(int	error_no)
 	return (strerror(error_no));
 }
 
-int		exit_status(int error_no)
+int	exit_status(int error_no)
 {
 	if (error_no == EACCES)
-		return(126);
+		return (126);
 	if (error_no == ERR_NO_CMD)
 		return (127);
 	return (1);

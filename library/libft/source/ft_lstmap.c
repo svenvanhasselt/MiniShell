@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-has <svan-has@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 19:34:19 by svan-has          #+#    #+#             */
-/*   Updated: 2022/10/26 12:28:27 by svan-has         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   ft_lstmap.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-has <svan-has@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/20 19:34:19 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/07/21 14:16:11 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{	
+{
 	t_list	*new_head;
 	t_list	*new_node;
 
