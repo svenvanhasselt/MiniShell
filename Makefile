@@ -6,7 +6,7 @@
 #    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
-#    Updated: 2023/08/07 16:23:43 by sven             ###   ########.fr        #
+#    Updated: 2023/08/07 17:51:29 by sven             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ READLINEFLAGS += -I/Users/svan-has/.brew/Cellar/readline/8.2.1/include
 
 NAME := minishell
 CC := cc
-#CFLAGS := -Werror -Wall -Wextra -g -fsanitize=address
+CFLAGS := #-Wall -Werror -Wextra #-g #-fsanitize=address
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
@@ -25,6 +25,7 @@ OBJ_DIR := object
 SRC := \
 		main.c\
 		lexer/lexer.c\
+		lexer/ll_lexer.c\
 		expansion/expansion.c\
 		expansion/utils.c\
 		parser/parser.c\
@@ -32,6 +33,7 @@ SRC := \
 		parser/ll_node_parser.c\
 		parser/redirections.c\
 		parser/syntax_error.c\
+		parser/qoute_trim.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\

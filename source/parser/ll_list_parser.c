@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/28 15:01:42 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/02 12:29:42 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new)
 
 int	ft_sizelist_lparser(t_parser_list *lst)
 {
-	int	count;
-	t_parser_list *head;
+	int				count;
+	t_parser_list	*head;
 
 	count = 0;
 	if (!lst)

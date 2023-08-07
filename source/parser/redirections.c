@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/07/31 16:23:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/07 13:21:15 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 	t_parser_list	*node;
 	t_node			*first_command;
 	bool			here_doc;
-	// char			*line;
 	char			*del;
-	// char			*delimiter;
 
 	head = tokens;
 	n_list = NULL;
@@ -87,7 +85,6 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 		if (head->type == WORD || head->type == SINGLE_QOUTE || head->type == DOUBLE_QOUTE)
 		{
 			printf("I got here! where are you segfaul!\n");
-			// node = ft_lastlist_lparser(*p_list);
 			node->rd_in = true;
 			if (node->rd_in_heredoc == false)
 				node->file_in = head->str;
@@ -118,6 +115,7 @@ t_node	*rd_managment_in(t_node *tokens, t_parser_list **p_list)
 			head = head->next;
 		}
 	}
+	printf("this is the string in the managment in %s\n", tokens->str);
 	return (tokens);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 12:36:31 by svan-has          #+#    #+#             */
-/*   Updated: 2023/08/07 11:47:13 by sven             ###   ########.fr       */
+/*   Updated: 2023/08/07 17:45:05 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	new_length(t_node *head, char ***env)
 	return (len);
 }
 
-void	copy_variable(char **new_str, char *variable, int *i, int *j)
+void	copy_variable(char **new_str, char *variable, int *j)
 {
 	int		k;
 

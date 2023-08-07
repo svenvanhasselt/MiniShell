@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:26:09 by svan-has          #+#    #+#             */
-/*   Updated: 2023/08/07 11:48:04 by sven             ###   ########.fr       */
+/*   Updated: 2023/08/07 17:44:57 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*new_str(t_node *head, char ***env, int len, int exit_status)
 		{
 			i++;
 			variable = find_word(head, env, &i);
-			copy_variable(&new_str, variable, &i, &j);
+			copy_variable(&new_str, variable, &j);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:33:17 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/08/07 10:22:47 by sven             ###   ########.fr       */
+/*   Updated: 2023/08/07 17:43:40 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,24 @@ typedef struct s_parser_list
 	bool			rd_out_append;
 	bool			rd_in_heredoc;
 	char			*delimiter;
+	int				exit_code;
 }				t_parser_list;
 
 int		main();
 char	*ft_readline(char *prompt);
-void	check_line(char *line, t_node **lst);
+//-----------Lexer
+void	make_tokens(char *line, t_node **lst);
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
 t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
 void	free_tokens(t_node **lst);
+int		dq_tokens(t_node **lst, char *line, int i);
+int		sq_tokens(t_node **lst, char *line, int i);
+//--------Syntax check
+int		syntax_error(t_node **tokens);
+int		qoute_check(t_node *tokens);
 //--------Parser Node functions
 t_parser_node	*make_node_parser(t_node *tokens);
 t_parser_node	*ft_lastlist_parser(t_parser_node *lst);
@@ -123,7 +130,8 @@ t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
 void			free_llist(t_parser_list **p_list);
 //-----Parser
 void	make_parser(t_node **tokens, t_parser_list **p_list);
-void	syntax_error(t_node *tokens);
+void	qoute_trim(t_node *tokens);
+void	combine_tokens(t_node **tokens);
 // int		ft_checkline(char *s);
 // int		count_words_msh(char *s);
 // int		count_words(char const	*s, char c);
@@ -164,7 +172,7 @@ void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_word(t_node *head, char ***env, int *i);
 int		find_len(t_node *head, char ***env, int *i);
 int		new_length(t_node *head, char ***env);
-void	copy_variable(char **new_str, char *variable, int *i, int *j);
+void	copy_variable(char **new_str, char *variable, int *j);
 
 /*	Main execution functions */
 int		execution(t_parser_list **p_list, char ***env);
