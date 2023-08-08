@@ -1,18 +1,18 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: sven <sven@student.42.fr>                    +#+                      #
-#                                                    +#+                       #
-#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/07 14:44:47 by psadeghi      ########   odam.nl          #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
+#    Updated: 2023/08/07 17:39:46 by sven             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -g #-fsanitize=address
+CFLAGS := -Wall -Werror -Wextra #-g #-fsanitize=address
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes
