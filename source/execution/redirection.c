@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:04:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/08 17:46:59 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	redirect_in(t_parser_list *parser, int *status, int fd)
 {
-	if (parser->rd_in)
+	if (parser->rd_in || parser->rd_in_heredoc)
 		fd = parser->fd_in;
 	else
 		return (fd);

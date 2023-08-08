@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 15:09:03 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/08/07 17:51:04 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/08/08 16:45:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ char	*ft_readline(char *prompt)
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
 		//if (!line || line[0] == '\0')
-		if (!new || new[0] == '\0')
+		if (!new)
+		{
+			printf("\b\b \n");
+			exit(1);
+		}
+		if (new[0] == '\0')
 		{
 			line = readline(prompt);
 			new = ft_strtrim(line, " ");

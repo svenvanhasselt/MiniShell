@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 14:35:16 by svan-has          #+#    #+#             */
-/*   Updated: 2023/08/07 10:22:05 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   execution.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/08/08 17:52:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,8 @@ char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, int *status, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
 int		builtins_redirect(t_exec **data, t_parser_list *parser, char ***env);
-
-void	execute_command(t_exec *data, char ***env, int i)
-{
-	if (data->num_commands == 1 && data->fork_pid[i] == 0)
-		execute(data, env);
-	else if (i == 0 && data->fork_pid[i] == 0)
-		execute(data, env);
-	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-		execute(data, env);
-	else if (data->fork_pid[i] == 0)
-		execute(data, env);
-}
-
-int	redirection_error(t_exec *data, int i)
-{
-	if (data->fdin < 0 || data->fdout < 0)
-	{
-		data->exit_status = 1;
-		if (data->fork_pid[i] == 0)
-			exit (1);
-		return (1);
-	}
-	return (0);
-}
+void	execute_command(t_exec *data, char ***env, int i);
+int		redirection_error(t_exec *data, int i);
 
 int	execution(t_parser_list **p_list, char ***env)
 {
@@ -69,6 +47,30 @@ int	execution(t_parser_list **p_list, char ***env)
 	close_pipes_files(data);
 	waitpid_forks(data);
 	return (data->exit_status);
+}
+
+void	execute_command(t_exec *data, char ***env, int i)
+{
+	if (data->num_commands == 1 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (i == 0 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
+		execute(data, env);
+	else if (data->fork_pid[i] == 0)
+		execute(data, env);
+}
+
+int	redirection_error(t_exec *data, int i)
+{
+	if (data->fdin < 0 || data->fdout < 0)
+	{
+		data->exit_status = 1;
+		if (data->fork_pid[i] == 0)
+			exit (1);
+		return (1);
+	}
+	return (0);
 }
 
 void	create_cmd_table(t_parser_list *parser)
