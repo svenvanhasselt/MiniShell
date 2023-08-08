@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:29:42 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/08 15:45:44 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,25 @@ int	ft_sizelist_lparser(t_parser_list *lst)
 	return (count);
 }
 
+void	free_llist(t_parser_list **p_list)
+{
+	t_parser_list *temp;
+
+	if (!p_list || !*p_list)
+	{
+		printf("it is NULL\n");
+		return ;
+	}
+	while ((*p_list))
+	{
+		temp = *p_list;
+		free_list((*p_list)->lst);
+		(*p_list) = (*p_list)->next;
+		free(temp);
+	}
+	printf("done freeing\n");
+}
+
 void	print_list_lparser(t_parser_list **plist)
 {
 	t_parser_list	*head;
@@ -98,23 +117,4 @@ void	print_list_lparser(t_parser_list **plist)
 	}
 	printf("the head each node = \"%s\"\n", head->lst->str);
 	print_list_parser(head->lst);
-}
-
-void	free_llist(t_parser_list **p_list)
-{
-	t_parser_list *temp;
-
-	if (!p_list || !*p_list)
-	{
-		printf("it is NULL\n");
-		return ;
-	}
-	while ((*p_list))
-	{
-		temp = *p_list;
-		free_list((*p_list)->lst);
-		(*p_list) = (*p_list)->next;
-		free(temp);
-	}
-	printf("done freeing\n");
 }

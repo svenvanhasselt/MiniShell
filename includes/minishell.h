@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/03 15:03:26 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/08 16:43:48 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_parser_list
 	bool			rd_out_append;
 	bool			rd_in_heredoc;
 	char			*delimiter;
+	char			*del_without_nl;
 	int				exit_code;
 }				t_parser_list;
 
@@ -100,6 +101,8 @@ int		main();
 char	*ft_readline(char *prompt);
 //-----------Lexer
 void	make_tokens(char *line, t_node **lst);
+int		make_new_token(t_node **lst, char *line, int i, int start);
+int		make_new_token2(t_node **lst, char *line, int i, int start);
 t_node	*make_node(char *str, int len, enum e_token type, enum e_situation state);
 t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
@@ -124,6 +127,7 @@ t_parser_list	*ft_lastlist_lparser(t_parser_list *lst);
 void			ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new);
 int				ft_sizelist_lparser(t_parser_list *lst);
 void			print_list_lparser(t_parser_list **plist);
+t_node			*redirection_atfirst(t_node *tokens, t_parser_list **p_list);
 t_node			*rd_managment(t_node *tokens, t_parser_list **p_list);
 t_node			*rd_managment_in(t_node *tokens, t_parser_list **p_list);
 t_node			*rd_managment_out(t_node *tokens, t_parser_list **p_list);
