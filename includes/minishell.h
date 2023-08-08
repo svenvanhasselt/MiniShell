@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:33:17 by psadeghi          #+#    #+#             */
-/*   Updated: 2023/08/07 17:43:40 by sven             ###   ########.fr       */
+/*   Updated: 2023/08/08 09:47:31 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ char	*find_word(t_node *head, char ***env, int *i);
 int		find_len(t_node *head, char ***env, int *i);
 int		new_length(t_node *head, char ***env);
 void	copy_variable(char **new_str, char *variable, int *j);
+char	*word_split(char *new_str, t_node *head);
 
 /*	Main execution functions */
 int		execution(t_parser_list **p_list, char ***env);

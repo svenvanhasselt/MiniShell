@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 18:26:09 by svan-has          #+#    #+#             */
-/*   Updated: 2023/08/07 17:44:57 by sven             ###   ########.fr       */
+/*   Updated: 2023/08/08 09:49:12 by sven             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,38 @@ void	expand_word(t_node *head, char ***env, int exit_status)
 	}
 }
 
+void	add_nodes(char **split_variable, t_node *head)
+{
+	int	i;
+	t_node *split_token;
+
+	i = 1;
+	while (split_variable[i])
+	{
+		split_token = make_node(split_variable[i], ft_strlen(split_variable[i]), WORD, IN_DOUBLEQ);
+		printf("STR TOKEN: %s\n", split_token->str);
+		split_token->next = head->next;
+		head->next = split_token;
+		//free(split_token);
+		i++;
+	}
+}
+
+char	*word_split(char *new_str, t_node *head)
+{
+	char	**split_variable;
+
+	if (new_str && ft_strnstr(new_str, " ", ft_strlen(new_str)))
+	{
+		printf("FOUND\n");
+		split_variable = null_check(ft_split(new_str, ' '));
+		free(new_str);
+		add_nodes(split_variable, head);
+		return (split_variable[0]);
+	}
+	return (new_str);
+}
+
 char	*new_str(t_node *head, char ***env, int len, int exit_status)
 {
 	int		i;
@@ -56,6 +88,7 @@ char	*new_str(t_node *head, char ***env, int len, int exit_status)
 			i++;
 			variable = find_word(head, env, &i);
 			copy_variable(&new_str, variable, &j);
+			new_str = word_split(new_str, head);
 		}
 		else
 		{
