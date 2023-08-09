@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:13:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, int *status, char ***env);
 void	dup2_stdin_stdout(int fdin, int fdout);
-int		builtins_redirect(t_exec **data, t_parser_list *parser, char ***env);
+int		builtins_redirect(t_exec **data, t_pl *parser, char ***env);
 
 void	execute_command(t_exec *data, char ***env, int i)
 {
@@ -43,11 +43,11 @@ int	redirection_error(t_exec *data, int i)
 	return (0);
 }
 
-int	execution(t_parser_list **p_list, char ***env)
+int	execution(t_pl **p_list, char ***env)
 {
 	int				i;
 	t_exec			*data;
-	t_parser_list	*parser;
+	t_pl	*parser;
 
 	parser = *p_list;
 	data = prepare(parser, env);
@@ -71,11 +71,11 @@ int	execution(t_parser_list **p_list, char ***env)
 	return (data->exit_status);
 }
 
-void	create_cmd_table(t_parser_list *parser)
+void	create_cmd_table(t_pl *parser)
 {
 	int				i;
 	int				size;
-	t_parser_list	*head;
+	t_pl	*head;
 
 	head = parser;
 	while (head)
@@ -178,7 +178,7 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec **data, t_parser_list *parser, char ***env)
+int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 {
 	int	*status;
 

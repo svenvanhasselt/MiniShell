@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: sven <sven@student.42.fr>                  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/31 19:05:22 by svan-has          #+#    #+#              #
-#    Updated: 2023/08/07 17:39:46 by sven             ###   ########.fr        #
+#                                                         ::::::::             #
+#    Makefile                                           :+:    :+:             #
+#                                                      +:+                     #
+#    By: sven <sven@student.42.fr>                    +#+                      #
+#                                                    +#+                       #
+#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
+#    Updated: 2023/08/09 17:04:20 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,11 @@ SRC := \
 		parser/parser.c\
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\
-		parser/redirections.c\
-		parser/syntax_error.c\
-		parser/qoute_trim.c\
+		syntax/syntax_error.c\
+		syntax/qoute_managing.c\
+		syntax/token_comb.c\
+		redirection/rd.c\
+		redirection/rd_atfirst.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\

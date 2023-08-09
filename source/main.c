@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/07 14:46:02 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_readline(char *prompt)
 	char	*line;
 	t_node	*lst;
 	char	*new;
-	t_parser_list *p_list;
+	t_pl *p_list;
 	extern char	**environ;
 	char	**env;
 	int		syntax_check;

@@ -6,17 +6,17 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/08 15:45:44 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:36:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_parser_list	*make_node_lparser(t_parser_node *small_list)
+t_pl	*make_node_lparser(t_pn *small_list)
 {
-	t_parser_list	*node;
+	t_pl	*node;
 
-	node = (t_parser_list *)malloc(sizeof(t_parser_list));
+	node = (t_pl *)malloc(sizeof(t_pl));
 	if (node == NULL)
 		exit(1);
 	node->lst = small_list;
@@ -35,7 +35,7 @@ t_parser_list	*make_node_lparser(t_parser_node *small_list)
 	return (node);
 }
 
-t_parser_list	*ft_lastlist_lparser(t_parser_list *lst)
+t_pl	*ft_lastlist_lparser(t_pl *lst)
 {
 	if (!lst)
 		return (0);
@@ -46,9 +46,9 @@ t_parser_list	*ft_lastlist_lparser(t_parser_list *lst)
 	return (lst);
 }
 
-void	ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new)
+void	ft_add_back_list_lparser(t_pl **lst, t_pl *new)
 {
-	t_parser_list	*current;
+	t_pl	*current;
 
 	if (!new || !lst)
 		return ;
@@ -63,10 +63,10 @@ void	ft_add_back_list_lparser(t_parser_list **lst, t_parser_list *new)
 	current->next->next = NULL;
 }
 
-int	ft_sizelist_lparser(t_parser_list *lst)
+int	ft_sizelist_lparser(t_pl *lst)
 {
 	int				count;
-	t_parser_list	*head;
+	t_pl	*head;
 
 	count = 0;
 	if (!lst)
@@ -80,15 +80,12 @@ int	ft_sizelist_lparser(t_parser_list *lst)
 	return (count);
 }
 
-void	free_llist(t_parser_list **p_list)
+void	free_llist(t_pl **p_list)
 {
-	t_parser_list *temp;
+	t_pl *temp;
 
 	if (!p_list || !*p_list)
-	{
-		printf("it is NULL\n");
 		return ;
-	}
 	while ((*p_list))
 	{
 		temp = *p_list;
@@ -96,25 +93,19 @@ void	free_llist(t_parser_list **p_list)
 		(*p_list) = (*p_list)->next;
 		free(temp);
 	}
-	printf("done freeing\n");
 }
 
-void	print_list_lparser(t_parser_list **plist)
+void	print_list_lparser(t_pl **plist)
 {
-	t_parser_list	*head;
+	t_pl	*head;
 
 	if (!plist || !*plist)
-	{
-		printf("it is NULL1\n");
 		return ;
-	}
 	head = *plist;
 	while (head->next != NULL)
 	{
-		printf("the head each node = \"%s\"\n", head->lst->str);
 		print_list_parser(head->lst);
 		head = head->next;
 	}
-	printf("the head each node = \"%s\"\n", head->lst->str);
 	print_list_parser(head->lst);
 }

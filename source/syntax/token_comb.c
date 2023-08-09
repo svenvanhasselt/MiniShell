@@ -1,35 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   qoute_trim.c                                       :+:    :+:            */
+/*   token_comb.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/08/02 16:58:19 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/08 17:11:36 by psadeghi      ########   odam.nl         */
+/*   Created: 2023/08/09 17:01:10 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/08/09 19:42:39 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	qoute_trim(t_node *tokens)
-{
-	t_node	*head;
-
-	head = tokens;
-	while(head)
-	{
-		if (head->state == IN_DOUBLEQ)
-		{
-			head->str = ft_strtrim(head->str, "\"");
-		}
-		else if (head->state == IN_SINGLEQ)
-		{
-			head->str = ft_strtrim(head->str, "\'");
-		}
-		head = head->next;
-	}
-}
 
 void	combine_tokens(t_node **tokens)
 {
@@ -40,7 +22,7 @@ void	combine_tokens(t_node **tokens)
 	temp = NULL;
 	while (head)
 	{
-		if (((head->state == IN_SINGLEQ || head->state == IN_DOUBLEQ) && ((head->next && head->next->type == WORD))) ||\
+		if (((head->state == IN_SINGLEQ || head->state == IN_DOUBLEQ) && ((head->next && head->next->type == WORD))) || \
 		((head->state == NORMAL && head->type == WORD) && (head->next && (head->next->state == IN_DOUBLEQ || head->next->state == IN_SINGLEQ))))
 		{
 			temp = head->next;
@@ -64,15 +46,13 @@ void	combine_tokens(t_node **tokens)
 				free(temp->str);
 				free(temp);
 				head->next = NULL;
-				break;
+				break ;
 			}
 		}
 		else
 			head = head->next;
 	}
 }
- //I should test this code!
-
 
 //  void	combine_tokens(t_node **tokens)
 // {

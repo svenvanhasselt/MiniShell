@@ -6,30 +6,16 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/08 17:06:58 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*redirection_atfirst(t_node *tokens, t_parser_list **p_list)
+void	make_parser(t_node **tokens, t_pl **p_list)
 {
-	if (tokens->type == REDIRECT_IN)
-		tokens = rd_managment_in(tokens, p_list);
-	else if (tokens->type == REDIRECT_OUT)
-		tokens = rd_managment_out(tokens, p_list);
-	return (tokens);
-}
-
-// void	parser_last_token()
-// {
-	
-// }
-
-void	make_parser(t_node **tokens, t_parser_list **p_list)
-{
-	t_parser_list	*last;
-	t_parser_node	*n_list;
+	t_pl	*last;
+	t_pn	*n_list;
 	t_node			*head;
 	char			*line;
 
@@ -45,7 +31,7 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		{
 			if ((*tokens)->type == REDIRECT_IN || (*tokens)->type == REDIRECT_OUT)
 			{
-				*tokens = redirection_atfirst(*tokens, p_list);
+				*tokens = rd_atfirst_managment(*tokens, p_list);
 				last = ft_lastlist_lparser(*p_list);
 				if (last->fd_in == -1 || last->fd_out == -1)
 					break ;
@@ -77,36 +63,34 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			else
 				break ;
 		}
-		// if (last->rd_in_heredoc == true)
-		// {
-		// 	while(1)
-		// 	{
-		// 		line = get_next_line(1);
-		// 		if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
-		// 		{
-		// 			write(last->fd_in, line, ft_strlen(line));
-		// 			free(line);
-		// 		}
-		// 		if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
-		// 			break;
-		// 	}
-		// 	close(last->fd_in);
-		// 	last->fd_in = open("here_doc", O_RDONLY);
-		// }
 		while ((*tokens) != NULL && (*tokens)->type != PIPE)
 		{
 			while ((*tokens)->type == SPACE && (*tokens)->next != NULL)
-			{
 				(*tokens) = (*tokens)->next;
-			}
 			while ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
 			{
 				*tokens = rd_managment(*tokens, p_list);
 				if ((*tokens)->type == PIPE || (*tokens)->next == NULL || last->fd_in == -1 || last->fd_out == -1)
 					break;
 			}
-			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true))) //|| ((*tokens)->next == NULL && last->rd_in == true))
+			// if ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
+			// {
+			// 	*(tokens) = rd_managment(*tokens, p_list);
+			// 	if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true)))
+			// 	{
+			// 		printf("here is the tokens str if it is the last = %s\n", (*tokens)->str);
+			// 		break;
+			// 	}
+			// 	if (last->fd_in == -1 || last->fd_out == -1)
+			// 		break ;
+			// }
+			printf("this is the last = %s\n", last->lst->str);
+			//I can not find why I have puted this here!
+			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true)))
+			{
+				printf("here is the tokens str if it is the last = %s\n", (*tokens)->str);
 				break;
+			}
 			if (last->fd_in == -1 || last->fd_out == -1)
 				break;
 			ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
@@ -139,6 +123,9 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 		if (*tokens == NULL)
 			break;
 	}
+	printf("I got here\n");
+	print_list_lparser(p_list);
+	printf("its finished\n");
 }
 
 // I should check where to put the heredoc!
@@ -152,9 +139,9 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 //echo < file2 is not working properly
 
 
-// void	make_parser(t_node **tokens, t_parser_list **p_list)
+// void	make_parser(t_node **tokens, t_pl **p_list)
 // {
-// 	t_parser_list	*last;
+// 	t_pl	*last;
 // 	t_parser_node	*n_list;
 // 	t_node			*head;
 // 	char			*line;

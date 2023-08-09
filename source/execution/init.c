@@ -6,13 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 14:38:22 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*prepare(t_parser_list *parser, char ***env)
+void	*prepare(t_pl *parser, char ***env)
 {
 	int			i;
 	t_exec		*data;

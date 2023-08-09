@@ -6,13 +6,13 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 16:04:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	redirect_in(t_parser_list *parser, int *status, int fd)
+int	redirect_in(t_pl *parser, int *status, int fd)
 {
 	if (parser->rd_in)
 		fd = parser->fd_in;
@@ -27,7 +27,7 @@ int	redirect_in(t_parser_list *parser, int *status, int fd)
 	return (fd);
 }
 
-int	redirect_out(t_parser_list *parser, int *status, int fd)
+int	redirect_out(t_pl *parser, int *status, int fd)
 {
 	if (parser->rd_out)
 		fd = parser->fd_out;
@@ -42,7 +42,7 @@ int	redirect_out(t_parser_list *parser, int *status, int fd)
 	return (fd);
 }
 
-int	redirect(t_parser_list *parser, int *status, int fd, bool STDIN)
+int	redirect(t_pl *parser, int *status, int fd, bool STDIN)
 {
 	if (STDIN == true)
 		return (redirect_in(parser, status, fd));
@@ -51,7 +51,7 @@ int	redirect(t_parser_list *parser, int *status, int fd, bool STDIN)
 	return (-1);
 }
 
-void	redirection(t_parser_list *parser, t_exec *data, int i)
+void	redirection(t_pl *parser, t_exec *data, int i)
 {
 	int	*status;
 
