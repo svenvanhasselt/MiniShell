@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 18:37:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 {
 	t_pl	*last;
 	t_pn	*n_list;
-	t_node			*head;
-	char			*line;
+	t_node	*head;
+	char	*line;
 
 	n_list = NULL;
 	last = NULL;
 	line = 0;
 	qoute_trim(*tokens);
-	combine_tokens(tokens);
+	combine_tokens(*tokens);
+	printf("this is the tokens list after the combine tokens function:\n");
+	print_list(*tokens);
+	printf("end of the list of tokens!\n");
 	head = *tokens;
 	while ((*tokens) != NULL)
 	{
@@ -33,6 +36,7 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 			{
 				*tokens = rd_atfirst_managment(*tokens, p_list);
 				last = ft_lastlist_lparser(*p_list);
+				n_list = last->lst;
 				if (last->fd_in == -1 || last->fd_out == -1)
 					break ;
 			}
@@ -54,8 +58,9 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 				last = ft_lastlist_lparser(*p_list);
 				break ;
 			}
-			if ((*tokens)->next == NULL && ((last->rd_in_heredoc == true && ft_strncmp((*tokens)->str, last->del_without_nl, ft_strlen(last->del_without_nl)) != 0)|| last->fd_out == true || last->fd_in == true))
+			if ((*tokens)->next == NULL && ((last->rd_in_heredoc == true && ft_strncmp((*tokens)->str, last->del_without_nl, ft_strlen(last->del_without_nl)) != 0) || last->rd_out == true || last->rd_in == true))
 			{
+				printf("this is the str in this if = %s\n", (*tokens)->str);
 				ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
 				(*tokens) = (*tokens)->next;
 				break ;
@@ -71,57 +76,43 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 			{
 				*tokens = rd_managment(*tokens, p_list);
 				if ((*tokens)->type == PIPE || (*tokens)->next == NULL || last->fd_in == -1 || last->fd_out == -1)
-					break;
+					break ;
 			}
-			// if ((*tokens)->type == REDIRECT_OUT || (*tokens)->type == REDIRECT_IN)
-			// {
-			// 	*(tokens) = rd_managment(*tokens, p_list);
-			// 	if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true)))
-			// 	{
-			// 		printf("here is the tokens str if it is the last = %s\n", (*tokens)->str);
-			// 		break;
-			// 	}
-			// 	if (last->fd_in == -1 || last->fd_out == -1)
-			// 		break ;
-			// }
-			printf("this is the last = %s\n", last->lst->str);
-			//I can not find why I have puted this here!
 			if ((*tokens)->type == PIPE || ((*tokens)->next == NULL && (last->rd_out == true || last->rd_in == true || last->rd_out_append == true || last->rd_in_heredoc == true)))
-			{
-				printf("here is the tokens str if it is the last = %s\n", (*tokens)->str);
-				break;
-			}
+				break ;
 			if (last->fd_in == -1 || last->fd_out == -1)
-				break;
+				break ;
+			printf("this is the str in here = %s\n", (*tokens)->str);
 			ft_add_back_list_parser(&n_list, make_node_parser(*tokens));
 			if ((*tokens)->next != NULL)
 				(*tokens) = (*tokens)->next;
 			else
-				break;
+				break ;
 		}
 		if (last->rd_in_heredoc == true)
 		{
-			while(1)
+			while (1)
 			{
 				line = get_next_line(1);
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
+				if (line && ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
 				{
 					write(last->fd_in, line, ft_strlen(line));
 					free(line);
 				}
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
-					break;
+				if (!line || ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
+					break ;
 			}
 			close(last->fd_in);
 			last->fd_in = open("here_doc", O_RDONLY);
 		}
-		while ( (*tokens) != NULL && ((*tokens)->type == PIPE || (*tokens)->type == SPACE))
+		while ((*tokens) != NULL && ((*tokens)->type == PIPE || (*tokens)->type == SPACE))
 		{
 			(*tokens) = (*tokens)->next;
 			head = (*tokens);
+			printf("this is the head now = %s\n", head->str);
 		}
 		if (*tokens == NULL)
-			break;
+			break ;
 	}
 	printf("I got here\n");
 	print_list_lparser(p_list);
@@ -137,7 +128,6 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 // I should take care of redirection in!
 
 //echo < file2 is not working properly
-
 
 // void	make_parser(t_node **tokens, t_pl **p_list)
 // {

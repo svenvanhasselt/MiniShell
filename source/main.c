@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 16:16:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 18:29:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,19 @@
 // }
 char	*ft_readline(char *prompt)
 {
-	char	*line;
-	t_node	*lst;
-	char	*new;
-	t_pl *p_list;
+	char		*line;
+	t_node		*lst;
+	char		*new;
+	t_pl		*p_list;
 	extern char	**environ;
-	char	**env;
-	int		syntax_check;
-	
+	char		**env;
+	int			syntax_check;
 	// atexit(blah);
 	env = copy_environment_list(environ);
 	p_list = NULL;
 	syntax_check = 0;
-	
 	lst = NULL;
-	while(1)
+	while (1)
 	{
 		printf("each time\n");
 		unlink("here_doc");
@@ -79,7 +77,7 @@ char	*ft_readline(char *prompt)
 	return (line);
 }
 
-int	main()
+int	main(void)
 {
 	char *line;
 

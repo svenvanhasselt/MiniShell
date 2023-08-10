@@ -6,7 +6,7 @@
 #    By: sven <sven@student.42.fr>                    +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/09 17:04:20 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/08/10 17:58:11 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC := \
 		syntax/token_comb.c\
 		redirection/rd.c\
 		redirection/rd_atfirst.c\
+		redirection/rd_atfirst_utils.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\

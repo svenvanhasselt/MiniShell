@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 20:03:50 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 18:35:34 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ t_node	*rd_out(t_node *tokens, t_pl *node)
 	return (tokens);
 }
 
+void	rd_in_utils(t_node *tokens, t_pl *node)
+{
+	node->del_without_nl = tokens->str;
+	node->delimiter = ft_strjoin(tokens->str, "\n");
+	node->file_in = "here_doc";
+}
+
 t_node	*rd_in(t_node *tokens, t_pl *node)
 {
 	while (tokens->type == SPACE && tokens->type != PIPE && tokens != NULL)
@@ -46,14 +53,13 @@ t_node	*rd_in(t_node *tokens, t_pl *node)
 	{
 		node->file_in = tokens->str;
 		if (node->rd_in_heredoc == true)
-		{
-			node->del_without_nl = tokens->str;
-			node->delimiter = ft_strjoin(tokens->str, "\n");
-			node->file_in = "here_doc";
-		}
+			rd_in_utils(tokens, node);
 		close(node->fd_in);
 		if (node->rd_in_heredoc == true)
+		{
+			unlink("here_doc");
 			node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
+		}
 		if (node->rd_in_heredoc == false)
 			node->fd_in = open(tokens->str, O_RDONLY);
 		if (node->fd_in == -1)

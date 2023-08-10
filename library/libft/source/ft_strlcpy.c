@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-has <svan-has@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 14:54:48 by svan-has          #+#    #+#             */
-/*   Updated: 2022/10/25 11:02:32 by svan-has         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   ft_strlcpy.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-has <svan-has@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/10 14:54:48 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/08/09 20:11:56 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "libft.h"
+#include "libft.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {

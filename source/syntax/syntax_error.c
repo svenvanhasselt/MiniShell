@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 14:06:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 19:38:29 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 14:57:14 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,17 @@ int	syntax_rd_in(t_node **h)
 			return (258);
 		}
 	}
+	if ((*h)->next && (*h)->next->next && (*h)->next->type == \
+	REDIRECT_IN && (*h)->next->next->type == REDIRECT_IN)
+	{
+		write(2, "syntax error near unexpected token `<'\n", 40);
+		return (258);
+	}
 	if ((*h)->next && !((*h)->next->type == WORD || \
 	(*h)->next->type == SINGLE_QOUTE || (*h)->next->type == \
 	DOUBLE_QOUTE || (*h)->next->type == REDIRECT_IN))
 	{
 		write(2, "syntax error near unexpected token `newline'\n", 46);
-		return (258);
-	}
-	if ((*h)->next && (*h)->next->next && (*h)->next->type == \
-	REDIRECT_OUT && (*h)->next->next->type == REDIRECT_OUT)
-	{
-		write(2, "syntax error near unexpected token `<'\n", 40);
 		return (258);
 	}
 	return (0);

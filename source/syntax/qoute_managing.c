@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:58:19 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 17:09:53 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 14:29:02 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,19 @@ int	qoute_check(t_node *tokens)
 	i = 0;
 	if (tokens->str[i] == '\"')
 	{
-		while (tokens->str[++i] != '\0' && tokens->str[i] != '\"')
+		i++;
+		while (tokens->str[i] != '\0' && tokens->str[i] != '\"')
 			i++;
 		if (tokens->str[i] == '\0')
-		{
-			write(2, "Please close the double qoute!\n", 32);
-			return (102);
-		}
+			return (write(2, "Please close the double qoute!\n", 32), 102);
 	}
 	else if (tokens->str[i] == '\'')
 	{
-		while (tokens->str[++i] != '\0' && tokens->str[i] != '\'')
+		i++;
+		while (tokens->str[i] != '\0' && tokens->str[i] != '\'')
 			i++;
 		if (tokens->str[i] == '\0')
-		{
-			write(2, "Please close the single qoute!\n", 32);
-			return (101);
-		}
+			return (write(2, "Please close the single qoute!\n", 32), 101);
 	}
 	return (0);
 }

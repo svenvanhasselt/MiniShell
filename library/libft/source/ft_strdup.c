@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 16:53:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/01 20:35:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/09 20:11:32 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strdup(const char *s1)
 {
 	int		i;
 	char	*s1_duplicate;
-	
+
 	s1_duplicate = (char *) malloc (ft_strlen(s1) + 1 * sizeof(char));
 	if (s1_duplicate == NULL)
 	{

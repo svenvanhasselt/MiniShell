@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 20:04:38 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 18:36:21 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_pl
 }				t_pl;
 
 /* FUNCTIONS */
-int		main();
+int		main(void);
 char	*ft_readline(char *prompt);
 
 /* LEXER */
@@ -121,6 +121,7 @@ int		syntax_rd_in(t_node **h);
 int		syntax_rd_out(t_node **h);
 int		syntax_pipe(t_node **head);
 int		qoute_check(t_node *tokens);
+
 /* PARSER NODE */
 t_pn	*make_node_parser(t_node *tokens);
 t_pn	*ft_lastlist_parser(t_pn *lst);
@@ -140,15 +141,21 @@ void	free_llist(t_pl **p_list);
 /* REDIRECTION */
 t_node	*rd_managment(t_node *tokens, t_pl **p_list);
 t_node	*rd_in(t_node *tokens, t_pl *node);
+void	rd_in_utils(t_node *tokens, t_pl *node);
 t_node	*rd_out(t_node *tokens, t_pl *node);
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node);
 t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list);
 void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node);
+void	rd_atfirst_out_utils(t_node *head, t_pl *node);
+void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node);
+void	rd_atfirst_in_utils(t_node *head, t_pl *node);
+t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
+t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
 
 /* PARSER */
 void	make_parser(t_node **tokens, t_pl **p_list);
 void	qoute_trim(t_node *tokens);
-void	combine_tokens(t_node **tokens);
+void	combine_tokens(t_node *tokens);
+void	combine_tokens_utils(t_node *tokens, t_node *temp);
 
 enum e_minishell_errors {
 	ERR_NO_CMD			= -1,

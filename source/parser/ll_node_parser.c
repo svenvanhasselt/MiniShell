@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/09 16:38:10 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 18:36:56 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ t_pn	*make_node_parser(t_node *token)
 {
 	t_pn	*node;
 
-	// I changed this : 	if (token->type == SPACE)
-	//	return (NULL); to the one below and then I commented it! why?
-	// if (token != NULL && token->type == SPACE)
-	// 	return (NULL);
 	node = (t_pn *)malloc(sizeof(t_pn));
 	if (node == NULL)
 		exit(1);
@@ -60,7 +56,7 @@ void	ft_add_back_list_parser(t_pn **lst, t_pn *new)
 
 int	ft_sizelist_parser(t_pn *lst)
 {
-	int				count;
+	int		count;
 	t_pn	*node;
 
 	count = 0;
