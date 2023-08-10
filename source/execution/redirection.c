@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/08 17:46:59 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 15:55:25 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	redirect_in(t_parser_list *parser, int *status, int fd)
 
 int	redirect_out(t_parser_list *parser, int *status, int fd)
 {
-	if (parser->rd_out)
+	if (parser->rd_out || parser->rd_out_append)
 		fd = parser->fd_out;
 	else
 		return (fd);
@@ -56,7 +56,7 @@ void	redirection(t_parser_list *parser, t_exec *data, int i)
 	int	*status;
 
 	status = &data->exit_status;
-	if (data->num_commands == 1 && data->fork_pid[i] == 0)
+	if ((data->num_commands == 1 && data->fork_pid[i] == 0))
 	{
 		data->fdin = redirect(parser, status, STDIN_FILENO, true);
 		data->fdout = redirect(parser, status, STDOUT_FILENO, false);

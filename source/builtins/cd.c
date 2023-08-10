@@ -6,22 +6,29 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/11 11:45:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 13:50:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
 
 int		change_dir(char *path, char ***env);
 
 int	cd_builtin(char **cmd_table, char ***env)
 {
+	struct stat path_stat;
+	
+	if (cmd_table[1] && stat(cmd_table[1], &path_stat) < 0)
+		error_exit("operation failure", errno);
 	if ((!cmd_table[1] && !getenv("HOME")))
 		return (error_seterrno(cmd_table[0], NULL, ERR_CD_NO_HOME));
 	else if (cmd_table[1] && !ft_strncmp(cmd_table[1], "", 1))
 		return (0);
 	else if (!cmd_table[1] && change_dir((getenv("HOME")), env) < 0)
 		return (error_seterrno(cmd_table[0], NULL, ERR_CD_NO_HOME));
+	else if(cmd_table[1] && !S_ISDIR(path_stat.st_mode))
+		return (error_seterrno(cmd_table[0], cmd_table[1], ERR_CD_NOT_DIR));
 	else if (cmd_table[1] && change_dir((cmd_table[1]), env) < 0)
 		return (error_seterrno(cmd_table[0], cmd_table[1], ERR_CD_FILE_UNAIV));
 	return (0);

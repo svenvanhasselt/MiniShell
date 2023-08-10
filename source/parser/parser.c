@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/07 14:40:13 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/10 14:57:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,12 +188,12 @@ void	make_parser(t_node **tokens, t_parser_list **p_list)
 			while(1)
 			{
 				line = get_next_line(1);
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
+				if (line && ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) != 0)
 				{
 					write(last->fd_in, line, ft_strlen(line));
 					free(line);
 				}
-				if (ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
+				if (!line || ft_strncmp(line, last->delimiter, ft_strlen(last->delimiter)) == 0)
 					break;
 			}
 			close(last->fd_in);

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/08 17:52:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 15:58:21 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
-int		check_builtins(char **cmd_table, int *status, char ***env);
+int		check_builtins(char **cmd_table, char ***env, int *status, int prev_status);
 void	dup2_stdin_stdout(int fdin, int fdout);
 int		builtins_redirect(t_exec **data, t_parser_list *parser, char ***env);
 void	execute_command(t_exec *data, char ***env, int i);
 int		redirection_error(t_exec *data, int i);
 
-int	execution(t_parser_list **p_list, char ***env)
+int	execution(t_parser_list **p_list, char ***env, int prev_status)
 {
 	int				i;
 	t_exec			*data;
@@ -29,6 +29,7 @@ int	execution(t_parser_list **p_list, char ***env)
 
 	parser = *p_list;
 	data = prepare(parser, env);
+	data->prev_status = prev_status;
 	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
 	i = 0;
@@ -107,7 +108,7 @@ void	execute(t_exec *data, char ***env)
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
 	close_pipes_files(data);
-	if (check_builtins(data->cmd_table, &data->exit_status, env))
+	if (check_builtins(data->cmd_table, env, &data->exit_status, data->prev_status))
 		exit (data->exit_status);
 	execve(path_cmd(data->cmd_table[0], data->env), \
 	data->cmd_table, data->env);
@@ -145,7 +146,7 @@ char	*path_cmd(char *command, char **env)
 	return (command);
 }
 
-int	check_builtins(char **cmd_table, int *status, char ***env)
+int	check_builtins(char **cmd_table, char ***env, int *status, int prev_status)
 {
 	int	i;
 
@@ -161,7 +162,7 @@ int	check_builtins(char **cmd_table, int *status, char ***env)
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
 		*status = env_builtin((*env));
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		*status = exit_builtin();
+		*status = exit_builtin(prev_status);
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		*status = export_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
@@ -195,7 +196,7 @@ int	builtins_redirect(t_exec **data, t_parser_list *parser, char ***env)
 		if ((*data)->fdin < 0 || (*data)->fdout < 0)
 			return (*status);
 		dup2_stdin_stdout((*data)->fdin, (*data)->fdout);
-		if (check_builtins(parser->cmd_table, status, env))
+		if (check_builtins(parser->cmd_table, env, status, (*data)->prev_status))
 		{
 			dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
 			return (*status);

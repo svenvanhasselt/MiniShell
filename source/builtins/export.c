@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:34:57 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 15:49:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	add_variable(char *string, char ***env)
 	int		join_value;
 	int		val_set;
 
-	if (string && !ft_isalpha(string[0]))
+	if (string && ft_isdigit(string[0]))
 		return (-1);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
 	join_value = check_variable(&variable);
@@ -86,10 +86,7 @@ int	check_variable(char **variable)
 			*variable = null_check(ft_strtrim_free(*variable, "+"));
 			return (1);
 		}
-		else if (ft_isalnum((*variable)[i]))
-			i++;
-		else
-			return (-1);
+		i++;
 	}
 	return (0);
 }

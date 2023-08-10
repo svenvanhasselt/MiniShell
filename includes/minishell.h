@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/08 14:42:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 15:30:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ enum e_minishell_errors {
 	ERR_EXPORT_INVALID	= -2,
 	ERR_CD_FILE_UNAIV	= -3,
 	ERR_CD_NO_HOME		= -4,
+	ERR_CD_NOT_DIR		= -5,
 };
 
 typedef struct s_funcstruc
@@ -159,7 +160,7 @@ typedef struct s_exec_struc
 	int		fdout_old;
 	int		num_commands;
 	int		exit_status;
-	int		prev_exit_status;
+	int		prev_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
@@ -176,7 +177,7 @@ void	copy_variable(char **new_str, char *variable, int *j);
 char	*word_split(char **new_str, t_node *head);
 
 /*	Main execution functions */
-int		execution(t_parser_list **p_list, char ***env);
+int		execution(t_parser_list **p_list, char ***env, int prev_status);
 void	*prepare(t_parser_list *parser, char ***env);
 void	create_cmd_table(t_parser_list *parser);
 void	redirection(t_parser_list *p_list, t_exec *data, int i);
@@ -194,7 +195,7 @@ int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
-int		exit_builtin(void);
+int		exit_builtin(int status);
 
 /*	Tools */
 char	**copy_environment_list(char **env);

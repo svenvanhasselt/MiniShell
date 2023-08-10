@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/08 17:53:51 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 14:01:27 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	add_nodes(char **split_variable, t_node *head)
 {
 	int	i;
 	t_node *split_token;
+	t_node *space_token;
 
 	i = 1;
 	while (split_variable[i])
@@ -53,9 +54,12 @@ void	add_nodes(char **split_variable, t_node *head)
 			printf("WOohOo: %s\n", split_token->str);
 			split_token->state = IN_DOUBLEQ;
 		}
-		split_token->next = head->next;
+		space_token = make_node(NULL, 1, SPACE, NORMAL);
+		space_token->next = head->next;
+		// split_token->next = head->next;
 		head->next = split_token;
-		//free(split_token);
+		head = head->next;
+		head->next = space_token;
 		head = head->next;
 		i++;
 	}
@@ -82,7 +86,9 @@ char	*new_str(t_node *head, char ***env, int len, int exit_status)
 	int		j;
 	char	*new_str;
 	char	*variable;
+	int		temp;
 
+	temp = exit_status;
 	new_str = null_check(malloc((len + 1) * sizeof(char)));
 	i = 0;
 	j = 0;
@@ -111,7 +117,6 @@ char	*new_str(t_node *head, char ***env, int len, int exit_status)
 
 void	expand_quotes(t_node *head, char ***env, int exit_status)
 {
-
 	if (!ft_strnstr(head->str, "$", head->len))
 		return ;
 	if (ft_strncmp(head->str, "$?", 2) == 0)

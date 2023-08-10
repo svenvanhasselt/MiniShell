@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/08 16:45:12 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 15:29:15 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_readline(char *prompt)
 				expansion(&lst, &env, exit_status);
 				make_parser(&lst, &p_list);
 				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
-				exit_status = execution(&p_list, &env);
+				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
 				ft_putstr_fd("Return code: ", 1);
 				ft_putnbr_fd(exit_status, 1);
