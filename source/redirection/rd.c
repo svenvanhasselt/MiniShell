@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 18:35:34 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/11 18:14:40 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_node	*rd_out(t_node *tokens, t_pl *node)
 {
+	node->rd_out = true;
 	while (tokens->type == SPACE && tokens->type != PIPE && tokens != NULL)
 		tokens = tokens->next;
 	if (tokens->type == WORD || tokens->type == SINGLE_QOUTE || \
 	tokens->type == DOUBLE_QOUTE)
 	{
-		node->rd_out = true;
 		node->file_out = tokens->str;
 		close(node->fd_out);
 		if (node->rd_out_append == true)
@@ -46,22 +46,23 @@ void	rd_in_utils(t_node *tokens, t_pl *node)
 
 t_node	*rd_in(t_node *tokens, t_pl *node)
 {
+	char	*line;
+
+	line = NULL;
 	while (tokens->type == SPACE && tokens->type != PIPE && tokens != NULL)
 		tokens = tokens->next;
 	if (tokens->type == WORD || tokens->type == SINGLE_QOUTE || \
 	tokens->type == DOUBLE_QOUTE)
 	{
 		node->file_in = tokens->str;
-		if (node->rd_in_heredoc == true)
-			rd_in_utils(tokens, node);
 		close(node->fd_in);
-		if (node->rd_in_heredoc == true)
-		{
-			unlink("here_doc");
-			node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
-		}
 		if (node->rd_in_heredoc == false)
 			node->fd_in = open(tokens->str, O_RDONLY);
+		if (node->rd_in_heredoc == true)
+		{
+			rd_in_utils(tokens, node);
+			rd_heredoc(node);
+		}
 		if (node->fd_in == -1)
 			node->errno_in = errno;
 		if (tokens->next != NULL)

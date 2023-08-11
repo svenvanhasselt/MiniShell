@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 18:36:21 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/11 17:35:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,9 +150,13 @@ void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node);
 void	rd_atfirst_in_utils(t_node *head, t_pl *node);
 t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
 t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
+void	rd_heredoc(t_pl *node);
 
 /* PARSER */
 void	make_parser(t_node **tokens, t_pl **p_list);
+t_node	*parser_utils(t_node *tokens, t_pl **p_list);
+t_node	*first_list_pl(t_node *tokens, t_pl **p_list);
+t_node	*special_last(t_node *tokens, t_node *head , t_pl **p_list);
 void	qoute_trim(t_node *tokens);
 void	combine_tokens(t_node *tokens);
 void	combine_tokens_utils(t_node *tokens, t_node *temp);

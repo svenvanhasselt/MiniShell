@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:48:49 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/11 12:18:44 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,64 +128,3 @@ void	make_tokens(char *l, t_node **lst)
 			i++;
 	}
 }
-
-// void	make_tokens(char *line, t_node **lst)
-// {
-// 	int		i;
-// 	int		start;
-// 	char	*new;
-// 	int		size;
-
-// 	i = 0;
-// 	while (line[i] != '\0')
-// 	{
-// 		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
-// 		{
-// 			new = ft_substr(line, i, (size_t)(1));
-// 			// printf("this is new string first if= \"%s\" and the char '%c'\n", new, line[i]);
-// 			ft_add_back_list(lst, make_node(new, 1, line[i], NORMAL));
-// 			i++;
-// 		}
-// 		start = i;
-// 		// printf("this is the start char = %c\n", line[start]);
-// 		while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '>' ||\
-// 		line[i] == '<' || line[i] == '|' || line[i] == '\"' || line[i] == '\''))
-// 			i++;
-// 		if (line[i] == ' ' || line[i] == '>' || line[i] == '<' ||\
-// 		line[i] == '|' || line[i] == '\"' || line[i] == '\'')
-// 			i = make_new_token(lst, line, i, start);
-// 		else
-// 		{
-// 			size = i - start;
-// 			// printf("second = this is the start char = %d\n", line[start]);
-// 			if (line[start] == '\0' && line[i] == '\0')
-// 				break;
-// 			else
-// 			{
-// 				if (line[i] == '\0')
-// 				{
-// 					// printf("this is the size in if in else %d\n", size);
-// 					new = ft_substr(line, start, (size_t)(size));
-// 					// printf("this is new string in else = \"%s\" and the char '%d'\n", new, line[i]);
-// 					if (line[start] == '$')
-// 						ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
-// 					else
-// 						ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-// 					break;
-// 				}
-// 				else
-// 				{
-// 					// printf("this is the size in else %d\n", size);
-// 					new = ft_substr(line, start, (size_t)(size));
-// 					// printf("this is new string in else in else = \"%s\" and the char '%d'\n", new, line[i]);
-// 					ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
-// 				}
-// 			}
-// 		}
-// 		if (line[i] != '\0')
-// 			i++;
-// 	}
-// 	// printf("this is the last result->");
-// 	// print_list(*lst);
-// 	// printf("we got out from here\n");
-// }

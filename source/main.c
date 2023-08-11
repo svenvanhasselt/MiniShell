@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 18:29:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/11 18:30:24 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_readline(char *prompt)
 		free_tokens(&lst);
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
-		//if (!line || line[0] == '\0')
 		if (!new || new[0] == '\0')
 		{
 			line = readline(prompt);
@@ -82,5 +81,5 @@ int	main(void)
 	char *line;
 
 	line = ft_readline("minishell~>");
-	return(0);
+	return (0);
 }
