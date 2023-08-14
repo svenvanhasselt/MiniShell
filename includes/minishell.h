@@ -6,11 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/08/10 15:30:48 by svan-has      ########   odam.nl         */
-=======
-/*   Updated: 2023/08/11 17:35:54 by psadeghi      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2023/08/14 14:20:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,19 +200,11 @@ void	copy_variable(char **new_str, char *variable, int *j);
 char	*word_split(char **new_str, t_node *head);
 
 /*	Main execution functions */
-<<<<<<< HEAD
-int		execution(t_parser_list **p_list, char ***env, int prev_status);
-void	*prepare(t_parser_list *parser, char ***env);
-void	create_cmd_table(t_parser_list *parser);
-void	redirection(t_parser_list *p_list, t_exec *data, int i);
-int		redirect(t_parser_list *parser, int *status, int fd, bool STDIN);
-=======
-int		execution(t_pl **p_list, char ***env);
+int		execution(t_pl **p_list, char ***env, int prev_status);
 void	*prepare(t_pl *parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
->>>>>>> main
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);

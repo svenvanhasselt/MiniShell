@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:14:29 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:20:34 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	redirection_error(t_exec *data, int i)
 	return (0);
 }
 
-int	execution(t_pl **p_list, char ***env)
+int	execution(t_pl **p_list, char ***env, int prev_status)
 {
 	int				i;
 	t_exec			*data;

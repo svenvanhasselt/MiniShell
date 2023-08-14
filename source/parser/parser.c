@@ -6,11 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/08/10 14:57:00 by svan-has      ########   odam.nl         */
-=======
-/*   Updated: 2023/08/11 18:31:16 by psadeghi      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2023/08/14 14:20:59 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
