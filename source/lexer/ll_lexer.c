@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 13:06:30 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:29:26 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 13:55:35 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_tokens(t_node **lst)
 	{
 		temp = (*lst);
 		(*lst) = (*lst)->next;
+		free(temp->str);
 		free(temp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:29:20 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 13:55:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_list(t_pn *lst)
 	{
 		temp = lst;
 		lst = lst->next;
+		free(temp->str);
 		free(temp);
 	}
 }

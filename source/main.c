@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:30:24 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:23:11 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // {
 // 	system("leaks minishell");
 // }
+
 char	*ft_readline(char *prompt)
 {
 	char		*line;
@@ -25,7 +26,7 @@ char	*ft_readline(char *prompt)
 	extern char	**environ;
 	char		**env;
 	int			syntax_check;
-	// atexit(blah);
+	//atexit(blah);
 	env = copy_environment_list(environ);
 	p_list = NULL;
 	syntax_check = 0;
@@ -71,14 +72,16 @@ char	*ft_readline(char *prompt)
 			ft_putstr_fd("\n\n\n", 1);
 			free(bash);
 			add_history(line);
+			free(new);
 		}
+		// system("leaks minishell");
 	}
 	return (line);
 }
 
 int	main(void)
 {
-	char *line;
+	char	*line;
 
 	line = ft_readline("minishell~>");
 	return (0);

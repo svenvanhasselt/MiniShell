@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:31:16 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 13:46:01 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 			head = (*tokens);
 		}
 	}
+	//free_tokens(tokens);
 }
 
 // I should check where to put the heredoc!

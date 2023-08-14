@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 12:18:44 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 13:18:10 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	dq_tokens(t_node **lst, char *line, int i)
 		size = i - dq_start;
 	else
 		size = i - dq_start + 1;
-	new = ft_substr(line, dq_start, (size_t)(size));
+	new = null_check(ft_substr(line, dq_start, (size_t)(size)));
 	ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
 	return (i);
 }
@@ -44,7 +44,7 @@ int	sq_tokens(t_node **lst, char *line, int i)
 	while (line[i] != '\0' && line[i] != '\'')
 		i++;
 	size = i - sq_start + 1;
-	new = ft_substr(line, sq_start, (size_t)(size));
+	new = null_check(ft_substr(line, sq_start, (size_t)(size)));
 	ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
 	return (i);
 }
@@ -57,7 +57,7 @@ int	make_new_token(t_node **lst, char *line, int i, int start)
 	size = i - start;
 	if (size != 0)
 	{
-		new = ft_substr(line, start, (size_t)(size));
+		new = null_check(ft_substr(line, start, (size_t)(size)));
 		if (line[start] == '$')
 			ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
 		else
@@ -65,7 +65,7 @@ int	make_new_token(t_node **lst, char *line, int i, int start)
 	}
 	if (line[i] == ' ' || line[i] == '>' || line[i] == '<' || line[i] == '|')
 	{
-		new = ft_substr(line, i, (size_t)(1));
+		new = null_check(ft_substr(line, i, (size_t)(1)));
 		ft_add_back_list(lst, make_node(new, 1, line[i], NORMAL));
 	}
 	if (line[i] == '\"')
@@ -85,7 +85,7 @@ int	make_new_token2(t_node **lst, char *line, int i, int start)
 	{
 		if (line[i] == '\0')
 		{
-			new = ft_substr(line, start, (size_t)(size));
+			new = null_check(ft_substr(line, start, (size_t)(size)));
 			if (line[start] == '$')
 				ft_add_back_list(lst, make_node(new, size, ENV, NORMAL));
 			else
@@ -93,7 +93,7 @@ int	make_new_token2(t_node **lst, char *line, int i, int start)
 		}
 		else
 		{
-			new = ft_substr(line, start, (size_t)(size));
+			new = null_check(ft_substr(line, start, (size_t)(size)));
 			ft_add_back_list(lst, make_node(new, size, WORD, NORMAL));
 		}
 	}
@@ -111,7 +111,7 @@ void	make_tokens(char *l, t_node **lst)
 	{
 		if (l[i] == ' ' || l[i] == '>' || l[i] == '<' || l[i] == '|')
 		{
-			new = ft_substr(l, i, (size_t)(1));
+			new = null_check(ft_substr(l, i, (size_t)(1)));
 			ft_add_back_list(lst, make_node(new, 1, l[i], NORMAL));
 			i++;
 		}

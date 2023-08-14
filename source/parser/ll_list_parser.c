@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:29:15 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:02:22 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ void	free_llist(t_pl **p_list)
 		temp = *p_list;
 		free_list((*p_list)->lst);
 		(*p_list) = (*p_list)->next;
+		free(temp->file_in);
+		free(temp->file_out);
+		free(temp->delimiter);
 		free(temp);
 	}
 }
