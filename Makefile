@@ -6,16 +6,19 @@
 #    By: sven <sven@student.42.fr>                    +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/11 12:42:15 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/08/14 14:18:57 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
+
+READLINEFLAGS += -lreadline -L $(shell brew --prefix readline)/lib
+
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Werror -Wextra #-g #-fsanitize=address
+CFLAGS := -Wall -Werror -Wextra
 LIBFT	:= ./library/libft
 #MINISHELL	:= ./minishell.a
-HEADERS := -I $(LIBFT)/includes -I includes
+HEADERS := -I $(LIBFT)/includes -I includes -I $(shell brew --prefix readline)/include
 LIB	:= $(LIBFT)/libft.a
 SRC_DIR := source
 OBJ_DIR := object
@@ -47,6 +50,7 @@ SRC := \
 		builtins/unset.c\
 		builtins/export.c\
 		builtins/exit.c\
+		signals/signals.c\
 		
 SRC := $(SRC:%=$(SRC_DIR)/%)
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -59,12 +63,12 @@ libft:
 	@$(MAKE) -C $(LIBFT)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIB) $(HEADERS) -o $(NAME) -lreadline
+	@$(CC) $(CFLAGS) $(OBJ) $(LIB) $(HEADERS) -o $(NAME) $(READLINEFLAGS)
 	$(info minishell Compiled)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(DIR_DUP)
-	@$(CC) $(CFLAGS) -c -o $@ $^ $(HEADERS)
+	@$(CC) $(CFLAGS) -c -o $@ $^ $(HEADERS) 
 
 clean:
 	@$(RM) $(OBJ_DIR)

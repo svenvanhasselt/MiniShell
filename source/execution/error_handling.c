@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/21 13:56:17 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/10 13:39:14 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char	*strerror_minishell(int error_no)
 		return ("No such file or directory");
 	if (error_no == ERR_CD_NO_HOME)
 		return ("HOME not set");
+	if (error_no == ERR_CD_NOT_DIR)
+		return ("Not a directory");
 	return (strerror(error_no));
 }
 

@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 12:36:31 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/03 15:03:16 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/08 13:44:58 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

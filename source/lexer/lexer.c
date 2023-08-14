@@ -6,13 +6,14 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 13:18:10 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:27:11 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 int	dq_tokens(t_node **lst, char *line, int i)
 {

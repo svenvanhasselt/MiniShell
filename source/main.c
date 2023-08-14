@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:23:11 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:26:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,16 @@ char	*ft_readline(char *prompt)
 	char		*new;
 	t_pl		*p_list;
 	extern char	**environ;
-	char		**env;
-	int			syntax_check;
-	//atexit(blah);
+	char	**env;
+	int		syntax_check;
+	int		exit_status;
+	
+	// atexit(blah);
+	signals_init();
 	env = copy_environment_list(environ);
 	p_list = NULL;
 	syntax_check = 0;
+	exit_status = 0;
 	lst = NULL;
 	while (1)
 	{
@@ -39,6 +43,12 @@ char	*ft_readline(char *prompt)
 		free_tokens(&lst);
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
+		//if (!line || line[0] == '\0')
+		if (!new)
+		{
+			printf("\b\b \n");
+			exit(1);
+		}
 		if (!new || new[0] == '\0')
 		{
 			line = readline(prompt);
@@ -56,13 +66,13 @@ char	*ft_readline(char *prompt)
 			{
 				if (lst == NULL)
 					printf("this is the head\n");
-				expansion(&lst, &env);
+				expansion(&lst, &env, exit_status);
 				make_parser(&lst, &p_list);
 				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
-				int ret = execution(&p_list, &env);
+				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
 				ft_putstr_fd("Return code: ", 1);
-				ft_putnbr_fd(ret, 1);
+				ft_putnbr_fd(exit_status, 1);
 				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
 			ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
@@ -81,7 +91,7 @@ char	*ft_readline(char *prompt)
 
 int	main(void)
 {
-	char	*line;
+	char *line;
 
 	line = ft_readline("minishell~>");
 	return (0);

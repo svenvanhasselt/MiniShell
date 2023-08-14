@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 13:38:26 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:26:41 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ enum e_minishell_errors {
 	ERR_EXPORT_INVALID	= -2,
 	ERR_CD_FILE_UNAIV	= -3,
 	ERR_CD_NO_HOME		= -4,
+	ERR_CD_NOT_DIR		= -5,
 };
 
 typedef struct s_funcstruc
@@ -182,6 +183,7 @@ typedef struct s_exec_struc
 	int		fdout_old;
 	int		num_commands;
 	int		exit_status;
+	int		prev_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
@@ -190,14 +192,15 @@ typedef struct s_exec_struc
 }	t_exec;
 
 /*	Expansion */
-void	expansion(t_node **lst, char ***env);
+void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_word(t_node *head, char ***env, int *i);
 int		find_len(t_node *head, char ***env, int *i);
 int		new_length(t_node *head, char ***env);
 void	copy_variable(char **new_str, char *variable, int *j);
+char	*word_split(char **new_str, t_node *head);
 
 /*	Main execution functions */
-int		execution(t_pl **p_list, char ***env);
+int		execution(t_pl **p_list, char ***env, int prev_status);
 void	*prepare(t_pl *parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
@@ -215,7 +218,7 @@ int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
-int		exit_builtin(void);
+int		exit_builtin(int status);
 
 /*	Tools */
 char	**copy_environment_list(char **env);
@@ -224,5 +227,8 @@ void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
+
+/*	Signals */
+void	signals_init(void);
 
 #endif

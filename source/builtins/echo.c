@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   echo.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:47:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:24:24 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/08 16:24:32 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	check_newline(char **cmd_table, int arguments)
 {
-	if (arguments >= 2 && !ft_strncmp(cmd_table[1], "-n", \
-	ft_strlen(cmd_table[1])))
+	if (arguments >= 2 && !ft_strncmp(cmd_table[1], "-n", 2))
 		return (1);
 	else
 		return (0);
