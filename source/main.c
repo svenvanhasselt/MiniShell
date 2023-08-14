@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 15:29:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:18:11 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 // }
 char	*ft_readline(char *prompt)
 {
-	char	*line;
-	t_node	*lst;
-	char	*new;
-	t_parser_list *p_list;
+	char		*line;
+	t_node		*lst;
+	char		*new;
+	t_pl		*p_list;
 	extern char	**environ;
 	char	**env;
 	int		syntax_check;
@@ -34,7 +34,7 @@ char	*ft_readline(char *prompt)
 	syntax_check = 0;
 	exit_status = 0;
 	lst = NULL;
-	while(1)
+	while (1)
 	{
 		printf("each time\n");
 		unlink("here_doc");
@@ -48,7 +48,7 @@ char	*ft_readline(char *prompt)
 			printf("\b\b \n");
 			exit(1);
 		}
-		if (new[0] == '\0')
+		if (!new || new[0] == '\0')
 		{
 			line = readline(prompt);
 			new = ft_strtrim(line, " ");
@@ -86,9 +86,9 @@ char	*ft_readline(char *prompt)
 	return (line);
 }
 
-int	main()
+int	main(void)
 {
 	char *line;
 	line = ft_readline("minishell~>");
-	return(0);
+	return (0);
 }

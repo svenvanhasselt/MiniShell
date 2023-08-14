@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/10 15:58:21 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/14 14:14:29 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,7 @@ void	execute(t_exec *data, char ***env);
 char	*path_cmd(char *command, char **env);
 int		check_builtins(char **cmd_table, char ***env, int *status, int prev_status);
 void	dup2_stdin_stdout(int fdin, int fdout);
-int		builtins_redirect(t_exec **data, t_parser_list *parser, char ***env);
-void	execute_command(t_exec *data, char ***env, int i);
-int		redirection_error(t_exec *data, int i);
-
-int	execution(t_parser_list **p_list, char ***env, int prev_status)
-{
-	int				i;
-	t_exec			*data;
-	t_parser_list	*parser;
-
-	parser = *p_list;
-	data = prepare(parser, env);
-	data->prev_status = prev_status;
-	if (builtins_redirect(&data, parser, env) >= 0)
-		return (data->exit_status);
-	i = 0;
-	create_pipes(data, data->num_commands);
-	while (i < data->num_commands)
-	{
-		data->fork_pid[i] = fork();
-		if (data->fork_pid[i] == -1)
-			error_exit("operation failure", errno);
-		redirection(parser, data, i);
-		if (!redirection_error(data, i))
-			execute_command(data, env, i);
-		parser = parser->next;
-		i++;
-	}
-	close_pipes_files(data);
-	waitpid_forks(data);
-	return (data->exit_status);
-}
+int		builtins_redirect(t_exec **data, t_pl *parser, char ***env);
 
 void	execute_command(t_exec *data, char ***env, int i)
 {
@@ -74,11 +43,40 @@ int	redirection_error(t_exec *data, int i)
 	return (0);
 }
 
-void	create_cmd_table(t_parser_list *parser)
+int	execution(t_pl **p_list, char ***env)
+{
+	int				i;
+	t_exec			*data;
+	t_pl	*parser;
+
+	parser = *p_list;
+	data = prepare(parser, env);
+	data->prev_status = prev_status;
+	if (builtins_redirect(&data, parser, env) >= 0)
+		return (data->exit_status);
+	i = 0;
+	create_pipes(data, data->num_commands);
+	while (i < data->num_commands)
+	{
+		data->fork_pid[i] = fork();
+		if (data->fork_pid[i] == -1)
+			error_exit("operation failure", errno);
+		redirection(parser, data, i);
+		if (!redirection_error(data, i))
+			execute_command(data, env, i);
+		parser = parser->next;
+		i++;
+	}
+	close_pipes_files(data);
+	waitpid_forks(data);
+	return (data->exit_status);
+}
+
+void	create_cmd_table(t_pl *parser)
 {
 	int				i;
 	int				size;
-	t_parser_list	*head;
+	t_pl	*head;
 
 	head = parser;
 	while (head)
@@ -182,7 +180,7 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec **data, t_parser_list *parser, char ***env)
+int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 {
 	int	*status;
 

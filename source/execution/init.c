@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sven <sven@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/21 13:45:46 by svan-has          #+#    #+#             */
-/*   Updated: 2023/08/07 10:21:49 by sven             ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   init.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/08/14 14:14:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*prepare(t_parser_list *parser, char ***env)
+void	*prepare(t_pl *parser, char ***env)
 {
 	int			i;
 	t_exec		*data;

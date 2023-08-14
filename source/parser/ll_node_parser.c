@@ -6,21 +6,17 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/02 12:29:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/11 18:29:20 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_parser_node	*make_node_parser(t_node *token)
+t_pn	*make_node_parser(t_node *token)
 {
-	t_parser_node	*node;
+	t_pn	*node;
 
-	// I changed this : 	if (token->type == SPACE)
-	//	return (NULL); to the one below and then I commented it! why?
-	// if (token != NULL && token->type == SPACE)
-	// 	return (NULL);
-	node = (t_parser_node *)malloc(sizeof(t_parser_node));
+	node = (t_pn *)malloc(sizeof(t_pn));
 	if (node == NULL)
 		exit(1);
 	if (token == NULL)
@@ -29,15 +25,10 @@ t_parser_node	*make_node_parser(t_node *token)
 		node->str = token->str;
 	node->next = NULL;
 	node->prev = NULL;
-	if (token == NULL)
-		printf("the str= \"NULL\" and Type = 0\n");
-	else
-		printf("the str= \"%s\" and Type = %d\n", node->str, token->type);
-	//sleep(2);
 	return (node);
 }
 
-t_parser_node	*ft_lastlist_parser(t_parser_node *lst)
+t_pn	*ft_lastlist_parser(t_pn *lst)
 {
 	if (!lst)
 		return (0);
@@ -46,9 +37,9 @@ t_parser_node	*ft_lastlist_parser(t_parser_node *lst)
 	return (lst);
 }
 
-void	ft_add_back_list_parser(t_parser_node **lst, t_parser_node *new)
+void	ft_add_back_list_parser(t_pn **lst, t_pn *new)
 {
-	t_parser_node	*current;
+	t_pn	*current;
 
 	if (!new || !lst)
 		return ;
@@ -63,10 +54,10 @@ void	ft_add_back_list_parser(t_parser_node **lst, t_parser_node *new)
 	current->next->next = NULL;
 }
 
-int	ft_sizelist_parser(t_parser_node *lst)
+int	ft_sizelist_parser(t_pn *lst)
 {
-	int				count;
-	t_parser_node	*node;
+	int		count;
+	t_pn	*node;
 
 	count = 0;
 	if (!lst)
@@ -80,21 +71,9 @@ int	ft_sizelist_parser(t_parser_node *lst)
 	return (count);
 }
 
-void	print_list_parser(t_parser_node *lst)
+void	free_list(t_pn *lst)
 {
-	if (!lst)
-		return ;
-	while (lst->next != NULL)
-	{
-		printf("str= %s, ", lst->str);
-		lst = lst->next;
-	}
-	printf("str= %s\n", lst->str);
-}
-
-void	free_list(t_parser_node *lst)
-{
-	t_parser_node *temp;
+	t_pn	*temp;
 
 	while (lst)
 	{
@@ -103,3 +82,15 @@ void	free_list(t_parser_node *lst)
 		free(temp);
 	}
 }
+
+// void	print_list_parser(t_pn *lst)
+// {
+// 	if (!lst)
+// 		return ;
+// 	while (lst->next != NULL)
+// 	{
+// 		printf("str= %s, ", lst->str);
+// 		lst = lst->next;
+// 	}
+// 	printf("str= %s\n", lst->str);
+// }
