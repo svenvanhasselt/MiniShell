@@ -6,22 +6,22 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 12:36:31 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/08 13:44:58 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/15 17:19:32 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*find_word(t_node *head, char ***env, int *i)
+char	*find_word(char *string, char ***env, int *i)
 {
 	int		j;
 	int		var_set;
 	char	*variable;
 
 	j = *i;
-	while (head->str[j] && head->str[j] != ' ' && head->str[j] != '"')
+	while (string[j] && string[j] != ' ' && string[j] != '"' && string[j] != '$')
 		j++;
-	variable = ft_substr(head->str, *i, j - *i);
+	variable = ft_substr(string, *i, j - *i);
 	var_set = find_env_var(variable, (*env));
 	free(variable);
 	*i = j;
@@ -30,54 +30,38 @@ char	*find_word(t_node *head, char ***env, int *i)
 	return (NULL);
 }
 
-int	find_len(t_node *head, char ***env, int *i)
+char	*find_variable(char *variable, char ***env)
 {
-	int		j;
 	int		var_set;
-	char	*variable;
+	char	*value;
 
-	j = *i;
-	while (head->str[j] && head->str[j] != ' ' && head->str[j] != '"')
-		j++;
-	variable = ft_substr(head->str, *i, j - *i);
 	var_set = find_env_var(variable, (*env));
 	free(variable);
-	*i = j;
 	if (var_set >= 0)
-		return (ft_strlen((*env)[var_set] + find_value((*env)[var_set]) + 1));
-	return (0);
+	{
+		value = null_check(ft_strdup(((*env)[var_set] + find_value((*env)[var_set]) + 1)));
+		return (value);
+	}
+	return (null_check(ft_strdup("")));
 }
 
-int	new_length(t_node *head, char ***env)
+char	**split_variable(char *string, char ***env, int exit_status)
 {
-	int		i;
-	int		len;
+	int	i;
+	char **split_str;
 
+	split_str = null_check(ft_split(string, '$'));
 	i = 0;
-	len = 0;
-	while (head->str[i])
+	while (split_str[i])
 	{
-		if (head->str[i] == '$')
+		if (!ft_strncmp(split_str[i], "?", ft_strlen(split_str[i])))
 		{
-			i++;
-			len += find_len(head, env, &i);
+			free(split_str[i]);
+			split_str[i] = null_check(ft_strdup(null_check(ft_itoa(exit_status))));
 		}
+		else
+			split_str[i] = find_variable(split_str[i], env);
 		i++;
-		len++;
 	}
-	return (len);
-}
-
-void	copy_variable(char **new_str, char *variable, int *j)
-{
-	int		k;
-
-	k = 0;
-	while (variable && variable[k])
-	{
-		(*new_str)[*j] = variable[k];
-		(*j)++;
-		k++;
-	}
-	free(variable);
+	return (split_str);
 }

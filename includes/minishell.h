@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:20:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/15 10:37:34 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,11 +193,13 @@ typedef struct s_exec_struc
 
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
-char	*find_word(t_node *head, char ***env, int *i);
+char	*find_word(char *string, char ***env, int *i);
+char	*find_variable(char *string, char ***env);
+char	**split_variable(char *string, char ***env, int exit_status);
 int		find_len(t_node *head, char ***env, int *i);
 int		new_length(t_node *head, char ***env);
 void	copy_variable(char **new_str, char *variable, int *j);
-char	*word_split(char **new_str, t_node *head);
+char	*word_split(char *variable, t_node *head);
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);

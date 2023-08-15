@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 17:01:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 16:46:12 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/15 12:11:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	combine_tokens(t_node *tokens)
 	temp = NULL;
 	while (tokens)
 	{
-		if (((tokens->state == IN_SINGLEQ || tokens->state == IN_DOUBLEQ) && \
+		if (((tokens->state == IN_SINGLEQ || tokens->state == IN_DOUBLEQ || tokens->type == ENV) && \
 		((tokens->next && tokens->next->type == WORD))) || \
 		((tokens->state == NORMAL && tokens->type == WORD) && \
 		(tokens->next && (tokens->next->state == IN_DOUBLEQ || \
