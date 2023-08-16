@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/15 10:37:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/16 18:45:49 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ enum e_state
 	NORMAL,
 	IN_SINGLEQ,
 	IN_DOUBLEQ,
+	EXP,
 };
 
 typedef struct s_node
@@ -193,13 +194,9 @@ typedef struct s_exec_struc
 
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
-char	*find_word(char *string, char ***env, int *i);
-char	*find_variable(char *string, char ***env);
-char	**split_variable(char *string, char ***env, int exit_status);
-int		find_len(t_node *head, char ***env, int *i);
-int		new_length(t_node *head, char ***env);
-void	copy_variable(char **new_str, char *variable, int *j);
-char	*word_split(char *variable, t_node *head);
+char	*find_variable(char *variable, enum e_token, char ***env);
+t_node	*split_variable(t_node *lst, char ***env, int exit_status);
+
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);

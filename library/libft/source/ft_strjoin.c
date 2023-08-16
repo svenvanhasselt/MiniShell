@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 18:10:58 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/06/29 13:23:01 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/16 17:05:41 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (s1_s2 == NULL)
 		return (NULL);
 	i = 0;
-	while (*s1)
+	while (s1 && *s1)
 	{
 		s1_s2[i] = *s1;
 		i++;
 		s1++;
 	}
-	while (*s2)
+	while (s2 && *s2)
 	{
 		s1_s2[i] = *s2;
 		i++;
