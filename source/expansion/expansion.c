@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/16 18:46:04 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/17 10:20:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	}
 	if (!ft_strncmp(variable, "$", ft_strlen(variable)))
 		return (variable);
-	else if (type == ENV)
+	else if (type == EXP)
 		return (NULL);
 	return (variable);
 }
@@ -42,14 +42,11 @@ t_node	*split_variable(t_node *lst, char ***env, int exit_status)
 
 	word_split = NULL;
 	split_str = null_check(ft_split(lst->str, ' '));
-	free(lst->str);
+	// free(lst->str);
 	i = 0;
 	while (split_str[i])
 	{
-		// if (split_str[i + 1] == '\0')
-		// 	node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, IN_DOUBLEQ);
-		// else
-			node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, EXP);
+		node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, EXP);
 		ft_add_back_list(&word_split, node);
 		i++;
 	}
@@ -106,8 +103,8 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 			ft_add_back_list(&exp_lst, node);			
 			start = -1;
 		}
-		else if (string[i] == '$' && string[i + 1] == '?')
-			ft_add_back_list(&exp_lst, make_node("?", 1, ENV, IN_DOUBLEQ));
+		// else if (string[i] == '$' && string[i + 1] == '?')
+		// 	ft_add_back_list(&exp_lst, make_node("?", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
 			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
@@ -121,7 +118,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 	lst = exp_lst;
 	while (lst)
 	{
-		printf("e-l: %s\n", lst->str);
+		printf("e-l: %s type: %d state: %u\n", lst->str, lst->type, lst->state);
 		lst = lst->next;
 	}
 	
