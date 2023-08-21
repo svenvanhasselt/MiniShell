@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:52:53 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:58:16 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
 			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
-			ft_add_back_list(&exp_lst, make_node(" ", 1, SPACE, NORMAL));
+			ft_add_back_list(&exp_lst, make_node(" ", 1, SPC, NORMAL));
 		i++;
 	}
 	expand_variable(&exp_lst, env, exit_status);
