@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:49:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:52:53 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	}
 	if (!ft_strncmp(variable, "$", ft_strlen(variable)))
 		return (variable);
-	else if (type == ENV)
+	else if (type == EXP)
 		return (NULL);
-	return (variable);
+	return (NULL);
 }
 
-t_node	*split_variable(t_node *lst, char ***env, int exit_status)
+t_node	*split_variable(t_node *lst)
 {
 	int		i;
 	char	**split_str;
@@ -46,43 +46,42 @@ t_node	*split_variable(t_node *lst, char ***env, int exit_status)
 	i = 0;
 	while (split_str[i])
 	{
-		split_token = make_node(split_variable[i], ft_strlen(split_variable[i]), WORD, NORMAL);
-		if (split_variable[i + 1] == NULL)
-		{
-			printf("WOohOo: %s\n", split_token->str);
-			split_token->state = IN_DOUBLEQ;
-		}
-		space_token = make_node(NULL, 1, SPC, NORMAL);
-		space_token->next = head->next;
-		// split_token->next = head->next;
-		head->next = split_token;
-		head = head->next;
-		head->next = space_token;
-		head = head->next;
+		node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, EXP);
+		ft_add_back_list(&word_split, node);
 		i++;
 	}
 	node = ft_lastlist(word_split);
 	node->next = lst->next;
-	// free(node);
+	free(lst);
 	return (word_split);
 }
 void	expand_variable(t_node **lst, char ***env, int exit_status)
 {	
 	t_node	*head;
+	t_node	*prev;
 
 	head = *lst;
+	prev = head;
 	while (head)
 	{
 		if (head->type == ENV)
 		{
 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
 				head->str = null_check(ft_strdup(null_check(ft_itoa(exit_status)))); //LEAK?
+			else if (*lst == head)
+			{
+				head->str = find_variable(head->str, head->type, env);
+				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
+					*lst = split_variable(head);
+			}
 			else
 			{
 				head->str = find_variable(head->str, head->type, env);
-				*lst = split_variable(head, env, exit_status);
+				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
+					prev = split_variable(head);
 			}
 		}
+		prev = head;
 		head = head->next;
 	}
 }
@@ -91,31 +90,31 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 {
 	int		i;
 	int		start;
+	int		len;
 	char	*string;
 	char	*split_str;
 	t_node	*exp_lst;
 	t_node	*node;
+	t_node	*last_node;
 
 	exp_lst = NULL;
 	string = ft_strdup((*head)->str);
+	len = (int)ft_strlen(string);
 	start = -1;
 	i = 0;
-	while (i <= ft_strlen(string))
+	while (i <= len)
 	{
 		if ((string[i] != '$' && string[i] != ' ') && (start < 0))
 			start = i;
-		else if (((string[i] == '$' || string[i] == ' ' || i == ft_strlen(string)) && start >= 0))
+		else if (((string[i] == '$' || string[i] == ' ' || i == (int)len) && start >= 0))
 		{
 			split_str = null_check(ft_substr(string, start, i - start));
-			printf("this is split_str = %s\n", split_str);
 			node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
 			if (string[start - 1] == '$')
 				node->type = ENV;
 			ft_add_back_list(&exp_lst, node);			
 			start = -1;
 		}
-		else if (string[i] == '$' && string[i + 1] == '?')
-			ft_add_back_list(&exp_lst, make_node("?", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
 			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
@@ -123,16 +122,6 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 		i++;
 	}
 	expand_variable(&exp_lst, env, exit_status);
-	t_node *lst;
-	t_node *last_node;
-	
-	lst = exp_lst;
-	while (lst)
-	{
-		printf("e-l: %s\n", lst->str);
-		lst = lst->next;
-	}
-	
 	last_node = ft_lastlist(exp_lst);
 	last_node->next = (*head)->next;	
 	return (exp_lst);

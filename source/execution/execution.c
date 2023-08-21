@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:07:02 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:54:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,7 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	t_pl	*parser;
 
 	parser = *p_list;
-	printf("Execution pointer before prep = %p\n", (parser)->lst);
 	data = prepare(&parser, env);
-	printf("Execution pointer after prep = %p\n", (parser)->lst);
 	data->prev_status = prev_status;
 	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
@@ -109,17 +107,28 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 
 void	create_cmd_table(t_pl *parser)
 {
+<<<<<<< HEAD
 	int		i;
 	int		size;
 	t_pl	*head;
 	t_pn	*head_lst;
+=======
+	int				i;
+	int				size;
+	t_pl			*head;
+	t_pn			*head_lst;
+>>>>>>> sven
 
 	head = parser;
 	while (head)
 	{
 		i = 0;
 		head_lst = head->lst;
+<<<<<<< HEAD
 		size = ft_sizelist_parser(&head_lst);
+=======
+		size = ft_sizelist_parser(head_lst);
+>>>>>>> sven
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head_lst)
 		{

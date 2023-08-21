@@ -3,14 +3,10 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/08/16 18:45:49 by svan-has      ########   odam.nl         */
-=======
-/*   Updated: 2023/08/21 18:03:50 by psadeghi      ########   odam.nl         */
->>>>>>> paris
+/*   Created: 2023/08/21 18:54:32 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/08/21 18:54:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +196,7 @@ typedef struct s_exec_struc
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_variable(char *variable, enum e_token, char ***env);
-t_node	*split_variable(t_node *lst, char ***env, int exit_status);
+t_node	*split_variable(t_node *lst);
 
 
 /*	Main execution functions */

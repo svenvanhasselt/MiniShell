@@ -6,17 +6,28 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/08/21 18:47:30 by psadeghi      ########   odam.nl         */
+=======
+/*   Updated: 2023/08/21 16:31:30 by svan-has      ########   odam.nl         */
+>>>>>>> sven
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD
 // void	blah(void)
 // {
 // 	system("leaks minishell");
 // }
 
+=======
+void	blah(void)
+{
+	system("leaks minishell");
+}
+>>>>>>> sven
 char	*ft_readline(char *prompt)
 {
 	char		*line;
@@ -28,7 +39,7 @@ char	*ft_readline(char *prompt)
 	int		syntax_check;
 	int		exit_status;
 	
-	// atexit(blah);
+	atexit(blah);
 	signals_init();
 	env = copy_environment_list(environ);
 	p_list = NULL;
@@ -69,11 +80,19 @@ char	*ft_readline(char *prompt)
 			{
 				if (lst == NULL)
 					printf("this is the head\n");
+<<<<<<< HEAD
 				//expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
 				printf("got here!\n");
 				//printf("pointer before = %p\n", p_list->lst);
 				// ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+=======
+				expansion(&lst, &env, exit_status);
+				print_list(lst);
+				printf("HieR: ");
+				make_parser(&lst, &p_list);
+				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+>>>>>>> sven
 				exit_status = execution(&p_list, &env, exit_status);
 				//printf("pointer after = %p\n", p_list->lst);
 				//free_llist(&p_list);

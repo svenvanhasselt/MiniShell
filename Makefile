@@ -3,29 +3,19 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: sven <sven@student.42.fr>                    +#+                      #
+#    By: svan-has <svan-has@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-<<<<<<< HEAD
-#    Updated: 2023/08/16 16:54:24 by svan-has      ########   odam.nl          #
-=======
-#    Updated: 2023/08/21 18:22:48 by psadeghi      ########   odam.nl          #
->>>>>>> paris
+#    Created: 2023/08/21 18:54:47 by svan-has      #+#    #+#                  #
+#    Updated: 2023/08/21 18:55:36 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
-
 
 READLINEFLAGS += -lreadline -L $(shell brew --prefix readline)/lib
 
 NAME := minishell
 CC := cc
-<<<<<<< HEAD
-CFLAGS := -g -fsanitize=address #-Wall -Werror -Wextra
-=======
-CFLAGS := #-Wall -Werror -Wextra #-g -fsanitize=address
->>>>>>> paris
+CFLAGS := -Wall -Werror -Wextra #-g -fsanitize=address
 LIBFT	:= ./library/libft
-#MINISHELL	:= ./minishell.a
 HEADERS := -I $(LIBFT)/includes -I includes -I $(shell brew --prefix readline)/include
 LIB	:= $(LIBFT)/libft.a
 SRC_DIR := source
