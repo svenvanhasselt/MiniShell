@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/16 18:46:04 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:49:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,19 @@ t_node	*split_variable(t_node *lst, char ***env, int exit_status)
 	i = 0;
 	while (split_str[i])
 	{
-		// if (split_str[i + 1] == '\0')
-		// 	node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, IN_DOUBLEQ);
-		// else
-			node = make_node(split_str[i], ft_strlen(split_str[i]), lst->type, EXP);
-		ft_add_back_list(&word_split, node);
+		split_token = make_node(split_variable[i], ft_strlen(split_variable[i]), WORD, NORMAL);
+		if (split_variable[i + 1] == NULL)
+		{
+			printf("WOohOo: %s\n", split_token->str);
+			split_token->state = IN_DOUBLEQ;
+		}
+		space_token = make_node(NULL, 1, SPC, NORMAL);
+		space_token->next = head->next;
+		// split_token->next = head->next;
+		head->next = split_token;
+		head = head->next;
+		head->next = space_token;
+		head = head->next;
 		i++;
 	}
 	node = ft_lastlist(word_split);

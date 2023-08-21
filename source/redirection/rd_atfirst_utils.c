@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/11 18:01:35 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:43:40 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	rd_atfirst_out_utils(t_node *head, t_pl *node)
 	node->file_out = head->str;
 	close(node->fd_out);
 	if (node->rd_out_append == true)
-		node->fd_out = open(head->str, O_CREAT | O_WRONLY, 0644);
+		node->fd_out = open(head->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (node->rd_out_append == false)
 		node->fd_out = open(head->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (node->fd_out == -1)

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 17:59:05 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 12:14:55 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node)
 			node->rd_out_append = true;
 			head = head->next;
 		}
-		while (head->type == SPACE && head->type != PIPE && head != NULL)
+		while (head->type == SPC && head->type != PIPE && head != NULL)
 			head = head->next;
 		if (head->type == WORD || head->type == SINGLE_QOUTE || \
 		head->type == DOUBLE_QOUTE)
@@ -31,31 +31,35 @@ void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node)
 			if (head->next != NULL)
 				head = head->next;
 		}
-		while (head->type == SPACE && head->next != NULL)
+		while (head->type == SPC && head->next != NULL)
 			head = head->next;
 	}
 }
 
 void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node)
 {
-	while (head->type == REDIRECT_IN && head != first_command)
+	while (head && head->type == REDIRECT_IN && head != first_command)
 	{
 		head = head->next;
 		if (head->type == REDIRECT_IN)
 		{
-			node->rd_in_heredoc = true;
+			if(node != NULL)
+				node->rd_in_heredoc = true;
 			head = head->next;
 		}
-		while (head->type == SPACE && head->type != PIPE && head != NULL)
+		while (head->type == SPC && head->type != PIPE && head != NULL)
 			head = head->next;
 		if (head->type == WORD || head->type == SINGLE_QOUTE || \
 		head->type == DOUBLE_QOUTE)
 		{
-			rd_atfirst_in_utils(head, node);
+			if (!node && !first_command)
+				heredoc_without_command(head);
+			else
+				rd_atfirst_in_utils(head, node);
 			if (head->next != NULL)
 				head = head->next;
 		}
-		while (head->type == SPACE && head->next != NULL)
+		while (head->type == SPC && head->next != NULL)
 			head = head->next;
 	}
 }
@@ -96,11 +100,18 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 	head = tokens;
 	first_command = rd_makelist(&tokens, p_list, tokens->type);
 	node = ft_lastlist_lparser(*p_list);
-	while (tokens && tokens->type == SPACE && tokens->next != NULL)
+	while (tokens && tokens->type == SPC && tokens->next != NULL)
 		tokens = tokens->next;
 	if (head->type == REDIRECT_IN)
+	{
 		rd_atfirst_in(head, first_command, node);
+	}
 	else if (head->type == REDIRECT_OUT)
 		rd_atfirst_out(head, first_command, node);
+	if (node && (node->fd_in == -1 || node->fd_out == -1))
+	{
+		while (tokens && tokens->type != PIPE && tokens->next != NULL)
+			tokens = tokens->next;
+	}
 	return (tokens);
 }
