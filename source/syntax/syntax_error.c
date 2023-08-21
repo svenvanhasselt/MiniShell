@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/17 14:06:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/10 14:57:14 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/15 12:36:39 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	syntax_pipe(t_node **head)
 		write(2, "sorry we can not handle this\n", 30);
 		return (100);
 	}
-	while ((*head)->next->type == SPACE && (*head)->next != NULL)
+	while ((*head)->next->type == SPC && (*head)->next != NULL)
 		(*head) = (*head)->next;
 	if (!((*head)->next->type == WORD || \
 	(*head)->next->type == SINGLE_QOUTE || \
-	(*head)->next->type == DOUBLE_QOUTE))
+	(*head)->next->type == DOUBLE_QOUTE || \
+	(*head)->next->type == REDIRECT_IN || \
+	(*head)->next->type == REDIRECT_OUT))
 	{
 		write(2, "syntax error near unexpected token `|'\n", 40);
 		return (258);
@@ -33,9 +35,9 @@ int	syntax_pipe(t_node **head)
 
 int	syntax_rd_out(t_node **h)
 {
-	if ((*h)->next && (*h)->next->type == SPACE)
+	if ((*h)->next && (*h)->next->type == SPC)
 	{
-		while ((*h)->next && (*h)->next->type == SPACE && (*h)->next != NULL)
+		while ((*h)->next && (*h)->next->type == SPC && (*h)->next != NULL)
 			(*h) = (*h)->next;
 		if ((*h)->next->type == REDIRECT_IN || (*h)->next->type == REDIRECT_OUT)
 		{
@@ -61,9 +63,9 @@ int	syntax_rd_out(t_node **h)
 
 int	syntax_rd_in(t_node **h)
 {
-	if ((*h)->next && (*h)->next->type == SPACE)
+	if ((*h)->next && (*h)->next->type == SPC)
 	{
-		while ((*h)->next && (*h)->next->type == SPACE && (*h)->next != NULL)
+		while ((*h)->next && (*h)->next->type == SPC && (*h)->next != NULL)
 			(*h) = (*h)->next;
 		if ((*h)->next->type == REDIRECT_IN || (*h)->next->type == REDIRECT_OUT)
 		{

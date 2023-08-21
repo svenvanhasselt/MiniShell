@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:26:41 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:03:50 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 enum e_token
 {
 	WORD = -1,
-	SPACE = ' ',
+	SPC = ' ',
 	NEW_LINE = '\n',
 	SINGLE_QOUTE = '\'',
 	DOUBLE_QOUTE = '\"',
@@ -53,15 +53,15 @@ typedef struct s_node
 	enum e_token	type;
 	enum e_state	state;
 	struct s_node	*next;
-	struct s_node	*prev;
+	// struct s_node	*prev;
 }		t_node;
 
-typedef struct s_lst
-{
-	t_node	*first;
-	t_node	*last;
-	int		list_size;
-}	t_lst;
+// typedef struct s_lst
+// {
+// 	t_node	*first;
+// 	t_node	*last;
+// 	int		list_size;
+// }	t_lst;
 
 /* PARSER STRUCT'S */
 enum e_node_type
@@ -110,7 +110,7 @@ t_node	*ft_lastlist(t_node *lst);
 void	ft_add_back_list(t_node **lst, t_node *new);
 int		ft_sizelist(t_node *lst);
 void	print_list(t_node *lst);
-void	free_tokens(t_node **lst);
+void	free_tokens(t_node *lst);
 int		dq_tokens(t_node **lst, char *line, int i);
 int		sq_tokens(t_node **lst, char *line, int i);
 
@@ -126,7 +126,7 @@ int		qoute_check(t_node *tokens);
 t_pn	*make_node_parser(t_node *tokens);
 t_pn	*ft_lastlist_parser(t_pn *lst);
 void	ft_add_back_list_parser(t_pn **lst, t_pn *new);
-int		ft_sizelist_parser(t_pn *lst);
+int		ft_sizelist_parser(t_pn **lst);
 void	print_list_parser(t_pn *lst);
 void	free_list(t_pn *lst);
 
@@ -134,7 +134,7 @@ void	free_list(t_pn *lst);
 t_pl	*make_node_lparser(t_pn *small_list);
 t_pl	*ft_lastlist_lparser(t_pl *lst);
 void	ft_add_back_list_lparser(t_pl **lst, t_pl *new);
-int		ft_sizelist_lparser(t_pl *lst);
+int		ft_sizelist_lparser(t_pl **lst);
 void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
 
@@ -151,9 +151,10 @@ void	rd_atfirst_in_utils(t_node *head, t_pl *node);
 t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
 t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
 void	rd_heredoc(t_pl *node);
+void	heredoc_without_command(t_node *head);
 
 /* PARSER */
-void	make_parser(t_node **tokens, t_pl **p_list);
+t_node	*make_parser(t_node **tokens, t_pl **p_list);
 t_node	*parser_utils(t_node *tokens, t_pl **p_list);
 t_node	*first_list_pl(t_node *tokens, t_pl **p_list);
 t_node	*special_last(t_node *tokens, t_node *head , t_pl **p_list);
@@ -201,7 +202,7 @@ char	*word_split(char **new_str, t_node *head);
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);
-void	*prepare(t_pl *parser, char ***env);
+void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);

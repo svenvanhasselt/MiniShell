@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/10 14:01:27 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/14 15:16:33 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	add_nodes(char **split_variable, t_node *head)
 			printf("WOohOo: %s\n", split_token->str);
 			split_token->state = IN_DOUBLEQ;
 		}
-		space_token = make_node(NULL, 1, SPACE, NORMAL);
+		space_token = make_node(NULL, 1, SPC, NORMAL);
 		space_token->next = head->next;
 		// split_token->next = head->next;
 		head->next = split_token;

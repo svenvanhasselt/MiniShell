@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 13:06:30 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 13:55:35 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:27:45 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_node	*make_node(char *str, int len, enum e_token type, enum e_state state)
 	node->type = type;
 	node->state = state;
 	node->next = NULL;
-	node->prev = NULL;
+	// node->prev = NULL;
 	return (node);
 }
 
@@ -71,29 +71,38 @@ int	ft_sizelist(t_node *lst)
 	return (count);
 }
 
-void	free_tokens(t_node **lst)
+void	free_tokens(t_node *lst)
 {
 	t_node	*temp;
 
-	while (*lst)
+	printf("lol %p\n", lst);
+	while (lst)
 	{
-		temp = (*lst);
-		(*lst) = (*lst)->next;
+		printf("lol2\n");
+		temp = (lst);
+		(lst) = (lst)->next;
 		free(temp->str);
 		free(temp);
+		// if ((temp)->type == SPC || temp->type == REDIRECT_IN || \
+		// (temp)->type == REDIRECT_OUT || (temp)->type == PIPE)
+		// {
+		// 	printf("temp->str before free = %s\n", temp->str);
+		// 	free(temp->str);
+		// 	free(temp);
+		// }
 	}
 }
 
-// void	print_list(t_node *lst)
-// {
-// 	if (!lst)
-// 		return ;
-// 	while (lst->next != NULL)
-// 	{
-// 		printf("str= .%s., state= %u, ", lst->str, lst->state);
-// 		printf("type= %d ,", lst->type);
-// 		lst = lst->next;
-// 	}
-// 	printf("str= .%s., state= %u ", lst->str, lst->state);
-// 	printf("type= %d\n", lst->type);
-// }
+void	print_list(t_node *lst)
+{
+	if (!lst)
+		return ;
+	while (lst->next != NULL)
+	{
+		printf("str= .%s., state= %u, ", lst->str, lst->state);
+		printf("type= %d ,", lst->type);
+		lst = lst->next;
+	}
+	printf("str= .%s., state= %u ", lst->str, lst->state);
+	printf("type= %d\n", lst->type);
+}

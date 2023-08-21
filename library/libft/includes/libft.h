@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 12:06:03 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/05/26 15:10:28 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/14 15:12:58 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* Libft add-ons */
 char		*ft_strjoin_free(char *s1, char *s2);
 char		*ft_strtrim_free(char *s1, char const *set);
-/* counts the words in a line seperated by a space */
+/* counts the words in a line seperated by a SPC */
 int			ft_count_word(char const *s, char c);
 /* counts the sets of numbers seperated by anything else */
 int			ft_count_items(char const *s);

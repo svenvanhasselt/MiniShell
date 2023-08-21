@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:27:06 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:07:02 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,51 @@ int	redirection_error(t_exec *data, int i)
 	return (0);
 }
 
+int	free_data(t_exec *data)
+{
+	int	exit_status;
+	int	i;
+
+	i = 0;
+	exit_status = data->exit_status;
+	free(data->fork_pid);
+	while(data->cmd_table[i] != NULL)
+	{
+		free(data->cmd_table[i]);
+		i++;
+	}
+	free(data->cmd_table);
+	// while(data->env[i] != NULL)
+	// {
+	// 	free(data->env[i]);
+	// 	i++;
+	// }
+	// free(data->env);
+	i = 0;
+	// while(i < data->num_commands - 1)
+	// {
+	// 	free(data->pipe_fd[i]);
+	// 	i++;
+	// }
+	free(data->pipe_fd);
+	free(data);
+	return (exit_status);
+}
+
 int	execution(t_pl **p_list, char ***env, int prev_status)
 {
-	int				i;
-	t_exec			*data;
+	int		i;
+	t_exec	*data;
 	t_pl	*parser;
 
 	parser = *p_list;
-	data = prepare(parser, env);
+	printf("Execution pointer before prep = %p\n", (parser)->lst);
+	data = prepare(&parser, env);
+	printf("Execution pointer after prep = %p\n", (parser)->lst);
 	data->prev_status = prev_status;
 	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
+	printf("after builtins\n");
 	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
@@ -69,28 +103,31 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
+	// return(free_data(data));
 	return (data->exit_status);
 }
 
 void	create_cmd_table(t_pl *parser)
 {
-	int				i;
-	int				size;
+	int		i;
+	int		size;
 	t_pl	*head;
+	t_pn	*head_lst;
 
 	head = parser;
 	while (head)
 	{
 		i = 0;
-		size = ft_sizelist_parser(head->lst);
+		head_lst = head->lst;
+		size = ft_sizelist_parser(&head_lst);
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
-		while (head->lst)
+		while (head_lst)
 		{
-			if (head->lst->str)
-				head->cmd_table[i] = head->lst->str;
+			if (head_lst->str)
+				head->cmd_table[i] = head_lst->str;
 			else
 				head->cmd_table[i] = NULL;
-			head->lst = head->lst->next;
+			head_lst = head_lst->next;
 			i++;
 		}
 		head->cmd_table[i] = NULL;
@@ -184,6 +221,7 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 {
 	int	*status;
 
+	printf("Execution pointer first of builtins = %p\n", (parser)->lst);
 	status = &(*data)->exit_status;
 	if ((*data)->num_commands == 1)
 	{

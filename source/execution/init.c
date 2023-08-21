@@ -6,13 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:14:33 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:09:24 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	*prepare(t_pl *parser, char ***env)
+void	*prepare(t_pl **parser, char ***env)
 {
 	int			i;
 	t_exec		*data;
@@ -26,6 +26,8 @@ void	*prepare(t_pl *parser, char ***env)
 	while (++i < data->num_commands - 1)
 		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
 	data->env = (*env);
-	create_cmd_table(parser);
+	printf("Execution pointer before = %p\n", (*parser)->lst);
+	create_cmd_table(*parser);
+	printf("Execution pointer after cmd tavle = %p\n", (*parser)->lst);
 	return (data);
 }
