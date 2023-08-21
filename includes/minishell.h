@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/16 18:45:49 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/21 17:55:29 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,12 @@ typedef struct s_exec_struc
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_variable(char *variable, enum e_token, char ***env);
-t_node	*split_variable(t_node *lst, char ***env, int exit_status);
+t_node	*split_variable(t_node *lst);
 
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);
-void	*prepare(t_pl *parser, char ***env);
+void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);

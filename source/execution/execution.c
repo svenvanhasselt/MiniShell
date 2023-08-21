@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:20:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/21 18:01:25 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	t_pl	*parser;
 
 	parser = *p_list;
-	data = prepare(parser, env);
+	data = prepare(&parser, env);
 	data->prev_status = prev_status;
 	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
@@ -76,21 +76,23 @@ void	create_cmd_table(t_pl *parser)
 {
 	int				i;
 	int				size;
-	t_pl	*head;
+	t_pl			*head;
+	t_pn			*head_lst;
 
 	head = parser;
 	while (head)
 	{
 		i = 0;
-		size = ft_sizelist_parser(head->lst);
+		head_lst = head->lst;
+		size = ft_sizelist_parser(head_lst);
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
-		while (head->lst)
+		while (head_lst)
 		{
-			if (head->lst->str)
-				head->cmd_table[i] = head->lst->str;
+			if (head_lst->str)
+				head->cmd_table[i] = head_lst->str;
 			else
 				head->cmd_table[i] = NULL;
-			head->lst = head->lst->next;
+			head_lst = head_lst->next;
 			i++;
 		}
 		head->cmd_table[i] = NULL;
