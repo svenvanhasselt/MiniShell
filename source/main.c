@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 16:31:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 11:58:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_readline(char *prompt)
 	int		syntax_check;
 	int		exit_status;
 	
-	atexit(blah);
+	//atexit(blah);
 	signals_init();
 	env = copy_environment_list(environ);
 	p_list = NULL;

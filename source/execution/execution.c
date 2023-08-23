@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:01:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:29:53 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	check_builtins(char **cmd_table, char ***env, int *status, int prev_status)
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
 		*status = env_builtin((*env));
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		*status = exit_builtin(prev_status);
+		*status = exit_builtin(cmd_table, prev_status);
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		*status = export_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)

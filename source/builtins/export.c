@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/10 15:49:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:19:50 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	export_builtin(char **cmd_table, char ***env)
 	while (cmd_table[i])
 	{
 		if (add_variable(cmd_table[i], env) < 0)
-			return (error_seterrno(cmd_table[0], cmd_table[i], ERR_EXPORT_INVALID));
+			error_seterrno(cmd_table[0], cmd_table[i], ERR_EXPORT_INVALID);
 		i++;
 	}
 	return (0);

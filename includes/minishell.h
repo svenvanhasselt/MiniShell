@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 17:55:29 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:04:22 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ enum e_minishell_errors {
 	ERR_CD_FILE_UNAIV	= -3,
 	ERR_CD_NO_HOME		= -4,
 	ERR_CD_NOT_DIR		= -5,
+	ERR_EXIT_ARG		= -6,
+	ERR_EXIT_NUM		= -7,
 };
 
 typedef struct s_funcstruc
@@ -217,7 +219,7 @@ int		pwd_builtin(void);
 int		env_builtin(char **env);
 int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
-int		exit_builtin(int status);
+int		exit_builtin(char **cmd_table, int status);
 
 /*	Tools */
 char	**copy_environment_list(char **env);
