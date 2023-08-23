@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 14:05:25 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 18:22:22 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,14 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	t_pl	*last;
 
 	printf("this is the head->str = %s\n", head->str);
-	if (tokens->next == NULL && head->type == REDIRECT_IN && head->next->type == REDIRECT_IN)
+	if (tokens->next == NULL && (*p_list)->lst == NULL && ft_sizelist_lparser(*p_list) == 1)
 	{
 		printf("I got in the first if\n");
 		return (NULL);
 	}
 	if ((head)->next == NULL && ft_sizelist(head) == 1)
 	{
+		printf("secod if\n");
 		n_list = make_node_parser(head);
 		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
 		return (NULL);
@@ -91,7 +92,8 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	ft_strlen(last->file_in)) != 0))) //||
 	//last->rd_out == true || last->rd_in == true))
 	{
-		//printf("here ?\n");
+		printf("third if\n");
+		printf("tokens->str = %s\n", tokens->str);
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
 		//sleep(1);
 		tokens = tokens->next;
@@ -138,6 +140,7 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list)
 			if (last && (last->fd_in == -1 || last->fd_out == -1))
 				break ;
 			*tokens = parser_utils(*tokens, p_list);
+			printf("after parser_utils > tokens = %p\n", (*tokens));
 			while ((*tokens) != NULL && ((*tokens)->type == PIPE \
 			|| (*tokens)->type == SPC))
 			{

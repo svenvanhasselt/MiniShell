@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 17:37:12 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 17:48:25 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,6 @@ void	rd_atfirst_in_utils(t_node *head, t_pl *node)
 		node->errno_in = errno;
 }
 
-t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
-{
-	char	*after_rd;
-	t_pn	*n_list;
-
-	after_rd = NULL;
-	n_list = NULL;
-	if (tokens->type == WORD)
-	{
-		after_rd = tokens->str;
-		if (tokens->next != NULL)
-			tokens = tokens->next;
-		if (tokens->next != NULL)
-			tokens = tokens->next;
-	}
-	if (tokens->type == WORD && \
-	ft_strncmp(tokens->str, after_rd, ft_strlen(after_rd)) != 0)
-	{
-		first_command = tokens;
-		n_list = make_node_parser(tokens);
-		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
-		tokens = tokens->next;
-	}
-	return (tokens);
-}
-
 // t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
 // {
 // 	char	*after_rd;
@@ -88,38 +62,64 @@ t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
 
 // 	after_rd = NULL;
 // 	n_list = NULL;
-// 	after_rd = tokens->str;
-// 	if (tokens->next != NULL)
-// 			tokens = tokens->next;
-// 	while (tokens && tokens->type == SPC)
-// 		tokens = tokens->next;
-// 	while (tokens && (tokens->type == REDIRECT_IN || tokens->type == REDIRECT_OUT))
+// 	if (tokens->type == WORD)
 // 	{
-// 		while(tokens && tokens->type != PIPE && tokens->type != WORD)
+// 		after_rd = tokens->str;
+// 		if (tokens->next != NULL)
 // 			tokens = tokens->next;
-// 		if(tokens && tokens->type == WORD)
-// 		{
-// 			after_rd = tokens->str;
-// 			printf("this is the after_rd = %s\n", after_rd);
-// 			if (tokens->next != NULL)
-// 				tokens = tokens->next;
-// 		}
-// 		if (tokens && tokens->type == PIPE)
-// 			return (NULL);
+// 		if (tokens->next != NULL)
+// 			tokens = tokens->next;
 // 	}
-// 	while (tokens && tokens->type == SPC)
-// 		tokens = tokens->next;
-// 	printf("in utils tokens->str = %s\n", tokens->str);
 // 	if (tokens->type == WORD && \
 // 	ft_strncmp(tokens->str, after_rd, ft_strlen(after_rd)) != 0)
 // 	{
 // 		first_command = tokens;
-// 		printf("here\n");
-// 		printf("in makelist utils first command = %s\n", first_command->str);
 // 		n_list = make_node_parser(tokens);
 // 		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
-// 		// tokens = tokens->next;
+// 		tokens = tokens->next;
 // 	}
-// 	//printf("in utils first command= %s\n", first_command->str);
-// 	return (first_command);
+// 	return (tokens);
 // }
+
+t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
+{
+	char	*after_rd;
+	t_pn	*n_list;
+
+	after_rd = NULL;
+	n_list = NULL;
+	after_rd = tokens->str;
+	if (tokens->next != NULL)
+			tokens = tokens->next;
+	while (tokens && tokens->type == SPC)
+		tokens = tokens->next;
+	while (tokens && (tokens->type == REDIRECT_IN || tokens->type == REDIRECT_OUT))
+	{
+		while(tokens && tokens->type != PIPE && tokens->type != WORD)
+			tokens = tokens->next;
+		if(tokens && tokens->type == WORD)
+		{
+			after_rd = tokens->str;
+			printf("this is the after_rd = %s\n", after_rd);
+			if (tokens->next != NULL)
+				tokens = tokens->next;
+		}
+		if (tokens && tokens->type == PIPE)
+			return (NULL);
+	}
+	while (tokens && tokens->type == SPC)
+		tokens = tokens->next;
+	printf("in utils tokens->str = %s\n", tokens->str);
+	if (tokens->type == WORD && \
+	ft_strncmp(tokens->str, after_rd, ft_strlen(after_rd)) != 0)
+	{
+		first_command = tokens;
+		printf("here\n");
+		printf("in makelist utils first command = %s\n", first_command->str);
+		n_list = make_node_parser(tokens);
+		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
+		// tokens = tokens->next;
+	}
+	//printf("in utils first command= %s\n", first_command->str);
+	return (first_command);
+}

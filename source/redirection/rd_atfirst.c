@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 17:38:02 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 18:15:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,8 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 	printf("I am getting out\n");
 	//printf("this is the first_command = %s\n", first_command->str);
 	node = ft_lastlist_lparser(*p_list);
-	while (tokens && tokens->type == SPC && tokens->next != NULL)
-		tokens = tokens->next;
+	// while (tokens && tokens->type == SPC && tokens->next != NULL)
+	// 	tokens = tokens->next;
 	if (head->type == REDIRECT_IN)
 	{
 		//rd_atfirst_in(head, first_command, node);
@@ -166,10 +166,13 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 	}
 	else if (head->type == REDIRECT_OUT)
 		rd_atfirst_out(head, first_command, node);
-	if (node && (node->fd_in == -1 || node->fd_out == -1))
-	{
-		while (tokens && tokens->type != PIPE && tokens->next != NULL)
-			tokens = tokens->next;
-	}
-	return (tokens);
+	// if (node && (node->fd_in == -1 || node->fd_out == -1))
+	// {
+	// 	while (tokens && tokens->type != PIPE && tokens->next != NULL)
+	// 		tokens = tokens->next;
+	// }
+	// while (first_command && first_command->type != PIPE && first_command->next != NULL)
+	// 		first_command = first_command->next;
+	first_command = first_command->next;
+	return (first_command);
 }
