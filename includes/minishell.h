@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/08/21 18:54:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:54:42 by svan-has      ########   odam.nl         */
+/*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
+/*   Updated: 2023/08/23 17:43:09 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_node
 	enum e_token	type;
 	enum e_state	state;
 	struct s_node	*next;
-	// struct s_node	*prev;
 }		t_node;
 
 // typedef struct s_lst
@@ -74,7 +73,6 @@ enum e_node_type
 typedef struct s_pn
 {
 	struct s_pn	*next;
-	struct s_pn	*prev;
 	char		*str;
 }				t_pn;
 
@@ -127,7 +125,8 @@ int		qoute_check(t_node *tokens);
 t_pn	*make_node_parser(t_node *tokens);
 t_pn	*ft_lastlist_parser(t_pn *lst);
 void	ft_add_back_list_parser(t_pn **lst, t_pn *new);
-int		ft_sizelist_parser(t_pn **lst);
+//int		ft_sizelist_parser(t_pn **lst);
+int		ft_sizelist_parser(t_pn *lst);
 void	print_list_parser(t_pn *lst);
 void	free_list(t_pn *lst);
 
@@ -135,7 +134,8 @@ void	free_list(t_pn *lst);
 t_pl	*make_node_lparser(t_pn *small_list);
 t_pl	*ft_lastlist_lparser(t_pl *lst);
 void	ft_add_back_list_lparser(t_pl **lst, t_pl *new);
-int		ft_sizelist_lparser(t_pl **lst);
+//int		ft_sizelist_lparser(t_pl **lst);
+int		ft_sizelist_lparser(t_pl *lst);
 void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
 
@@ -153,6 +153,7 @@ t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
 t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
 void	rd_heredoc(t_pl *node);
 void	heredoc_without_command(t_node *head);
+//t_node	*rd_atfirst_in(t_node *tokens, t_node *first_command, t_pl *node);
 
 /* PARSER */
 t_node	*make_parser(t_node **tokens, t_pl **p_list);
@@ -196,8 +197,8 @@ typedef struct s_exec_struc
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_variable(char *variable, enum e_token, char ***env);
+//t_node	*split_variable(t_node *lst, char ***env, int exit_status);
 t_node	*split_variable(t_node *lst);
-
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);

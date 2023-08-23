@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:59:09 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 17:43:58 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,12 @@ void	create_cmd_table(t_pl *parser)
 	{
 		i = 0;
 		head_lst = head->lst;
-		size = ft_sizelist_parser(&head_lst);
+		size = ft_sizelist_parser(head_lst);
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head_lst)
 		{
 			if (head_lst->str)
-				head->cmd_table[i] = head_lst->str;
+				head->cmd_table[i] = ft_strdup(head_lst->str);
 			else
 				head->cmd_table[i] = NULL;
 			head_lst = head_lst->next;

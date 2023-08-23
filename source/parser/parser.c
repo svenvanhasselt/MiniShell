@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:26:19 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 14:05:25 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,12 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	t_pn	*n_list;
 	t_pl	*last;
 
-	if (tokens->next == NULL && !*p_list)
+	printf("this is the head->str = %s\n", head->str);
+	if (tokens->next == NULL && head->type == REDIRECT_IN && head->next->type == REDIRECT_IN)
+	{
+		printf("I got in the first if\n");
 		return (NULL);
+	}
 	if ((head)->next == NULL && ft_sizelist(head) == 1)
 	{
 		n_list = make_node_parser(head);

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:58:16 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 17:44:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,62 @@ t_node	*split_variable(t_node *lst)
 	free(lst);
 	return (word_split);
 }
+
+// t_node	*split_variable(t_node *lst, char ***env, int exit_status)
+// {
+// 	int		i;
+// 	char	**split_str;
+// 	t_node	*word_split;
+// 	t_node	*node;
+
+
+// 	word_split = NULL;
+// 	split_str = null_check(ft_split(lst->str, ' '));
+// 	free(lst->str);
+// 	i = 0;
+// 	while (split_str[i])
+// 	{
+// 		split_token = make_node(split_variable[i], ft_strlen(split_variable[i]), WORD, NORMAL);
+// 		if (split_variable[i + 1] == NULL)
+// 		{
+// 			printf("WOohOo: %s\n", split_token->str);
+// 			split_token->state = IN_DOUBLEQ;
+// 		}
+// 		space_token = make_node(NULL, 1, SPC, NORMAL);
+// 		space_token->next = head->next;
+// 		// split_token->next = head->next;
+// 		head->next = split_token;
+// 		head = head->next;
+// 		head->next = space_token;
+// 		head = head->next;
+// 		i++;
+// 	}
+// 	node = ft_lastlist(word_split);
+// 	node->next = lst->next;
+// 	// free(node);
+// 	return (word_split);
+// }
+// void	expand_variable(t_node **lst, char ***env, int exit_status)
+// {	
+// 	t_node	*head;
+
+// 	head = *lst;
+// 	while (head)
+// 	{
+// 		if (head->type == ENV)
+// 		{
+// 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
+// 				head->str = null_check(ft_strdup(null_check(ft_itoa(exit_status)))); //LEAK?
+// 			else
+// 			{
+// 				head->str = find_variable(head->str, head->type, env);
+// 				*lst = split_variable(head, env, exit_status);
+// 			}
+// 		}
+// 		head = head->next;
+// 	}
+// }
+
 void	expand_variable(t_node **lst, char ***env, int exit_status)
 {	
 	t_node	*head;
@@ -158,3 +214,35 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 		head = head->next;
 	}
 }
+
+// void	expansion(t_node **lst, char ***env, int exit_status)
+// {
+// 	t_node	*head;
+// 	t_node  *prev;
+// 	t_node	*current;
+
+// 	head = *lst;
+// 	prev = *lst;
+// 	while (head)
+// 	{
+// 		if (head->type == ENV || (head->state == IN_DOUBLEQ && ft_strnstr(head->str, "$", head->len)))
+// 		{
+// 			current = head;
+// 			if (head->state == IN_DOUBLEQ)
+// 				head->str = ft_strtrim_free(head->str, "\"");
+// 			if (*lst == head)
+// 			{
+// 				current = expand_split(&head, env, exit_status);
+// 				*lst = current;
+// 				// free(head);
+// 			}
+// 			else
+// 			{
+// 				prev->next = expand_split(&head, env, exit_status);
+// 				// free(current); //LEAK
+// 			}				
+// 		}
+// 		prev = head;
+// 		head = head->next;
+// 	}
+// }
