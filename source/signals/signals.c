@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 16:19:50 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/15 14:31:18 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:36:41 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,13 @@ void		signals_init(void)
 	if (signal(SIGINT, signal_action) == SIG_ERR)
 		error_exit("signal error", errno);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		error_exit("signal error", errno);
+}
+
+void		signals_default(void)
+{
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+		error_exit("signal error", errno);
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 		error_exit("signal error", errno);
 }

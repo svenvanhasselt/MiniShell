@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:04:22 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:36:55 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,5 +231,6 @@ int		add_variable(char *string, char ***env);
 
 /*	Signals */
 void	signals_init(void);
+void	signals_default(void);
 
 #endif
