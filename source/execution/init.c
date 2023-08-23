@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:09:24 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:28:41 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*prepare(t_pl **parser, char ***env)
 	t_exec		*data;
 
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = ft_sizelist_lparser(parser);
+	data->num_commands = ft_sizelist_lparser(*parser);
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
 	data->pipe_fd = null_check(malloc((data->num_commands - 1) \
 	* sizeof(int *)));

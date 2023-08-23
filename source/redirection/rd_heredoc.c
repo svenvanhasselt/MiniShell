@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:41:55 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 17:28:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	heredoc_without_command(t_node *head)
 			free(line);
 		if (!line || \
 		ft_strncmp(line, del, ft_strlen(del)) == 0)
+		{
+			free(line);
 			break ;
+		}
 	}
 	free(del);
 	return ;
@@ -38,6 +41,7 @@ void	rd_heredoc(t_pl *node)
 
 	line = NULL;
 	unlink("here_doc");
+	close(node->fd_in);
 	node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
 	while (1)
 	{

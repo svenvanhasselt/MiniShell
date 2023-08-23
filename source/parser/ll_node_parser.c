@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:34:15 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:52:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ t_pn	*make_node_parser(t_node *token)
 	if (token == NULL)
 		node->str = NULL;
 	else
-		node->str = token->str;
+	{
+		//node->str = null_check(malloc(sizeof(char) * ft_strlen(token->str)));
+		node->str = ft_strdup(token->str);
+		// free(token->str);
+		//node->str = token->str;
+	}
 	node->next = NULL;
-	node->prev = NULL;
 	return (node);
 }
 
@@ -54,15 +58,15 @@ void	ft_add_back_list_parser(t_pn **lst, t_pn *new)
 	current->next->next = NULL;
 }
 
-int	ft_sizelist_parser(t_pn **lst)
+int	ft_sizelist_parser(t_pn *lst)
 {
 	int		count;
 	t_pn	*node;
 
 	count = 0;
-	if (!lst || !*lst)
+	if (!lst)
 		return (0);
-	node = *lst;
+	node = lst;
 	while (node != NULL)
 	{
 		node = node->next;
@@ -82,6 +86,7 @@ void	free_list(t_pn *lst)
 	{
 		temp = lst;
 		lst = lst->next;
+		free(temp->str);
 		free(temp);
 	}
 }
