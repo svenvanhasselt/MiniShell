@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:20:59 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 14:05:25 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,25 @@
 t_node	*parser_utils(t_node *tokens, t_pl **p_list)
 {
 	t_pl	*last;
+	t_node	*temp;
 
+	temp = NULL;
 	last = ft_lastlist_lparser(*p_list);
-	while (tokens != NULL && tokens->type != PIPE)
+	while (last && tokens != NULL && tokens->type != PIPE)
 	{
-		while (tokens->type == SPACE && tokens->next != NULL)
-			tokens = tokens->next;
-		while (tokens->type == REDIRECT_OUT || tokens->type == REDIRECT_IN)
+		while (tokens->type == SPC && tokens->next != NULL)
+		{
+			temp = (tokens);
+			(tokens) = (tokens)->next;
+		}
+		while (tokens && (tokens->type == REDIRECT_OUT || tokens->type == REDIRECT_IN))
 		{
 			tokens = rd_managment(tokens, p_list);
-			if (tokens->type == PIPE || tokens->next == NULL \
-			|| last->fd_in == -1 || last->fd_out == -1)
+			if (last->fd_in == -1 || last->fd_out == -1 || \
+			tokens->type == PIPE || tokens->next == NULL)
 				break ;
 		}
-		if (tokens->type == PIPE || (tokens->next == NULL && \
+		if ((tokens && tokens->type == PIPE) || (tokens && tokens->next == NULL && \
 		(last->rd_out == true || last->rd_in == true)))
 			break ;
 		if (last->fd_in == -1 || last->fd_out == -1)
@@ -48,7 +53,6 @@ t_node	*first_list_pl(t_node *tokens, t_pl **p_list)
 		tokens = rd_atfirst_managment(tokens, p_list);
 	else
 	{
-		printf("this is the str = %s\n", tokens->str);
 		n_list = make_node_parser(tokens);
 		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
 		if (tokens->next != NULL)
@@ -62,6 +66,12 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	t_pn	*n_list;
 	t_pl	*last;
 
+	printf("this is the head->str = %s\n", head->str);
+	if (tokens->next == NULL && head->type == REDIRECT_IN && head->next->type == REDIRECT_IN)
+	{
+		printf("I got in the first if\n");
+		return (NULL);
+	}
 	if ((head)->next == NULL && ft_sizelist(head) == 1)
 	{
 		n_list = make_node_parser(head);
@@ -70,28 +80,49 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	}
 	last = ft_lastlist_lparser(*p_list);
 	n_list = last->lst;
-	if (tokens->next == NULL && ((last->rd_in_heredoc == true && \
+	//printf("last->file_out = %s and tokens->str = %s\n", last->file_out, tokens->str);
+	//printf("strncmp result = %d\n", ft_strncmp(tokens->str, last->file_out, ft_strlen(last->file_out)));
+	if (!(last->rd_in == true && last->rd_out == true) && ((last->rd_in_heredoc == true && \
 	ft_strncmp(tokens->str, last->del_without_nl, \
-	ft_strlen(last->del_without_nl)) != 0) || \
-	last->rd_out == true || last->rd_in == true))
+	ft_strlen(last->del_without_nl)) != 0) || (last->rd_out == true && \
+	ft_strncmp(tokens->str, last->file_out, \
+	ft_strlen(last->file_out)) != 0) || (last->rd_in == true && \
+	ft_strncmp(tokens->str, last->file_in, \
+	ft_strlen(last->file_in)) != 0))) //||
+	//last->rd_out == true || last->rd_in == true))
 	{
+		//printf("here ?\n");
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
+		//sleep(1);
 		tokens = tokens->next;
 	}
-	else
-	{
-		printf("it is not rare!!!!!\n\n");
-		return (NULL);
-	}
-	return (tokens);
+	// free(last->delimiter);
+	// free(last->del_without_nl);
+	// else if (tokens->next == NULL && (last->rd_out == true || last->rd_in == true))
+	// {
+	// 	printf("2 here ?\n");
+	// 	ft_add_back_list_parser(&n_list, make_node_parser(tokens));
+	// 	tokens = tokens->next;
+	// 	sleep(1);
+	// }
+	// else
+	// {
+	// 	//printf("it is not rare!!!!!\n\n");
+	// 	return (NULL);
+	// }
+	return (NULL);
 }
 
-void	make_parser(t_node **tokens, t_pl **p_list)
+t_node	*make_parser(t_node **tokens, t_pl **p_list)
 {
 	t_pl	*last;
 	t_node	*head;
+	t_node	*temp;
+	t_node	*save_head;
 
 	last = NULL;
+	temp = NULL;
+	save_head = *tokens;
 	qoute_trim(*tokens);
 	combine_tokens(*tokens);
 	head = *tokens;
@@ -99,19 +130,26 @@ void	make_parser(t_node **tokens, t_pl **p_list)
 	{
 		if ((*tokens)->next != NULL && (*tokens) == head)
 			*tokens = first_list_pl(*tokens, p_list);
-		else
+		else if((*tokens) && (*tokens)->next == NULL)
 			*tokens = special_last(*tokens, head, p_list);
-		last = ft_lastlist_lparser(*p_list);
-		if (last->fd_in == -1 || last->fd_out == -1)
-			break ;
-		*tokens = parser_utils(*tokens, p_list);
-		while ((*tokens) != NULL && ((*tokens)->type == PIPE \
-		|| (*tokens)->type == SPACE))
+		if (*tokens)
 		{
-			(*tokens) = (*tokens)->next;
-			head = (*tokens);
+			last = ft_lastlist_lparser(*p_list);
+			if (last && (last->fd_in == -1 || last->fd_out == -1))
+				break ;
+			*tokens = parser_utils(*tokens, p_list);
+			while ((*tokens) != NULL && ((*tokens)->type == PIPE \
+			|| (*tokens)->type == SPC))
+			{
+				(*tokens) = (*tokens)->next;
+				head = (*tokens);
+			}
 		}
 	}
+	printf("this is the parser list:\n");
+	print_list_lparser(p_list);
+	printf("make parser thats it\n");
+	return (save_head);
 }
 
 // I should check where to put the heredoc!

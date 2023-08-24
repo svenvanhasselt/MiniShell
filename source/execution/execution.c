@@ -6,7 +6,11 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/08/23 18:38:40 by svan-has      ########   odam.nl         */
+=======
+/*   Updated: 2023/08/23 17:43:58 by psadeghi      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +74,8 @@ int	free_data(t_exec *data)
 
 int	execution(t_pl **p_list, char ***env, int prev_status)
 {
-	int				i;
-	t_exec			*data;
+	int		i;
+	t_exec	*data;
 	t_pl	*parser;
 
 	parser = *p_list;
@@ -79,6 +83,7 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	data->prev_status = prev_status;
 	if (builtins_redirect(&data, parser, env) >= 0)
 		return (data->exit_status);
+	printf("after builtins\n");
 	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
@@ -99,10 +104,10 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 
 void	create_cmd_table(t_pl *parser)
 {
-	int				i;
-	int				size;
-	t_pl			*head;
-	t_pn			*head_lst;
+	int		i;
+	int		size;
+	t_pl	*head;
+	t_pn	*head_lst;
 
 	head = parser;
 	while (head)
@@ -114,7 +119,7 @@ void	create_cmd_table(t_pl *parser)
 		while (head_lst)
 		{
 			if (head_lst->str)
-				head->cmd_table[i] = head_lst->str;
+				head->cmd_table[i] = ft_strdup(head_lst->str);
 			else
 				head->cmd_table[i] = NULL;
 			head_lst = head_lst->next;
@@ -212,6 +217,7 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 {
 	int	*status;
 
+	printf("Execution pointer first of builtins = %p\n", (parser)->lst);
 	status = &(*data)->exit_status;
 	if ((*data)->num_commands == 1)
 	{

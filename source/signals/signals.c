@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 16:19:50 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:36:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/24 13:06:01 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 void	signal_action()
 {
 	ft_putstr_fd("\n", 1);
-    rl_replace_line("", 0);
-    rl_on_new_line();
-    rl_redisplay();
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void		signals_init(void)

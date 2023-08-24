@@ -6,7 +6,11 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/08/24 11:47:57 by svan-has      ########   odam.nl         */
+=======
+/*   Updated: 2023/08/23 17:44:19 by psadeghi      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +121,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status, bool split)
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
 			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
-			ft_add_back_list(&exp_lst, make_node(" ", 1, SPACE, NORMAL));
+			ft_add_back_list(&exp_lst, make_node(" ", 1, SPC, NORMAL));
 		i++;
 	}
 	expand_variable(&exp_lst, env, exit_status, split);
@@ -154,3 +158,35 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 		head = head->next;
 	}
 }
+
+// void	expansion(t_node **lst, char ***env, int exit_status)
+// {
+// 	t_node	*head;
+// 	t_node  *prev;
+// 	t_node	*current;
+
+// 	head = *lst;
+// 	prev = *lst;
+// 	while (head)
+// 	{
+// 		if (head->type == ENV || (head->state == IN_DOUBLEQ && ft_strnstr(head->str, "$", head->len)))
+// 		{
+// 			current = head;
+// 			if (head->state == IN_DOUBLEQ)
+// 				head->str = ft_strtrim_free(head->str, "\"");
+// 			if (*lst == head)
+// 			{
+// 				current = expand_split(&head, env, exit_status);
+// 				*lst = current;
+// 				// free(head);
+// 			}
+// 			else
+// 			{
+// 				prev->next = expand_split(&head, env, exit_status);
+// 				// free(current); //LEAK
+// 			}				
+// 		}
+// 		prev = head;
+// 		head = head->next;
+// 	}
+// }

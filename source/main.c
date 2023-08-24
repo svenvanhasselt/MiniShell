@@ -6,16 +6,17 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 17:20:03 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/24 13:03:35 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	blah(void)
-{
-	system("leaks minishell");
-}
+// void	blah(void)
+// {
+// 	system("leaks minishell");
+// }
+
 char	*ft_readline(char *prompt)
 {
 	char		*line;
@@ -27,7 +28,7 @@ char	*ft_readline(char *prompt)
 	int		syntax_check;
 	int		exit_status;
 	
-	//atexit(blah);
+	// atexit(blah);
 	signals_init();
 	env = copy_environment_list(environ);
 	p_list = NULL;
@@ -37,42 +38,41 @@ char	*ft_readline(char *prompt)
 	while (1)
 	{
 		printf("each time\n");
+		lst = NULL;
 		unlink("here_doc");
-		free_llist(&p_list);
-		free_tokens(&lst);
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
 		//if (!line || line[0] == '\0')
 		if (!new)
 		{
-			printf("\b\b \n");
+			//printf("\b\b \n");
+			free(line);
 			exit(1);
 		}
 		if (!new || new[0] == '\0')
 		{
+			free(line);
+			free(new);
 			line = readline(prompt);
 			new = ft_strtrim(line, " ");
 		}
 		else
 		{
-			printf("line = \"%s\"\n", line);
-			printf("new = .%s.\n", new);
-			printf("compare new and line = %d\n", strcmp(new, line));
 			make_tokens(new, &lst);
+			printf("after make tokens\n");
 			syntax_check = syntax_error(&lst);
 			printf("this is the syntax check %d\n", syntax_check);
 			if (syntax_check == 0)
 			{
 				if (lst == NULL)
 					printf("this is the head\n");
-				expansion(&lst, &env, exit_status);
-				print_list(lst);
-				make_parser(&lst, &p_list);
+				//expansion(&lst, &env, exit_status);
+				lst = make_parser(&lst, &p_list);
 				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
-				ft_putstr_fd("Return code: ", 1);
-				ft_putnbr_fd(exit_status, 1);
+				// ft_putstr_fd("Return code: ", 1);
+				// ft_putnbr_fd(exit_status, 1);
 				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
 			// ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
@@ -83,6 +83,11 @@ char	*ft_readline(char *prompt)
 			// free(bash);
 			add_history(line);
 		}
+		free(new);
+		free(line);
+		free_tokens(lst);
+		free_llist(&p_list);
+		//system("leaks minishell");
 	}
 	return (line);
 }
@@ -91,6 +96,7 @@ int	main(void)
 {
 	// atexit(blah);
 	char *line;
+
 	line = ft_readline("minishell~>");
 	return (0);
 }
