@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:37:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 17:20:03 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ char	*ft_readline(char *prompt)
 				ft_putnbr_fd(exit_status, 1);
 				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
-			ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
-			char *bash = ft_strjoin(line, " && echo Return code: $?");
-			system(bash);
-			ft_putstr_fd("-----------Bash Output-------------", 1);
-			ft_putstr_fd("\n\n\n", 1);
-			free(bash);
+			// ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
+			// char *bash = ft_strjoin(line, " && echo Return code: $?");
+			// system(bash);
+			// ft_putstr_fd("-----------Bash Output-------------", 1);
+			// ft_putstr_fd("\n\n\n", 1);
+			// free(bash);
 			add_history(line);
 		}
 	}
@@ -89,6 +89,7 @@ char	*ft_readline(char *prompt)
 
 int	main(void)
 {
+	// atexit(blah);
 	char *line;
 	line = ft_readline("minishell~>");
 	return (0);

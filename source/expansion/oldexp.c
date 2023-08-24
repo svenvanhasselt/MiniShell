@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expansion.c                                        :+:    :+:            */
+/*   oldexp.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/24 11:47:57 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/24 11:42:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ t_node	*split_variable(t_node *lst)
 	}
 	node = ft_lastlist(word_split);
 	node->next = lst->next;
-	// free(lst);
+	free(lst);
 	return (word_split);
 }
-void	expand_variable(t_node **lst, char ***env, int exit_status, bool split)
+void	expand_variable(t_node **lst, char ***env, int exit_status)
 {	
 	t_node	*head;
 	t_node	*prev;
-	t_node	*node;
 
 	head = *lst;
 	prev = head;
@@ -69,15 +68,17 @@ void	expand_variable(t_node **lst, char ***env, int exit_status, bool split)
 		{
 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
 				head->str = null_check(ft_strdup(null_check(ft_itoa(exit_status)))); //LEAK?
+			else if (*lst == head)
+			{
+				head->str = find_variable(head->str, head->type, env);
+				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
+					*lst = split_variable(head);
+			}
 			else
 			{
 				head->str = find_variable(head->str, head->type, env);
-				if (ft_strnstr(head->str, " ", ft_strlen(head->str)) && split == true)
-					node = split_variable(head);
-				if (*lst == head)
-					*lst = node;
-				else
-					prev = node;
+				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
+					prev = split_variable(head);
 			}
 		}
 		prev = head;
@@ -85,7 +86,7 @@ void	expand_variable(t_node **lst, char ***env, int exit_status, bool split)
 	}
 }
 
-t_node	*expand_split(t_node **head, char ***env, int exit_status, bool split)
+t_node	*expand_split(t_node **head, char ***env, int exit_status)
 {
 	int		i;
 	int		start;
@@ -120,7 +121,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status, bool split)
 			ft_add_back_list(&exp_lst, make_node(" ", 1, SPACE, NORMAL));
 		i++;
 	}
-	expand_variable(&exp_lst, env, exit_status, split);
+	expand_variable(&exp_lst, env, exit_status);
 	last_node = ft_lastlist(exp_lst);
 	last_node->next = (*head)->next;	
 	return (exp_lst);
@@ -130,25 +131,28 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 {
 	t_node	*head;
 	t_node  *prev;
-	t_node	*node;
-	bool	split;
+	t_node	*current;
 
 	head = *lst;
 	prev = *lst;
 	while (head)
 	{
-		split = true;
-		if (head->state == IN_DOUBLEQ)
-			split = false;
 		if (head->type == ENV || (head->state == IN_DOUBLEQ && ft_strnstr(head->str, "$", head->len)))
 		{
+			current = head;
 			if (head->state == IN_DOUBLEQ)
 				head->str = ft_strtrim_free(head->str, "\"");
-			node = expand_split(&head, env, exit_status, split);
 			if (*lst == head)
-				*lst = node;
+			{
+				current = expand_split(&head, env, exit_status);
+				*lst = current;
+				// free(head);
+			}
 			else
-				prev->next = node;
+			{
+				prev->next = expand_split(&head, env, exit_status);
+				// free(current); //LEAK
+			}				
 		}
 		prev = head;
 		head = head->next;

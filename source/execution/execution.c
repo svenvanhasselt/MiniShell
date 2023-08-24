@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:44:23 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 18:38:40 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,31 @@ int	redirection_error(t_exec *data, int i)
 	return (0);
 }
 
+int	free_data(t_exec *data)
+{
+	int	exit_status;
+	int	i;
+
+	i = 0;
+	exit_status = data->exit_status;
+	free(data->fork_pid);
+	while(data->cmd_table[i] != NULL)
+	{
+		free(data->cmd_table[i]);
+		i++;
+	}
+	free(data->cmd_table);
+	i = 0;
+	while(i < data->num_commands - 1)
+	{
+		free(data->pipe_fd[i]);
+		i++;
+	}
+	free(data->pipe_fd);
+	free(data);
+	return (exit_status);
+}
+
 int	execution(t_pl **p_list, char ***env, int prev_status)
 {
 	int				i;
@@ -69,7 +94,7 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	return (data->exit_status);
+	return (free_data(data));
 }
 
 void	create_cmd_table(t_pl *parser)
