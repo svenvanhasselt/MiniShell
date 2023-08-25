@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:57:18 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/25 18:52:19 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,13 +167,6 @@ void	free_llist(t_pl **p_list)
 		printf("do I return ? \n");
 		return ;
 	}
-	printf("pointer p_list= %p\n", *p_list);
-	printf("pointer P_list->lst = %p\n", (*p_list)->lst);
-	printf("pointer P_list->next = %p\n", (*p_list)->next);
-	//printf("this = %s\n", (*p_list)->lst->str);
-	// printf("this is the parser list in free:\n");
-	// print_list_lparser(p_list);
-	// printf("make parser thats it\n");
 	while (*p_list)
 	{
 		temp = *p_list;
@@ -192,29 +185,19 @@ void	free_llist(t_pl **p_list)
 		// if (p_list->next)
 		// 	free_list(p_list->lst);
 		*p_list = (*p_list)->next;
-		printf("whyyyyy\n");
-		printf("pointer temp = %p and temp->next = %p\n", temp, temp->next);
-		// while(temp->cmd_table[i] != NULL)
-		// {
-		// 	free(temp->cmd_table[i]);
-		// 	i++;
-		// }
-		// free(temp->cmd_table);
+		while(temp->cmd_table[i] != NULL)
+		{
+			free(temp->cmd_table[i]);
+			i++;
+		}
+		//free(temp->cmd_table);
 		free_list(temp->lst);
-		printf("free 1\n");
 		free(temp->file_in);
-		printf("free 1.1\n");
 		free(temp->file_out);
-		printf("free 1.2\n");
 		free(temp->delimiter);
 		free(temp->del_without_nl);
-		printf("free 2\n");
 		free(temp);
-		printf("free 3\n");
 	}
-	printf("this is the parser list after free:\n");
-	print_list_lparser(p_list);
-	printf("make parser thats it\n");
 }
 
 void	print_list_lparser(t_pl **plist)

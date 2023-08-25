@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:19:50 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/24 16:07:28 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,42 @@ void	put_env(char *string, char ***env);
 int		add_variable(char *string, char ***env);
 int		check_variable(char **variable);
 
-int	export_builtin(char **cmd_table, char ***env)
+void	print_env(char ***env)
 {
 	int	i;
 	int	val_set;
 
+	i = 0;
+	while ((*env)[i])
+	{
+		val_set = find_value((*env)[i]);
+		if (val_set < 0)
+			printf("declare -x %s\n", (*env)[i]);
+		else
+			printf("declare -x %.*s\"%s\"\n", val_set + 1, \
+			(*env)[i], (*env)[i] + val_set + 1);
+		i++;
+	}
+}
+int	export_builtin(char **cmd_table, char ***env)
+{
+	int	i;
+	int	exit_code;
+
+	exit_code = 0;
 	if (!cmd_table[1])
 	{
-		i = 0;
-		while ((*env)[i])
-		{
-			val_set = find_value((*env)[i]);
-			if (val_set < 0)
-				printf("declare -x %s\n", (*env)[i]);
-			else
-				printf("declare -x %.*s\"%s\"\n", val_set + 1, \
-				(*env)[i], (*env)[i] + val_set + 1);
-			i++;
-		}
+		print_env(env);
 		return (0);
 	}
 	i = 1;
 	while (cmd_table[i])
 	{
 		if (add_variable(cmd_table[i], env) < 0)
-			error_seterrno(cmd_table[0], cmd_table[i], ERR_EXPORT_INVALID);
+			exit_code = error_seterrno(cmd_table[0], cmd_table[i], ERR_EXPORT_INVALID);
 		i++;
 	}
-	return (0);
+	return (exit_code);
 }
 
 int	add_variable(char *string, char ***env)

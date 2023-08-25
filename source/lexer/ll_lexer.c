@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 13:06:30 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:59:34 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/24 13:11:34 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,10 @@ void	free_tokens(t_node *lst)
 {
 	t_node	*temp;
 
-	printf("lol %p\n", lst);
 	while (lst)
 	{
-		printf("lol2\n");
 		temp = (lst);
 		(lst) = (lst)->next;
-		printf("this is the string in free tokens before freeing = %s\n", temp->str);
 		free(temp->str);
 		free(temp);
 		// if ((temp)->type == SPC || temp->type == REDIRECT_IN || \

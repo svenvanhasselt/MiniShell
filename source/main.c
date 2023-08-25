@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 13:03:35 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/25 18:48:28 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ char	*ft_readline(char *prompt)
 	lst = NULL;
 	while (1)
 	{
-		printf("each time\n");
 		lst = NULL;
 		unlink("here_doc");
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
+		// char *test = "$?";
+		// new = ft_strtrim(test, " ");
 		//if (!line || line[0] == '\0')
 		if (!new)
 		{
@@ -59,14 +60,12 @@ char	*ft_readline(char *prompt)
 		else
 		{
 			make_tokens(new, &lst);
-			printf("after make tokens\n");
 			syntax_check = syntax_error(&lst);
-			printf("this is the syntax check %d\n", syntax_check);
-			if (syntax_check == 0)
+				if (syntax_check == 0)
 			{
 				if (lst == NULL)
 					printf("this is the head\n");
-				//expansion(&lst, &env, exit_status);
+				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
 				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
@@ -82,12 +81,13 @@ char	*ft_readline(char *prompt)
 			// ft_putstr_fd("\n\n\n", 1);
 			// free(bash);
 			add_history(line);
+			// break;
 		}
 		free(new);
 		free(line);
 		free_tokens(lst);
-		free_llist(&p_list);
-		//system("leaks minishell");
+		// free_llist(&p_list);
+		system("leaks minishell");
 	}
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 13:04:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/25 12:16:06 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
+int		free_data(t_exec *data, t_pl *parser);
 
 /*	Signals */
 void	signals_init(void);
