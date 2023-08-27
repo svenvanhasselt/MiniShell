@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/25 18:52:19 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/27 10:47:13 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,12 +185,13 @@ void	free_llist(t_pl **p_list)
 		// if (p_list->next)
 		// 	free_list(p_list->lst);
 		*p_list = (*p_list)->next;
+		i = 0;
 		while(temp->cmd_table[i] != NULL)
 		{
 			free(temp->cmd_table[i]);
 			i++;
 		}
-		//free(temp->cmd_table);
+		free(temp->cmd_table);
 		free_list(temp->lst);
 		free(temp->file_in);
 		free(temp->file_out);

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:52:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/27 11:04:44 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	free_list(t_pn *lst)
 
 	if (!lst)
 		return ;
-	printf("1\n");
 	while (lst)
 	{
 		temp = lst;

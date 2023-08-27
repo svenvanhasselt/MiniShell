@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/25 18:08:51 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/27 12:15:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 				{
 					*lst = split_variable(head);
-					free(current);
+					// free(current);
 				}
 			}
 			else
@@ -159,6 +159,7 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 			else
 			{
 				prev->next = expand_split(&head, env, exit_status);
+				free(current->str);
 				free(current);
 			}				
 		}
