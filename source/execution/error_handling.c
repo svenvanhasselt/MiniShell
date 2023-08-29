@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/10 13:39:14 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/23 12:04:47 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ char	*strerror_minishell(int error_no)
 		return ("HOME not set");
 	if (error_no == ERR_CD_NOT_DIR)
 		return ("Not a directory");
+	if (error_no == ERR_EXIT_ARG)
+		return ("too many arguments");
+	if (error_no == ERR_EXIT_NUM)
+		return ("numeric argument required");
 	return (strerror(error_no));
 }
 

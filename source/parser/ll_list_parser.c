@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 10:15:40 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/29 13:48:30 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	free_llist(t_pl **p_list)
 	{
 		temp = *p_list;
 		*p_list = (*p_list)->next;
+		i = 0;
 		while(temp->cmd_table[i] != NULL)
 		{
 			free(temp->cmd_table[i]);
