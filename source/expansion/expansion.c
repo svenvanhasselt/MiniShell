@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/27 12:15:33 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/29 17:47:13 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 		{
 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
 			{
-				free(head->str);
+				// free(head->str);
 				head->str = null_check((ft_itoa(exit_status))); //LEAK?
 			}
 			else if (*lst == head)
@@ -153,14 +153,14 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 			if (*lst == head)
 			{
 				*lst = expand_split(&head, env, exit_status);
-				free(current->str);
-				free(current);
+				// free(current->str);
+				// free(current);
 			}
 			else
 			{
 				prev->next = expand_split(&head, env, exit_status);
-				free(current->str);
-				free(current);
+				// free(current->str);
+				// free(current);
 			}				
 		}
 		prev = head;
