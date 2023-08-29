@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/27 11:04:17 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/29 14:12:06 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	execution(t_pl **p_list, char ***env, int prev_status)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	free_llist(p_list); // correct?
+	//free_llist(p_list); // correct?
 	return (free_data(data, parser));
 }
 

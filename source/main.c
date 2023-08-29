@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 13:49:01 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/29 15:55:32 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ char	*ft_readline(char *prompt)
 			syntax_check = syntax_error(&lst);
 				if (syntax_check == 0)
 			{
-				if (lst == NULL)
-					printf("this is the head\n");
+				// if (lst == NULL)
+				// 	printf("this is the head\n");
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
-				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+				//ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
 				// ft_putnbr_fd(exit_status, 1);
-				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
+				//ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
 			// ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
 			// char *bash = ft_strjoin(line, " && echo Return code: $?");
@@ -87,7 +87,7 @@ char	*ft_readline(char *prompt)
 		free(line);
 		free_tokens(lst);
 		free_llist(&p_list);
-		system("leaks minishell");
+		//system("leaks minishell");
 	}
 	return (line);
 }

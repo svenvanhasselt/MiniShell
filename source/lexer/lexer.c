@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 10:24:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/29 14:02:24 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ void	make_tokens(char *l, t_node **lst)
 		if (l[i] != '\0')
 			i++;
 	}
-	printf("after the while\n");
-	printf("this is the lexer list:\n");
-	print_list(*lst);
-	printf("thats it\n");
+	// printf("after the while\n");
+	// printf("this is the lexer list:\n");
+	// print_list(*lst);
+	// printf("thats it\n");
 }

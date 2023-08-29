@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/25 17:24:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/29 14:12:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,31 @@ void	create_cmd_table(t_pl *parser)
 
 int	free_data(t_exec *data, t_pl *parser)
 {
-	int		i;
+	//int		i;
 	int		exit_status;
 	t_pl	*head;
 
 	head = parser;
 	exit_status = data->exit_status;
-	free(data->fork_pid);
-	while (head)
-	{
-		i = 0;
-		while (head->cmd_table[i])
-		{
-			free(head->cmd_table[i]);
-			i++;
-		}
-		free(head->cmd_table);
-		head = head->next;
-	}
-	i = 0;
-	while(i < data->num_commands - 1)
-	{
-		free(data->pipe_fd[i]);
-		i++;
-	}
-	free(data->pipe_fd);
-	free(data);
+	//free(data->fork_pid);
+	// while (head)
+	// {
+	// 	i = 0;
+	// 	// while (head->cmd_table[i])
+	// 	// {
+	// 	// 	free(head->cmd_table[i]);
+	// 	// 	i++;
+	// 	// }
+	// 	// free(head->cmd_table);
+	// 	head = head->next;
+	// }
+	// i = 0;
+	// while(i < data->num_commands - 1)
+	// {
+	// 	free(data->pipe_fd[i]);
+	// 	i++;
+	// }
+	// free(data->pipe_fd);
+	// free(data);
 	return (exit_status);
 }

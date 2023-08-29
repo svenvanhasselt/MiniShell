@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 10:16:52 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/29 15:55:08 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_node	*first_list_pl(t_node *tokens, t_pl **p_list)
 	{
 		n_list = make_node_parser(tokens);
 		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
-		if (tokens->next != NULL)
+		// if (tokens->next != NULL)
 			tokens = tokens->next;
 	}
 	return (tokens);
@@ -66,7 +66,8 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	t_pn	*n_list;
 	t_pl	*last;
 
-	if (tokens->next == NULL && (*p_list)->lst == NULL && ft_sizelist_lparser(*p_list) == 1)
+	if (tokens->next == NULL && (*p_list) && \
+	(*p_list)->lst == NULL && ft_sizelist_lparser(*p_list) == 1)
 		return (NULL);
 	if ((head)->next == NULL && ft_sizelist(head) == 1)
 	{
@@ -83,10 +84,7 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	ft_strlen(last->file_out)) != 0) || (last->rd_in == true && \
 	ft_strncmp(tokens->str, last->file_in, \
 	ft_strlen(last->file_in)) != 0)))
-	{
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
-		tokens = tokens->next;
-	}
 	return (NULL);
 }
 
@@ -123,9 +121,9 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list)
 			}
 		}
 	}
-	printf("this is the parser list:\n");
-	print_list_lparser(p_list);
-	printf("make parser thats it\n");
+	// printf("this is the parser list:\n");
+	// print_list_lparser(p_list);
+	// printf("make parser thats it\n");
 	return (save_head);
 }
 
