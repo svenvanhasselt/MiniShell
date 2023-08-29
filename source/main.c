@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 18:19:52 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/24 10:13:44 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ft_readline(char *prompt)
 		free(line);
 		free_tokens(lst);
 		free_llist(&p_list);
-		//system("leaks minishell");
+		system("leaks minishell");
 	}
 	return (line);
 }

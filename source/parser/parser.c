@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 18:22:22 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/24 10:16:52 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,52 +66,27 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	t_pn	*n_list;
 	t_pl	*last;
 
-	printf("this is the head->str = %s\n", head->str);
 	if (tokens->next == NULL && (*p_list)->lst == NULL && ft_sizelist_lparser(*p_list) == 1)
-	{
-		printf("I got in the first if\n");
 		return (NULL);
-	}
 	if ((head)->next == NULL && ft_sizelist(head) == 1)
 	{
-		printf("secod if\n");
 		n_list = make_node_parser(head);
 		ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
 		return (NULL);
 	}
 	last = ft_lastlist_lparser(*p_list);
 	n_list = last->lst;
-	//printf("last->file_out = %s and tokens->str = %s\n", last->file_out, tokens->str);
-	//printf("strncmp result = %d\n", ft_strncmp(tokens->str, last->file_out, ft_strlen(last->file_out)));
 	if (!(last->rd_in == true && last->rd_out == true) && ((last->rd_in_heredoc == true && \
 	ft_strncmp(tokens->str, last->del_without_nl, \
 	ft_strlen(last->del_without_nl)) != 0) || (last->rd_out == true && \
 	ft_strncmp(tokens->str, last->file_out, \
 	ft_strlen(last->file_out)) != 0) || (last->rd_in == true && \
 	ft_strncmp(tokens->str, last->file_in, \
-	ft_strlen(last->file_in)) != 0))) //||
-	//last->rd_out == true || last->rd_in == true))
+	ft_strlen(last->file_in)) != 0)))
 	{
-		printf("third if\n");
-		printf("tokens->str = %s\n", tokens->str);
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
-		//sleep(1);
 		tokens = tokens->next;
 	}
-	// free(last->delimiter);
-	// free(last->del_without_nl);
-	// else if (tokens->next == NULL && (last->rd_out == true || last->rd_in == true))
-	// {
-	// 	printf("2 here ?\n");
-	// 	ft_add_back_list_parser(&n_list, make_node_parser(tokens));
-	// 	tokens = tokens->next;
-	// 	sleep(1);
-	// }
-	// else
-	// {
-	// 	//printf("it is not rare!!!!!\n\n");
-	// 	return (NULL);
-	// }
 	return (NULL);
 }
 
@@ -140,7 +115,6 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list)
 			if (last && (last->fd_in == -1 || last->fd_out == -1))
 				break ;
 			*tokens = parser_utils(*tokens, p_list);
-			printf("after parser_utils > tokens = %p\n", (*tokens));
 			while ((*tokens) != NULL && ((*tokens)->type == PIPE \
 			|| (*tokens)->type == SPC))
 			{

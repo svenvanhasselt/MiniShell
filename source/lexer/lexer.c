@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:47:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/24 10:24:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	sq_tokens(t_node **lst, char *line, int i)
 
 int	env_check(char *line, int i, int start)
 {
-	while(line[start] != '\0' && start < i)
+	while (line[start] != '\0' && start < i)
 	{
 		if (line[start] == '$')
 			return (1);
@@ -123,7 +123,6 @@ void	make_tokens(char *l, t_node **lst)
 	i = 0;
 	while (l[i] != '\0')
 	{
-		printf("in the while\n");
 		if (l[i] == ' ' || l[i] == '>' || l[i] == '<' || l[i] == '|')
 		{
 			new = null_check(ft_substr(l, i, (size_t)(1)));
