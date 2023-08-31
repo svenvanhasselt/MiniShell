@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 13:48:41 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:37:29 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	free_list(t_pn *lst)
 	{
 		temp = lst;
 		lst = lst->next;
+		printf("W: %s\n", temp->str);
+		printf("P4: %p\n", temp->str);
 		free(temp->str);
 		free(temp);
 	}
@@ -92,6 +94,7 @@ void	print_list_parser(t_pn *lst)
 	while (lst->next != NULL)
 	{
 		printf("str= %s, ", lst->str);
+		printf("str_pointer= %p, ", lst->str);
 		lst = lst->next;
 	}
 	printf("str= %s\n", lst->str);

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 12:08:54 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/10 18:57:33 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:44:01 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	env_builtin(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (printf("%s\n", env[i]) < 0)
+		if (find_value(env[i]) > 0 && printf("%s\n", env[i]) < 0)
 			error_exit("operation failure", errno);
 		i++;
 	}
