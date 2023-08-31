@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 16:10:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:14:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:39:51 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	split_string(char *string_node, t_node	**exp_lst)
 	}
 	free(string);
 }
+
 t_node	*expand_split(t_node **head, char ***env, int exit_status)
 {
 
