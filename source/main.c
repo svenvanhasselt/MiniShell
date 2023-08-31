@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 13:14:43 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:21:58 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ char	*ft_readline(char *prompt, char **envp)
 			syntax_check = syntax_error(&lst);
 				if (syntax_check == 0)
 			{
-				if (lst == NULL)
-					printf("this is the head\n");
+				// if (lst == NULL)
+				// 	printf("this is the head\n");
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
-				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+				//ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
 				ft_putstr_fd("Return code: ", 1);

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/30 14:52:17 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:53:49 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,24 @@ void	create_cmd_table(t_pl *parser)
 		head = head->next;
 	}
 }
-
-int	free_data(t_exec *data, t_pl *parser)
+int free_data(t_exec *data, t_pl *parser)
 {
-	int		i;
-	int		exit_status;
+	int	i;
+	int	 exit_status;
 	t_pl	*head;
-
 	head = parser;
 	exit_status = data->exit_status;
 	// free(data->fork_pid);
 	// // while (head)
 	// // {
-	// // 	i = 0;
-	// // 	while (head->cmd_table[i])
-	// // 	{
-	// // 		free(head->cmd_table[i]);
-	// // 		i++;
-	// // 	}
-	// // 	free(head->cmd_table);
-	// // 	head = head->next;
+	// //   i = 0;
+	// //   while (head->cmd_table[i])
+	// //   {
+	// //	   free(head->cmd_table[i]);
+	// //	   i++;
+	// //   }
+	// //   free(head->cmd_table);
+	// //   head = head->next;
 	// // }
 	i = 0;
 	while(i < data->num_commands - 1)
