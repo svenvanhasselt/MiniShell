@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/29 13:17:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:04:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:44:38 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ int	error_seterrno(char *message, char *message2, int error_no)
 	}
 	if (message2)
 	{
-		ft_putstr_fd("'", 2);
 		ft_putstr_fd(message2, 2);
-		ft_putstr_fd("'", 2);
 		ft_putstr_fd(": ", 2);
 	}
 	ft_putstr_fd(strerror_minishell(error_no), 2);

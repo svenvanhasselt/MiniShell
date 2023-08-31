@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/21 18:47:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:59:02 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	dq_tokens(t_node **lst, char *line, int i)
 		size = i - dq_start + 1;
 	new = null_check(ft_substr(line, dq_start, (size_t)(size)));
 	ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
-	free(new);
 	return (i);
 }
 
@@ -48,7 +47,6 @@ int	sq_tokens(t_node **lst, char *line, int i)
 	size = i - sq_start + 1;
 	new = null_check(ft_substr(line, sq_start, (size_t)(size)));
 	ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
-	free(new);
 	return (i);
 }
 

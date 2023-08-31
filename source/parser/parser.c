@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/23 14:05:25 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 12:53:47 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,9 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list)
 
 	last = NULL;
 	temp = NULL;
+	printf("in parser this is the lexer list:\n");
+	print_list(*tokens);
+	printf("thats it\n");
 	save_head = *tokens;
 	qoute_trim(*tokens);
 	combine_tokens(*tokens);

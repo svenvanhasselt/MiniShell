@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:10:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 13:25:49 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	if (var_set >= 0)
 	{
 		value = null_check(ft_strdup(((*env)[var_set] + find_value((*env)[var_set]) + 1)));
-		printf("P: %p\n", value);
 		free(variable);
 		return (value);
 	}
@@ -42,8 +41,6 @@ t_node	*split_variable(t_node *lst)
 
 	word_split = NULL;
 	split_str = null_check(ft_split(lst->str, ' '));
-	printf("test: %s\n", split_str[0]);
-	printf("PP: %p", lst->str);
 	free(lst->str);
 	i = 0;
 	while (split_str[i])
@@ -78,7 +75,6 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 			else if (*lst == head)
 			{
 				head->str = find_variable(head->str, head->type, env);
-				printf("P2: %p\n", head->str);
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 				{
 					*lst = split_variable(head);
@@ -88,7 +84,6 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 			else
 			{
 				head->str = find_variable(head->str, head->type, env);
-				printf("P3: %p\n", head->str);
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 					prev = split_variable(head);
 			}
@@ -134,6 +129,14 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 		i++;
 	}
 	expand_variable(&exp_lst, env, exit_status);
+	t_node *test;
+	test = exp_lst;
+	while (test)
+	{
+		printf("t: %s\n", test->str);
+		printf("p: %p\n", test->str);
+		test = test->next;
+	}
 	last_node = ft_lastlist(exp_lst);
 	last_node->next = (*head)->next;
 	free(string);	
@@ -154,7 +157,7 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 		{
 			current = head;
 			if (head->state == IN_DOUBLEQ)
-				head->str = ft_strtrim(head->str, "\"");
+				head->str = ft_strtrim_free(head->str, "\"");
 			if (*lst == head)
 			{
 				*lst = expand_split(&head, env, exit_status);

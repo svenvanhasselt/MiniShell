@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:07:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 12:37:30 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ t_pn	*make_node_parser(t_node *token)
 	else
 	{
 		//node->str = null_check(malloc(sizeof(char) * ft_strlen(token->str)));
+		printf("making each node in parser token->str = %s, %p\n", token->str, token->str);
 		node->str = ft_strdup(token->str);
+		printf("making each node in parser node->str %s, %p\n", node->str, node->str);
 		// free(token->str);
 		//node->str = token->str;
 	}
@@ -85,8 +87,6 @@ void	free_list(t_pn *lst)
 	{
 		temp = lst;
 		lst = lst->next;
-		printf("W: %s\n", temp->str);
-		printf("P4: %p\n", temp->str);
 		free(temp->str);
 		free(temp);
 	}
@@ -99,8 +99,9 @@ void	print_list_parser(t_pn *lst)
 	while (lst->next != NULL)
 	{
 		printf("str= %s, ", lst->str);
-		printf("str_pointer= %p, ", lst->str);
+		printf("str_point= %p, ", lst->str);
 		lst = lst->next;
 	}
 	printf("str= %s\n", lst->str);
+	printf("str_point= %p, ", lst->str);
 }

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 14:42:42 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 13:03:03 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ typedef struct s_pl
 }				t_pl;
 
 /* FUNCTIONS */
-int		main(void);
-char	*ft_readline(char *prompt);
+char	*ft_readline(char *prompt, char **envp);
 
 /* LEXER */
 void	make_tokens(char *l, t_node **lst);

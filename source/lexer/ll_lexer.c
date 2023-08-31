@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 13:06:30 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 13:11:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 13:17:18 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,8 @@ void	print_list(t_node *lst)
 		return ;
 	while (lst->next != NULL)
 	{
-		printf("str= .%s., state= %u, ", lst->str, lst->state);
-		printf("type= %d ,", lst->type);
+		printf("str= .%s., pointer= %p\n", lst->str, lst->str);
 		lst = lst->next;
 	}
-	printf("str= .%s., state= %u ", lst->str, lst->state);
-	printf("type= %d\n", lst->type);
+	printf("str= .%s., pointer= %p\n", lst->str, lst->str);
 }

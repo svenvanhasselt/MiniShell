@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/30 15:25:05 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:48:31 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cd_builtin(char **cmd_table, char ***env)
 {
 	struct stat path_stat;
 	
-	if (cmd_table[1] && stat(cmd_table[1], &path_stat) < 0)
+	if (cmd_table[1] && stat(cmd_table[1], &path_stat) > 0)
 		error_exit("operation failure", errno);
 	if ((!cmd_table[1] && !getenv("HOME")))
 		return (error_seterrno(cmd_table[0], NULL, ERR_CD_NO_HOME));
@@ -27,7 +27,7 @@ int	cd_builtin(char **cmd_table, char ***env)
 		return (0);
 	else if (!cmd_table[1] && change_dir((getenv("HOME")), env) < 0)
 		return (error_seterrno(cmd_table[0], NULL, ERR_CD_NO_HOME));
-	else if(cmd_table[1] && !S_ISDIR(path_stat.st_mode))
+	else if(cmd_table[1] && S_ISREG(path_stat.st_mode))
 		return (error_seterrno(cmd_table[0], cmd_table[1], ERR_CD_NOT_DIR));
 	else if (cmd_table[1] && change_dir((cmd_table[1]), env) < 0)
 		return (error_seterrno(cmd_table[0], cmd_table[1], ERR_CD_FILE_UNAIV));
