@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 10:33:05 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:46:47 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_node	*rd_out(t_node *tokens, t_pl *node)
 		node->file_out = ft_strdup(tokens->str);
 		close(node->fd_out);
 		if (node->rd_out_append == true)
-			node->fd_out = open(tokens->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			node->fd_out = open(tokens->str, O_CREAT | \
+			O_WRONLY | O_APPEND, 0644);
 		if (node->rd_out_append == false)
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_TRUNC, 0644);
@@ -47,6 +48,7 @@ void	rd_in_utils(t_node *tokens, t_pl *node)
 	node->delimiter = ft_strjoin(tokens->str, "\n");
 	free(node->file_in);
 	node->file_in = ft_strdup("here_doc");
+	rd_heredoc(node);
 }
 
 t_node	*rd_in(t_node *tokens, t_pl *node)
@@ -63,10 +65,7 @@ t_node	*rd_in(t_node *tokens, t_pl *node)
 		if (node->rd_in_heredoc == false)
 			node->fd_in = open(tokens->str, O_RDONLY);
 		if (node->rd_in_heredoc == true)
-		{
 			rd_in_utils(tokens, node);
-			rd_heredoc(node);
-		}
 		if (node->fd_in == -1)
 			node->errno_in = errno;
 		if (tokens->next != NULL)
@@ -77,11 +76,8 @@ t_node	*rd_in(t_node *tokens, t_pl *node)
 	return (tokens);
 }
 
-t_node	*rd_managment(t_node *tokens, t_pl **p_list)
+t_node	*rd_managment_utils(t_node *tokens, t_pl *node)
 {
-	t_pl	*node;
-
-	node = ft_lastlist_lparser(*p_list);
 	if (tokens->type == REDIRECT_OUT)
 	{
 		tokens = tokens->next;
@@ -103,10 +99,19 @@ t_node	*rd_managment(t_node *tokens, t_pl **p_list)
 		}
 		tokens = rd_in(tokens, node);
 	}
+	return (tokens);
+}
+
+t_node	*rd_managment(t_node *tokens, t_pl **p_list)
+{
+	t_pl	*node;
+
+	node = ft_lastlist_lparser(*p_list);
+	tokens = rd_managment_utils(tokens, node);
 	if (node->fd_in == -1 || node->fd_out == -1)
 	{
 		while (tokens && tokens->type != PIPE && tokens->next != NULL)
-					tokens = tokens->next;
+			tokens = tokens->next;
 	}
 	return (tokens);
 }

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:37:27 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:40:21 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	free_llist(t_pl **p_list)
 		temp = *p_list;
 		*p_list = (*p_list)->next;
 		i = 0;
-		while(temp->cmd_table[i] != NULL)
+		while (temp->cmd_table[i] != NULL)
 		{
 			free(temp->cmd_table[i]);
 			i++;
@@ -113,10 +113,6 @@ void	print_list_lparser(t_pl **plist)
 {
 	t_pl	*head;
 
-	// if (!plist)
-	// 	printf("I am empty1  \n");
-	// if (!*plist)
-	// 	printf("I am empty\n");
 	if (!plist || !*plist)
 		return ;
 	head = *plist;

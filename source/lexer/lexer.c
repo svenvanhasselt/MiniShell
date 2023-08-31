@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 14:02:24 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:31:35 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
-
-int	dq_tokens(t_node **lst, char *line, int i)
-{
-	int		dq_start;
-	int		size;
-	char	*new;
-
-	dq_start = i;
-	i++;
-	while (line[i] != '\0' && line[i] != '\"')
-		i++;
-	if (line[i] == '\0')
-		size = i - dq_start;
-	else
-		size = i - dq_start + 1;
-	new = null_check(ft_substr(line, dq_start, (size_t)(size)));
-	ft_add_back_list(lst, make_node(new, size, WORD, IN_DOUBLEQ));
-	free(new);
-	return (i);
-}
-
-int	sq_tokens(t_node **lst, char *line, int i)
-{
-	int		sq_start;
-	int		size;
-	char	*new;
-
-	sq_start = i;
-	i++;
-	while (line[i] != '\0' && line[i] != '\'')
-		i++;
-	size = i - sq_start + 1;
-	new = null_check(ft_substr(line, sq_start, (size_t)(size)));
-	ft_add_back_list(lst, make_node(new, size, WORD, IN_SINGLEQ));
-	free(new);
-	return (i);
-}
 
 int	env_check(char *line, int i, int start)
 {
@@ -141,8 +104,4 @@ void	make_tokens(char *l, t_node **lst)
 		if (l[i] != '\0')
 			i++;
 	}
-	// printf("after the while\n");
-	// printf("this is the lexer list:\n");
-	// print_list(*lst);
-	// printf("thats it\n");
 }

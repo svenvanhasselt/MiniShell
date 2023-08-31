@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 14:42:42 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:39:34 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	free_llist(t_pl **p_list);
 
 /* REDIRECTION */
 t_node	*rd_managment(t_node *tokens, t_pl **p_list);
+t_node	*rd_managment_utils(t_node *tokens, t_pl *node);
 t_node	*rd_in(t_node *tokens, t_pl *node);
 void	rd_in_utils(t_node *tokens, t_pl *node);
 t_node	*rd_out(t_node *tokens, t_pl *node);

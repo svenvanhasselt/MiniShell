@@ -6,17 +6,19 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:30:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 12:42:11 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:24:30 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <minishell.h>
 
+
 int	exit_builtin(char **cmd_table, int status)
 {
 	int	i;
 	int	arr_size;
+	int	result;
 
 	printf("exit\n");
 	arr_size = array_size(cmd_table);
@@ -35,7 +37,11 @@ int	exit_builtin(char **cmd_table, int status)
 				exit (255);
 			}
 		}
-		exit (ft_atoi(cmd_table[1]));
+		result = ft_atoi(cmd_table[1]);
+		if (result > 255 || result < 0)
+			exit (255);
+		else
+			exit (result);
 	}
 	exit(status);
 }
