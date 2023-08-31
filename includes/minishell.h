@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 13:03:03 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:14:20 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_variable(char *variable, enum e_token, char ***env);
 //t_node	*split_variable(t_node *lst, char ***env, int exit_status);
 t_node	*split_variable(t_node *lst);
+t_node	*expand_split(t_node **head, char ***env, int exit_status);
+void	expand_variable(t_node **lst, char ***env, int exit_status);
 
 /*	Main execution functions */
 int		execution(t_pl **p_list, char ***env, int prev_status);
