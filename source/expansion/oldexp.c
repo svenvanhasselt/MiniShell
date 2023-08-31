@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/24 11:42:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:25:39 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	int		var_set;
 	char	*value;
 
-	printf("var: %s\n", variable);
 	var_set = find_env_var(variable, (*env));
 	if (var_set >= 0)
 	{
@@ -55,6 +54,7 @@ t_node	*split_variable(t_node *lst)
 	free(lst);
 	return (word_split);
 }
+
 void	expand_variable(t_node **lst, char ***env, int exit_status)
 {	
 	t_node	*head;
@@ -118,7 +118,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
 			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
-			ft_add_back_list(&exp_lst, make_node(" ", 1, SPACE, NORMAL));
+			ft_add_back_list(&exp_lst, make_node(" ", 1, SPC, NORMAL));
 		i++;
 	}
 	expand_variable(&exp_lst, env, exit_status);

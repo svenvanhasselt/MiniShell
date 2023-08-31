@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:10:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:47:21 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	int		var_set;
 	char	*value;
 
+	printf("before\n");
+	printf("this is var = %s\n", variable);
 	var_set = find_env_var(variable, (*env));
+	printf("after find env var\n");
 	if (var_set >= 0)
 	{
 		value = null_check(ft_strdup(((*env)[var_set] + find_value((*env)[var_set]) + 1)));
-		printf("P: %p\n", value);
 		free(variable);
 		return (value);
 	}
@@ -42,8 +44,6 @@ t_node	*split_variable(t_node *lst)
 
 	word_split = NULL;
 	split_str = null_check(ft_split(lst->str, ' '));
-	printf("test: %s\n", split_str[0]);
-	printf("PP: %p", lst->str);
 	free(lst->str);
 	i = 0;
 	while (split_str[i])
@@ -78,7 +78,6 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 			else if (*lst == head)
 			{
 				head->str = find_variable(head->str, head->type, env);
-				printf("P2: %p\n", head->str);
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 				{
 					*lst = split_variable(head);
@@ -88,7 +87,6 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 			else
 			{
 				head->str = find_variable(head->str, head->type, env);
-				printf("P3: %p\n", head->str);
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 					prev = split_variable(head);
 			}
@@ -124,7 +122,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 			node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
 			if (string[start - 1] == '$')
 				node->type = ENV;
-			ft_add_back_list(&exp_lst, node);			
+			ft_add_back_list(&exp_lst, node);
 			start = -1;
 		}
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
@@ -136,7 +134,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status)
 	expand_variable(&exp_lst, env, exit_status);
 	last_node = ft_lastlist(exp_lst);
 	last_node->next = (*head)->next;
-	free(string);	
+	free(string);
 	return (exp_lst);
 }
 

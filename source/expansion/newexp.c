@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expansion.c                                        :+:    :+:            */
+/*   newexp.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/23 18:47:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 14:43:49 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 	int		var_set;
 	char	*value;
 
-	printf("var: %s\n", variable);
 	var_set = find_env_var(variable, (*env));
 	if (var_set >= 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/30 17:01:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 14:02:47 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node)
 	}
 }
 
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node)
+void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node, char ***env)
 {
 	while (head && head->type == REDIRECT_IN && head != first_command)
 	{
@@ -53,9 +53,9 @@ void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node)
 		head->type == DOUBLE_QOUTE)
 		{
 			if (!node && !first_command)
-				heredoc_without_command(head);
+				heredoc_without_command(head, env);
 			else
-				rd_atfirst_in_utils(head, node);
+				rd_atfirst_in_utils(head, node, env);
 			if (head->next != NULL)
 				head = head->next;
 		}
@@ -91,7 +91,7 @@ t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type)
 	return (first_command);
 }
 
-t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
+t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list, char ***env)
 {
 	t_node	*head;
 	t_pl	*node;
@@ -101,7 +101,7 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 	first_command = rd_makelist(&tokens, p_list, tokens->type);
 	node = ft_lastlist_lparser(*p_list);
 	if (head->type == REDIRECT_IN)
-		rd_atfirst_in(head, first_command, node);
+		rd_atfirst_in(head, first_command, node, env);
 	else if (head->type == REDIRECT_OUT)
 		rd_atfirst_out(head, first_command, node);
 	if (first_command != NULL)

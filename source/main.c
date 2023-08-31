@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:36:50 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 12:59:52 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_readline(char *prompt)
 				// if (lst == NULL)
 				// 	printf("this is the head\n");
 				expansion(&lst, &env, exit_status);
-				lst = make_parser(&lst, &p_list);
+				lst = make_parser(&lst, &p_list, &env);
 				//ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
