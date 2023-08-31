@@ -6,7 +6,7 @@
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/08/31 16:25:12 by svan-has      ########   odam.nl          #
+#    Updated: 2023/08/31 17:12:26 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRC := \
 		execution/init.c\
 		execution/error_handling.c\
 		execution/redirection.c\
+		execution/builtins.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		builtins/pwd.c\
