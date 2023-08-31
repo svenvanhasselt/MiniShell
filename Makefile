@@ -5,8 +5,8 @@
 #                                                      +:+                     #
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/08/31 11:40:01 by psadeghi      #+#    #+#                  #
-#    Updated: 2023/08/31 11:40:06 by psadeghi      ########   odam.nl          #
+#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
+#    Updated: 2023/08/31 16:25:12 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC := \
 		lexer/lexer_qoute.c\
 		expansion/expansion.c\
 		expansion/utils.c\
+		expansion/split.c\
 		parser/parser.c\
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\

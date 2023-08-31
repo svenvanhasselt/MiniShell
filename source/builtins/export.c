@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 10:52:48 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 13:31:08 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ void	put_env(char *string, char ***env)
 	}
 	new_environ[i] = null_check(ft_strdup(string));
 	new_environ[i + 1] = NULL;
-	free(*env);
+	//free(*env);
 	*env = new_environ;
 }
