@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:14:20 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 17:09:06 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,9 @@ void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
+int		check_builtins(char **cmd_table, char ***env, \
+int *status, int prev_status);
+int		builtins_redirect(t_exec **data, t_pl *parser, char ***env);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);
