@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/24 16:07:28 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 10:52:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	add_variable(char *string, char ***env)
 	int		join_value;
 	int		val_set;
 
-	if (string && ft_isdigit(string[0]))
+	if (string && !ft_isalpha(string[0]))
 		return (-1);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
 	join_value = check_variable(&variable);
@@ -74,11 +74,12 @@ int	add_variable(char *string, char ***env)
 	else if (val_set > 0)
 	{
 		free((*env)[val_set]);
-		(*env)[val_set] = string;
+		(*env)[val_set] = null_check(ft_strdup(string));
 	}
 	else
 		put_env(string, env);
 	free(variable);
+	free(string);
 	return (0);
 }
 
@@ -125,8 +126,8 @@ void	put_env(char *string, char ***env)
 		new_environ[i] = (*env)[i];
 		i++;
 	}
-	new_environ[i] = string;
+	new_environ[i] = null_check(ft_strdup(string));
 	new_environ[i + 1] = NULL;
-	//free(*env);
+	free(*env);
 	*env = new_environ;
 }

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/29 13:29:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 11:12:21 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ char	*ft_readline(char *prompt)
 		unlink("here_doc");
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
-		// char *test = "$?";
-		// new = ft_strtrim(test, " ");
 		//if (!line || line[0] == '\0')
 		if (!new)
 		{
@@ -70,24 +68,17 @@ char	*ft_readline(char *prompt)
 				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
 				exit_status = execution(&p_list, &env, exit_status);
 				unlink("here_doc");
-				// ft_putstr_fd("Return code: ", 1);
-				// ft_putnbr_fd(exit_status, 1);
+				ft_putstr_fd("Return code: ", 1);
+				ft_putnbr_fd(exit_status, 1);
 				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
-			// ft_putstr_fd("\n\n\n-----------Bash Output-------------\n", 1);
-			// char *bash = ft_strjoin(line, " && echo Return code: $?");
-			// system(bash);
-			// ft_putstr_fd("-----------Bash Output-------------", 1);
-			// ft_putstr_fd("\n\n\n", 1);
-			// free(bash);
 			add_history(line);
-			// break;
 		}
 		free(new);
 		free(line);
 		free_tokens(lst);
-		// free_llist(&p_list);
-		// system("leaks minishell");
+		free_llist(&p_list);
+		// system("leaks -quiet minishell");
 	}
 	return (line);
 }
