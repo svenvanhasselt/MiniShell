@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 10:19:22 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/30 17:01:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 		rd_atfirst_in(head, first_command, node);
 	else if (head->type == REDIRECT_OUT)
 		rd_atfirst_out(head, first_command, node);
-	first_command = first_command->next;
+	if (first_command != NULL)
+		first_command = first_command->next;
 	return (first_command);
 }

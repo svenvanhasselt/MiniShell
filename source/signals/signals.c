@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 16:19:50 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/29 13:48:46 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/30 17:20:36 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <libft.h>
 #include <minishell.h>
 
-void	signal_action()
+void	signal_action(void)
 {
 	unlink("here_doc");
 	ft_putstr_fd("\n", 1);
@@ -26,7 +26,7 @@ void	signal_action()
 	rl_redisplay();
 }
 
-void		signals_init(void)
+void	signals_init(void)
 {
 	if (signal(SIGINT, signal_action) == SIG_ERR)
 		error_exit("signal error", errno);
@@ -34,7 +34,7 @@ void		signals_init(void)
 		error_exit("signal error", errno);
 }
 
-void		signals_default(void)
+void	signals_default(void)
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		error_exit("signal error", errno);
