@@ -3,14 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/09/01 18:09:09 by svan-has      ########   odam.nl         */
-=======
-/*   Updated: 2023/09/01 18:09:43 by psadeghi      ########   odam.nl         */
->>>>>>> 63d86ab5c30e306920f304c9187013f57d311ba6
+/*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/09/01 18:24:50 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
