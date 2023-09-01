@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/30 17:20:08 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:28:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	rd_atfirst_out_utils(t_node *head, t_pl *node)
 		node->errno_in = errno;
 }
 
-void	rd_atfirst_in_utils(t_node *head, t_pl *node)
+void	rd_atfirst_in_utils(t_node *head, t_pl *node, char ***env)
 {
 	char	*line;
 
@@ -46,7 +46,7 @@ void	rd_atfirst_in_utils(t_node *head, t_pl *node)
 		node->delimiter = ft_strjoin(head->str, "\n");
 		free(node->file_in);
 		node->file_in = ft_strdup("here_doc");
-		rd_heredoc(node);
+		rd_heredoc(node, env, head);
 	}
 	else if (node->rd_in_heredoc == false)
 		node->fd_in = open(head->str, O_RDONLY);

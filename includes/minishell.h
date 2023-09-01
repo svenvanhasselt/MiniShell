@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 17:08:18 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 18:23:01 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,26 +170,27 @@ void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
 
 /* REDIRECTION */
-t_node	*rd_managment(t_node *tokens, t_pl **p_list);
-t_node	*rd_managment_utils(t_node *tokens, t_pl *node);
-t_node	*rd_in(t_node *tokens, t_pl *node);
-void	rd_in_utils(t_node *tokens, t_pl *node);
+t_node	*rd_managment(t_node *tokens, t_pl **p_list, char ***env);
+t_node	*rd_managment_utils(t_node *tokens, t_pl *node, char ***env);
+t_node	*rd_in(t_node *tokens, t_pl *node, char ***env);
+void	rd_in_utils(t_node *tokens, t_pl *node, char ***env);
 t_node	*rd_out(t_node *tokens, t_pl *node);
-t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list);
+t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list, char ***env);
 void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node);
 void	rd_atfirst_out_utils(t_node *head, t_pl *node);
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node);
-void	rd_atfirst_in_utils(t_node *head, t_pl *node);
+void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node, char ***env);
+void	rd_atfirst_in_utils(t_node *head, t_pl *node, char ***env);
 t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
 t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
-void	rd_heredoc(t_pl *node);
-void	heredoc_without_command(t_node *head);
+//void	rd_heredoc(t_pl *node, char ***env);
+void	rd_heredoc(t_pl *node, char ***env, t_node *lst);
+void	heredoc_without_command(t_node *head, char ***env);
 //t_node	*rd_atfirst_in(t_node *tokens, t_node *first_command, t_pl *node);
 
 /* PARSER */
-t_node	*make_parser(t_node **tokens, t_pl **p_list);
-t_node	*parser_utils(t_node *tokens, t_pl **p_list);
-t_node	*first_list_pl(t_node *tokens, t_pl **p_list);
+t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
+t_node	*parser_utils(t_node *tokens, t_pl **p_list, char ***env);
+t_node	*first_list_pl(t_node *tokens, t_pl **p_list, char ***env);
 t_node	*special_last(t_node *tokens, t_node *head , t_pl **p_list);
 void	qoute_trim(t_node *tokens);
 void	combine_tokens(t_node *tokens);
