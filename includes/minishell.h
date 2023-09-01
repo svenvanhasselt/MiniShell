@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 12:26:45 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:44:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status);
 void	expand_variable(t_node **lst, char ***env, int exit_status);
 
 /*	Execution */
-int		execution(t_pl **p_list, char ***env, int prev_status);
+int		execution(t_pl **p_list, char ***env, int *status);
 void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
@@ -214,9 +214,8 @@ void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
-int		check_builtins(char **cmd_table, char ***env, \
-int *status, int prev_status);
-int		builtins_redirect(t_exec **data, t_pl *parser, char ***env);
+int		check_builtins(char **cmd_table, char ***env, int *status);
+int		builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);
@@ -234,7 +233,7 @@ void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
-int		free_data(t_exec *data, t_pl *parser);
+int		free_data(t_exec *data, t_pl *parser, int status);
 
 /*	Signals */
 void	signals_init(void);

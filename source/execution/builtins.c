@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 12:05:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:46:06 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,8 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
+int	builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status)
 {
-	int	*status;
-
-	status = &(*data)->exit_status;
 	if ((*data)->num_commands == 1)
 	{
 		(*data)->fdin_old = dup(STDIN_FILENO);
@@ -34,11 +31,10 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 		if ((*data)->fdin < 0 || (*data)->fdout < 0)
 			return (*status);
 		dup2_stdin_stdout((*data)->fdin, (*data)->fdout);
-		if (check_builtins(parser->cmd_table, env, \
-		status, (*data)->prev_status))
+		if (check_builtins(parser->cmd_table, env, status))
 		{
 			dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
-			*status = free_data(*data, parser);
+			free_data(*data, parser, *status);
 			return (*status);
 		}
 		dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
@@ -46,7 +42,7 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env)
 	return (-1);
 }
 
-int	check_builtins(char **cmd_table, char ***env, int *status, int prev_status)
+int	check_builtins(char **cmd_table, char ***env, int *status)
 {
 	int	i;
 
@@ -62,7 +58,7 @@ int	check_builtins(char **cmd_table, char ***env, int *status, int prev_status)
 	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
 		*status = env_builtin((*env));
 	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
-		*status = exit_builtin(cmd_table, prev_status);
+		*status = exit_builtin(cmd_table, *status);
 	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		*status = export_builtin(cmd_table, env);
 	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
