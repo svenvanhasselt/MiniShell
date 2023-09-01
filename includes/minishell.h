@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:27:18 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/01 18:09:39 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,40 @@ typedef struct s_pl
 	int			exit_code;
 }				t_pl;
 
+enum e_minishell_errors {
+	ERR_NO_CMD			= -1,
+	ERR_EXPORT_INVALID	= -2,
+	ERR_CD_FILE_UNAIV	= -3,
+	ERR_CD_NO_HOME		= -4,
+	ERR_CD_NOT_DIR		= -5,
+	ERR_EXIT_ARG		= -6,
+	ERR_EXIT_NUM		= -7,
+};
+
+typedef struct s_funcstruc
+{
+	char	*name;
+	void	(*func)(void*);
+}	t_func;
+
+typedef struct s_exec_struc
+{
+	int		fdin;
+	int		fdout;
+	int		fdin_old;
+	int		fdout_old;
+	int		num_commands;
+	int		exit_status;
+	int		prev_status;
+	int		**pipe_fd;
+	int		*fork_pid;
+	char	**cmd_table;
+	t_func	*builtin_func[7];
+	char	**env;
+}	t_exec;
+
 /* FUNCTIONS */
-int		main(void);
-char	*ft_readline(char *prompt);
+char	*ft_readline(char *prompt, char **envp);
 
 /* LEXER */
 void	make_tokens(char *l, t_node **lst);
@@ -166,46 +197,15 @@ void	qoute_trim(t_node *tokens);
 void	combine_tokens(t_node *tokens);
 void	combine_tokens_utils(t_node *tokens, t_node *temp);
 
-enum e_minishell_errors {
-	ERR_NO_CMD			= -1,
-	ERR_EXPORT_INVALID	= -2,
-	ERR_CD_FILE_UNAIV	= -3,
-	ERR_CD_NO_HOME		= -4,
-	ERR_CD_NOT_DIR		= -5,
-	ERR_EXIT_ARG		= -6,
-	ERR_EXIT_NUM		= -7,
-};
-
-typedef struct s_funcstruc
-{
-	char	*name;
-	void	(*func)(void*);
-}	t_func;
-
-typedef struct s_exec_struc
-{
-	int		fdin;
-	int		fdout;
-	int		fdin_old;
-	int		fdout_old;
-	int		num_commands;
-	int		exit_status;
-	int		prev_status;
-	int		**pipe_fd;
-	int		*fork_pid;
-	char	**cmd_table;
-	t_func	*builtin_func[7];
-	char	**env;
-}	t_exec;
-
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
 char	*find_variable(char *variable, enum e_token, char ***env);
-//t_node	*split_variable(t_node *lst, char ***env, int exit_status);
 t_node	*split_variable(t_node *lst);
+t_node	*expand_split(t_node **head, char ***env, int exit_status);
+void	expand_variable(t_node **lst, char ***env, int exit_status);
 
-/*	Main execution functions */
-int		execution(t_pl **p_list, char ***env, int prev_status);
+/*	Execution */
+void	execution(t_pl **p_list, char ***env, int *status);
 void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
@@ -215,6 +215,8 @@ void	waitpid_forks(t_exec *data);
 void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
+int		check_builtins(char **cmd_table, char ***env, int *status);
+int		builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);
@@ -225,14 +227,14 @@ int		unset_builtin(char *variable, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
 int		exit_builtin(char **cmd_table, int status);
 
-/*	Tools */
+/*	Sub functions / Tools */
 char	**copy_environment_list(char **env);
 int		array_size(char **array);
 void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
-int		free_data(t_exec *data, t_pl *parser);
+void	free_data(t_exec *data, t_pl *parser);
 
 /*	Signals */
 void	signals_init(void);

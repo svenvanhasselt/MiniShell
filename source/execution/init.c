@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:53:49 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:54:17 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	*prepare(t_pl **parser, char ***env)
 	t_pl		*head;
 
 	head = *parser;
-
 	data = null_check(malloc (1 * sizeof(t_exec)));
 	data->num_commands = ft_sizelist_lparser(*parser);
 	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
@@ -62,27 +61,14 @@ void	create_cmd_table(t_pl *parser)
 		head = head->next;
 	}
 }
-int free_data(t_exec *data, t_pl *parser)
+void	free_data(t_exec *data, t_pl *parser)
 {
 	int	i;
-	int	 exit_status;
 	t_pl	*head;
 	head = parser;
-	exit_status = data->exit_status;
-	// free(data->fork_pid);
-	// // while (head)
-	// // {
-	// //   i = 0;
-	// //   while (head->cmd_table[i])
-	// //   {
-	// //	   free(head->cmd_table[i]);
-	// //	   i++;
-	// //   }
-	// //   free(head->cmd_table);
-	// //   head = head->next;
-	// // }
+
 	i = 0;
-	while(i < data->num_commands - 1)
+	while (i < data->num_commands - 1)
 	{
 		free(data->pipe_fd[i]);
 		i++;
@@ -90,5 +76,4 @@ int free_data(t_exec *data, t_pl *parser)
 	free(data->pipe_fd);
 	free(data->fork_pid);
 	free(data);
-	return (exit_status);
 }

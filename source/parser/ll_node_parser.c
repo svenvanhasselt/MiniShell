@@ -6,7 +6,11 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/08/31 14:06:06 by psadeghi      ########   odam.nl         */
+=======
+/*   Updated: 2023/08/31 16:21:50 by svan-has      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +99,5 @@ void	print_list_parser(t_pn *lst)
 		lst = lst->next;
 	}
 	printf("str= %s\n", lst->str);
+	printf("str_point= %p, ", lst->str);
 }

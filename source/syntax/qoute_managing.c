@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:58:19 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/30 15:27:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:23:37 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	qoute_trim(t_node *tokens)
 	{
 		if (head->state == IN_DOUBLEQ)
 		{
-			head->str = ft_strtrim(head->str, "\"");
+			head->str = ft_strtrim_free(head->str, "\"");
 		}
 		else if (head->state == IN_SINGLEQ)
 		{
-			head->str = ft_strtrim(head->str, "\'");
+			head->str = ft_strtrim_free(head->str, "\'");
 		}
 		head = head->next;
 	}

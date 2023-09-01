@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:54:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/01 18:09:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,19 @@
 // 	system("leaks minishell");
 // }
 
-char	*ft_readline(char *prompt)
+char	*ft_readline(char *prompt, char **envp)
 {
 	char		*line;
 	t_node		*lst;
 	char		*new;
 	t_pl		*p_list;
-	extern char	**environ;
 	char	**env;
 	int		syntax_check;
 	int		exit_status;
 	
 	// atexit(blah);
 	signals_init();
-	env = copy_environment_list(environ);
+	env = copy_environment_list(envp);
 	p_list = NULL;
 	syntax_check = 0;
 	exit_status = 0;
@@ -66,7 +65,7 @@ char	*ft_readline(char *prompt)
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list, &env);
 				//ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
-				exit_status = execution(&p_list, &env, exit_status);
+				execution(&p_list, &env, &exit_status);
 				unlink("here_doc");
 				ft_putstr_fd("Return code: ", 1);
 				ft_putnbr_fd(exit_status, 1);
@@ -83,11 +82,12 @@ char	*ft_readline(char *prompt)
 	return (line);
 }
 
-int	main(void)
+int	main(int argc, char *argv[], char *envp[])
 {
 	// atexit(blah);
 	char *line;
-
-	line = ft_readline("minishell~>");
+	argc = 0;
+	argv[0] = NULL;
+	line = ft_readline("minishell~>", envp);
 	return (0);
 }

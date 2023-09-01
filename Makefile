@@ -5,8 +5,8 @@
 #                                                      +:+                     #
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/08/31 11:40:01 by psadeghi      #+#    #+#                  #
-#    Updated: 2023/09/01 17:28:55 by psadeghi      ########   odam.nl          #
+#    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
+#    Updated: 2023/09/01 18:09:24 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ READLINEFLAGS += -lreadline -L $(shell brew --prefix readline)/lib
 
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT	:= ./library/libft
 HEADERS := -I $(LIBFT)/includes -I includes -I $(shell brew --prefix readline)/include
 LIB	:= $(LIBFT)/libft.a
@@ -27,6 +27,7 @@ SRC := \
 		lexer/lexer_qoute.c\
 		expansion/expansion.c\
 		expansion/utils.c\
+		expansion/split.c\
 		parser/parser.c\
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\
@@ -42,6 +43,7 @@ SRC := \
 		execution/init.c\
 		execution/error_handling.c\
 		execution/redirection.c\
+		execution/builtins.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		builtins/pwd.c\
