@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 17:02:38 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 09:57:47 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 		if (head->type == ENV)
 		{
 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
-			{
 				expand_exit_code(head, exit_status);
-				continue ;
-			}
-			head->str = find_variable(head->str, head->type, env);
-			if (*lst == head)
-				expand(head, lst);
 			else
-				expand(head, &prev);
+			{
+				head->str = find_variable(head->str, head->type, env);
+				if (*lst == head)
+					expand(head, lst);
+				else
+					expand(head, &prev);
+			}
 		}
 		prev = head;
 		head = head->next;
@@ -55,26 +55,26 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 {
 	t_node	*head;
 	t_node	*prev;
-	t_node	*current;
+	t_node	*next;
 
 	head = *lst;
 	prev = *lst;
 	while (head)
 	{
+		next = head->next;
 		if (head->type == ENV || (head->state == IN_DOUBLEQ && \
 		ft_strnstr(head->str, "$", head->len)))
 		{
-			current = head;
 			if (head->state == IN_DOUBLEQ)
 				head->str = ft_strtrim_free(head->str, "\"");
 			if (*lst == head)
 				*lst = expand_split(&head, env, exit_status);
 			else
 				prev->next = expand_split(&head, env, exit_status);
-			free(current->str);
-			free(current);
+			free(head->str);
+			free(head);
 		}
 		prev = head;
-		head = head->next;
+		head = next;
 	}
 }

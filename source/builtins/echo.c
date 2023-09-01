@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:47:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:38:05 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 17:22:28 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	check_newline(char **cmd_table, int arguments, int *index)
 {
 	int	i;
-	int return_value;
+	int	return_value;
 
 	i = 1;
 	if (arguments >= 2 && !ft_strncmp(cmd_table[i], "-n", 1))
@@ -28,7 +28,7 @@ int	check_newline(char **cmd_table, int arguments, int *index)
 		if (arguments >= 2 && !ft_strncmp(cmd_table[i], "-n", 1))
 			i++;
 		else
-			break;
+			break ;
 	}
 	*index = i;
 	return (return_value);

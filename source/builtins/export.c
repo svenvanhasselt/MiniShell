@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 13:31:08 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 17:22:57 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	print_env(char ***env)
 		i++;
 	}
 }
+
 int	export_builtin(char **cmd_table, char ***env)
 {
 	int	i;
@@ -49,7 +50,8 @@ int	export_builtin(char **cmd_table, char ***env)
 	while (cmd_table[i])
 	{
 		if (add_variable(cmd_table[i], env) < 0)
-			exit_code = error_seterrno(cmd_table[0], cmd_table[i], ERR_EXPORT_INVALID);
+			exit_code = error_seterrno(cmd_table[0], \
+			cmd_table[i], ERR_EXPORT_INVALID);
 		i++;
 	}
 	return (exit_code);
@@ -128,6 +130,6 @@ void	put_env(char *string, char ***env)
 	}
 	new_environ[i] = null_check(ft_strdup(string));
 	new_environ[i + 1] = NULL;
-	//free(*env);
+	free(*env);
 	*env = new_environ;
 }
