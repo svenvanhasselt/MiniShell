@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 17:08:18 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 19:41:44 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,8 @@ int		add_variable(char *string, char ***env);
 void	free_data(t_exec *data, t_pl *parser);
 
 /*	Signals */
-void	signals_init(void);
-void	signals_default(void);
+void	signals_parent(void);
+void	signals_child(void);
+void	signals_heredoc(void);
 
 #endif

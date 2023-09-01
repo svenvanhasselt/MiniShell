@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:54:34 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 18:31:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ int	check_builtins(char **cmd_table, char ***env, int *status)
 		return (-1);
 	while (cmd_table[0][++i])
 		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
-	if (strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
+	if (ft_strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
 		*status = cd_builtin(cmd_table, env);
-	else if (strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
 		*status = echo_builtin(cmd_table);
-	else if (strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "env", ft_strlen(cmd_table[0])) == 0)
 		*status = env_builtin((*env));
-	else if (strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "exit", ft_strlen(cmd_table[0])) == 0)
 		*status = exit_builtin(cmd_table, *status);
-	else if (strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "export", ft_strlen(cmd_table[0])) == 0)
 		*status = export_builtin(cmd_table, env);
-	else if (strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
 		*status = pwd_builtin();
-	else if (strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
+	else if (ft_strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
 		*status = unset_builtin(cmd_table[1], env);
 	else
 		return (0);
