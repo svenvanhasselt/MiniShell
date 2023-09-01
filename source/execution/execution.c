@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:49:17 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:55:49 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*path_cmd(char *command, char **env);
 void	execute_command(t_exec *data, char ***env, int i, int *status);
 int		redirection_error(t_exec *data, int i);
 
-int	execution(t_pl **p_list, char ***env, int *status)
+void	execution(t_pl **p_list, char ***env, int *status)
 {
 	int		i;
 	t_exec	*data;
@@ -27,7 +27,7 @@ int	execution(t_pl **p_list, char ***env, int *status)
 	parser = *p_list;
 	data = prepare(&parser, env);
 	if (builtins_redirect(&data, parser, env, status) >= 0)
-		return (*status);
+		return ;
 	i = 0;
 	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
@@ -43,7 +43,7 @@ int	execution(t_pl **p_list, char ***env, int *status)
 	}
 	close_pipes_files(data);
 	waitpid_forks(data);
-	return (free_data(data, parser, *status));
+	free_data(data, parser);
 }
 
 void	execute_command(t_exec *data, char ***env, int i, int *status)

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:44:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:55:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status);
 void	expand_variable(t_node **lst, char ***env, int exit_status);
 
 /*	Execution */
-int		execution(t_pl **p_list, char ***env, int *status);
+void	execution(t_pl **p_list, char ***env, int *status);
 void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
@@ -233,7 +233,7 @@ void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
 int		add_variable(char *string, char ***env);
-int		free_data(t_exec *data, t_pl *parser, int status);
+void	free_data(t_exec *data, t_pl *parser);
 
 /*	Signals */
 void	signals_init(void);

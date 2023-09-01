@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:46:06 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 16:54:34 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status)
 		if (check_builtins(parser->cmd_table, env, status))
 		{
 			dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
-			free_data(*data, parser, *status);
+			free_data(*data, parser);
 			return (*status);
 		}
 		dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
