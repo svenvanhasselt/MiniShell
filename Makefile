@@ -3,10 +3,10 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: svan-has <svan-has@student.codam.nl>         +#+                      #
+#    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/09/01 12:24:19 by svan-has      ########   odam.nl          #
+#    Updated: 2023/09/01 12:26:53 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC := \
 		main.c\
 		lexer/lexer.c\
 		lexer/ll_lexer.c\
+		lexer/lexer_qoute.c\
 		expansion/expansion.c\
 		expansion/utils.c\
 		expansion/split.c\

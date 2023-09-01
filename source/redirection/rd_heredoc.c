@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/24 13:05:56 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/30 15:51:09 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	heredoc_without_command(t_node *head)
 	free(del);
 	return ;
 }
+
 void	rd_heredoc(t_pl *node)
 {
 	char	*line;

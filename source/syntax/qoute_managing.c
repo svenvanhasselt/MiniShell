@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:58:19 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 12:49:06 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:23:37 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,10 @@ void	qoute_trim(t_node *tokens)
 		if (head->state == IN_DOUBLEQ)
 		{
 			head->str = ft_strtrim_free(head->str, "\"");
-			printf("this is the str dq = %s and %p\n", head->str, head->str);
-			//head->state = NORMAL;
 		}
 		else if (head->state == IN_SINGLEQ)
 		{
 			head->str = ft_strtrim_free(head->str, "\'");
-			printf("this is the str sq = %s and %p\n", head->str, head->str);
-			//head->state = NORMAL;
 		}
 		head = head->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 12:37:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/08/31 16:21:50 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,7 @@ t_pn	*make_node_parser(t_node *token)
 	if (token == NULL)
 		node->str = NULL;
 	else
-	{
-		//node->str = null_check(malloc(sizeof(char) * ft_strlen(token->str)));
-		printf("making each node in parser token->str = %s, %p\n", token->str, token->str);
 		node->str = ft_strdup(token->str);
-		printf("making each node in parser node->str %s, %p\n", node->str, node->str);
-		// free(token->str);
-		//node->str = token->str;
-	}
 	node->next = NULL;
 	return (node);
 }
