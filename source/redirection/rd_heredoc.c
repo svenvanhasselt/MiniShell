@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 18:05:56 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/01 18:06:31 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ int	heredoc_find_env_var(char *variable, char **env)
 	{
 		if (!strncmp(env[i], new_variable, ft_strlen(new_variable)) ||\
 		!strncmp(env[i], after_trim, ft_strlen(after_trim)))
-			return (free(new_variable), i);
+			return (free(new_variable), free(after_trim), i);
 		i++;
 	}
+	free(after_trim);
 	free(new_variable);
 	return (-1);
 }
@@ -36,11 +37,15 @@ char	*heredoc_find_variable(char *variable, enum e_token type, char ***env)
 {
 	int		var_set;
 	char	*value;
+	int		len;
 
+	len = ft_strlen(variable);
 	var_set = heredoc_find_env_var(variable, (*env));
 	if (var_set >= 0)
 	{
 		value = null_check(ft_strdup(((*env)[var_set] + find_value((*env)[var_set]) + 1)));
+		if (variable[len - 1] == '\n')
+			value = ft_strjoin_free(value, "\n");
 		free(variable);
 		return (value);
 	}
@@ -72,7 +77,7 @@ void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status)
 			}
 			else
 			{
-				head->str = find_variable(head->str, head->type, env);
+				head->str = heredoc_find_variable(head->str, head->type, env);
 				if (ft_strnstr(head->str, " ", ft_strlen(head->str)))
 					prev = split_variable(head);
 			}
@@ -106,21 +111,38 @@ t_node	*heredoc_expand_split(char *string, char ***env)
 			node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
 			if (start - 1 >= 0 && string[start - 1] == '$')
 				node->type = ENV;
-			printf("1\n");
 			ft_add_back_list(&exp_lst, node);
-			printf("2\n");
 			start = -1;
 		}
-		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
-			ft_add_back_list(&exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
+		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' ' || string[i + 1] == '\n'))
+		{
+			split_str = null_check(ft_substr(string, i, 1));
+			ft_add_back_list(&exp_lst, make_node(split_str, 1, ENV, IN_DOUBLEQ));
+		}
 		if (string[i] == ' ')
-			ft_add_back_list(&exp_lst, make_node(" ", 1, SPC, NORMAL));
+		{
+			split_str = null_check(ft_substr(string, i, 1));
+			ft_add_back_list(&exp_lst, make_node(split_str, 1, SPC, NORMAL));
+		}
 		i++;
 	}
 	heredoc_expand_variable(&exp_lst, env, 0);
 	return (exp_lst);
 }
 
+
+char	*join_str_node(t_node *node)
+{
+	char *str;
+
+	str = ft_strdup(node->str);
+	while(node && node->next)
+	{
+		str = ft_strjoin_free(str, node->next->str);
+		node = node->next;
+	}
+	return (str);
+}
 void	heredoc_without_command(t_node *head, char ***env)
 {
 	char	*line;
@@ -132,17 +154,22 @@ void	heredoc_without_command(t_node *head, char ***env)
 	while (1)
 	{
 		line = get_next_line(1);
-		if (head->state != IN_DOUBLEQ)
-			new = heredoc_expand_split(line, env);
-		if (line && \
-		ft_strncmp(line, del, ft_strlen(del)) != 0)
-			free(line);
 		if (!line || \
 		ft_strncmp(line, del, ft_strlen(del)) == 0)
 		{
 			free(line);
 			break ;
 		}
+		if (head->state != IN_DOUBLEQ)
+		{
+			new = heredoc_expand_split(line, env);
+			free(line);
+			line = join_str_node(new);
+			free_tokens(new);
+		}
+		if (line && \
+		ft_strncmp(line, del, ft_strlen(del)) != 0)
+			free(line);
 	}
 	free(del);
 	return ;
@@ -154,23 +181,32 @@ void	rd_heredoc(t_pl *node, char ***env, t_node *lst)
 	t_node	*new;
 
 	line = NULL;
+	new = NULL;
 	unlink("here_doc");
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
 	while (1)
 	{
 		line = get_next_line(1);
+		if (!line || \
+		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
+		{
+			free(line);
+			break ;
+		}
 		if (lst->state != IN_DOUBLEQ)
+		{
 			new = heredoc_expand_split(line, env);
+			free(line);
+			line = join_str_node(new);
+			free_tokens(new);
+		}
 		if (line && \
 		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
 		{
 			write(node->fd_in, line, ft_strlen(line));
 			free(line);
 		}
-		if (!line || \
-		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
-			break ;
 	}
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_RDONLY);
