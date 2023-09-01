@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:35:52 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 17:10:27 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ void	close_pipes_files(t_exec *data)
 	// 	close(data->fdout);
 }
 
-void	waitpid_forks(t_exec *data)
+void	waitpid_forks(t_exec *data, int *status)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->num_commands)
 	{
-		waitpid(data->fork_pid[i], &data->exit_status, 0);
-		if (WIFEXITED(data->exit_status))
-			data->exit_status = WEXITSTATUS(data->exit_status);
-		else if (WIFSIGNALED(data->exit_status))
-			data->exit_status = WTERMSIG(data->exit_status) + 128;
+		waitpid(data->fork_pid[i], &(*status), 0);
+		if (WIFEXITED(*status))
+			*status = WEXITSTATUS(*status);
+		else if (WIFSIGNALED(*status))
+			*status = WTERMSIG(*status) + 128;
 		i++;
 	}
 }

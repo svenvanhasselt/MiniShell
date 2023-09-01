@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:55:23 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 17:08:18 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,7 @@ typedef struct s_exec_struc
 	int		fdin_old;
 	int		fdout_old;
 	int		num_commands;
-	int		exit_status;
-	int		prev_status;
+	int		*exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
@@ -210,7 +209,7 @@ void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
 void	close_pipes_files(t_exec *data);
-void	waitpid_forks(t_exec *data);
+void	waitpid_forks(t_exec *data, int *status);
 void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
