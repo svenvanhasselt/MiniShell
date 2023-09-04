@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 19:41:44 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 20:27:25 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data, int *status);
-void	create_pipes(t_exec *data, int num_commands);
+int		create_fork_pipe(t_exec *data, t_pl *parser, int i);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
 int		check_builtins(char **cmd_table, char ***env, int *status);
@@ -238,5 +238,9 @@ void	free_data(t_exec *data, t_pl *parser);
 void	signals_parent(void);
 void	signals_child(void);
 void	signals_heredoc(void);
+void	parent_signint(int sig);
+void	child_sigquit(int sig);
+void	child_sigint(int sig);
+void	heredoc_sigint(int sig);
 
 #endif

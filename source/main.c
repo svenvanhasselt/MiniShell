@@ -6,17 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 20:33:44 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 19:49:09 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_heredoc = 0;
-// void	blah(void)
-// {
-// 	system("leaks minishell");
-// }
 
 char	*ft_readline(char *prompt, char **envp)
 {
@@ -58,21 +54,12 @@ char	*ft_readline(char *prompt, char **envp)
 		{
 			make_tokens(new, &lst);
 			syntax_check = syntax_error(&lst);
-				if (syntax_check == 0)
+			if (syntax_check == 0)
 			{
-				// if (lst == NULL)
-				// 	printf("this is the head\n");
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
-				if (g_heredoc == 1)
-				{
-					// free(new);
-					// free(line);
-					// free_tokens(lst);
-					// free_llist(&p_list);
-					continue ;
-				}
-				execution(&p_list, &env, &exit_status);
+				if (g_heredoc == 0)
+					execution(&p_list, &env, &exit_status);
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
 				// ft_putnbr_fd(exit_status, 1);
@@ -91,7 +78,6 @@ char	*ft_readline(char *prompt, char **envp)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	// atexit(blah);
 	char *line;
 	argc = 0;
 	argv[0] = NULL;

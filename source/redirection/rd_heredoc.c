@@ -6,11 +6,12 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/01 20:37:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 19:50:54 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/wait.h>
 
 extern int g_heredoc;
 
@@ -54,6 +55,7 @@ void	rd_heredoc(t_pl *node)
 {
 	char	*line;
 	int		fork_pid;
+	int		fork_status;
 
 	line = NULL;
 	unlink("here_doc");
@@ -63,24 +65,30 @@ void	rd_heredoc(t_pl *node)
 	fork_pid = fork();
 	if (fork_pid == -1)
 		error_exit("operation failure", errno);
-	if (fork_pid == 0)
+	while (fork_pid == 0 && g_heredoc == 0)
 	{
-		while (1 && g_heredoc == 0)
+		line = get_next_line(1);
+		if (line && \
+		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
 		{
-			line = get_next_line(1);
-			if (line && \
-			ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
-			{
-				write(node->fd_in, line, ft_strlen(line));
-				free(line);
-			}
-			if (!line || \
-			ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
-				break ;
+			write(node->fd_in, line, ft_strlen(line));
+			free(line);
 		}
-		exit (0);
+		if (!line || \
+		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
+			exit (1) ;
 	}
-	waitpid(fork_pid, NULL, 0);
+	if (fork_pid != 0)
+	{
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+			error_exit("signal error", errno);
+		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+			error_exit("signal error", errno);
+	}
+	if (fork_pid == 0)
+		exit (0);
+	waitpid(fork_pid, &fork_status, 0);
+	g_heredoc = WEXITSTATUS(fork_status);
 	signals_parent();
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_RDONLY);

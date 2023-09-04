@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 18:55:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 20:26:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ void	execution(t_pl **p_list, char ***env, int *status)
 	if (builtins_redirect(&data, parser, env, status) >= 0)
 		return ;
 	i = 0;
-	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{
-		data->fork_pid[i] = fork();
-		if (data->fork_pid[i] == -1)
-			error_exit("operation failure", errno);
+		if (create_fork_pipe(data, parser, i) < 0)
+			return ;
 		redirection(parser, data, i);
 		if (!redirection_error(data, i, status))
 			execute_command(data, env, i, status);

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 17:10:27 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 20:27:07 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,25 @@ void	waitpid_forks(t_exec *data, int *status)
 	}
 }
 
-void	create_pipes(t_exec *data, int num_commands)
+int	create_fork_pipe(t_exec *data, t_pl *parser, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < num_commands)
+	if (i < data->num_commands - 1)
 	{
-		if (i < num_commands - 1)
+		if (pipe(data->pipe_fd[i]) < 0)
 		{
-			if (pipe(data->pipe_fd[i]) < 0)
-				exit (1);
+			error_seterrno("pipe", "Resource temporarily unavailable", errno);
+			free_data(data, parser);
+			return (-1);
 		}
-		i++;
 	}
+	data->fork_pid[i] = fork();
+	if (data->fork_pid[i] == -1)
+	{
+		error_seterrno("pipe", "Resource temporarily unavailable", errno);
+		free_data(data, parser);
+		return (-1);
+	}
+	return (0);
 }
 
 char	**copy_environment_list(char **env)
