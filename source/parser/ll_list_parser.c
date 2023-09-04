@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 11:40:21 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/04 13:57:57 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,17 @@ void	free_llist(t_pl **p_list)
 	}
 }
 
-void	print_list_lparser(t_pl **plist)
-{
-	t_pl	*head;
+// void	print_list_lparser(t_pl **plist)
+// {
+// 	t_pl	*head;
 
-	if (!plist || !*plist)
-		return ;
-	head = *plist;
-	while (head->next != NULL)
-	{
-		print_list_parser(head->lst);
-		head = head->next;
-	}
-	print_list_parser(head->lst);
-}
+// 	if (!plist || !*plist)
+// 		return ;
+// 	head = *plist;
+// 	while (head->next != NULL)
+// 	{
+// 		print_list_parser(head->lst);
+// 		head = head->next;
+// 	}
+// 	print_list_parser(head->lst);
+// }

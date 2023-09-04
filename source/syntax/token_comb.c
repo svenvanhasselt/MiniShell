@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 17:01:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:20:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 13:53:15 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	combine_tokens_utils(t_node *tokens, t_node *temp)
 {
 	tokens->str = ft_strjoin_free(tokens->str, tokens->next->str);
 	tokens->len = ft_strlen(tokens->str);
-	tokens->state = EXP; // CHANGED THIS FROM IN_SQUOTES
+	tokens->state = EXP;
 	if (temp != NULL)
 	{
 		if (temp->next == NULL)

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:28:38 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/04 13:30:34 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,3 @@ t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
 	first_command = rd_makelist_utils2(tokens, first_command, p_list, after_rd);
 	return (first_command);
 }
-
-	// while (tokens && tokens->type == SPC)
-	// 	tokens = tokens->next;
-	// if (tokens->type == WORD && \
-	// ft_strncmp(tokens->str, after_rd, ft_strlen(after_rd)) != 0)
-	// {
-	// 	first_command = tokens;
-	// 	n_list = make_node_parser(tokens);
-	// 	ft_add_back_list_lparser(p_list, make_node_lparser(n_list));
-	// }

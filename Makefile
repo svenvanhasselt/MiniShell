@@ -6,7 +6,7 @@
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/09/01 18:09:24 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/09/04 13:56:15 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ SRC := \
 		redirection/rd_atfirst.c\
 		redirection/rd_atfirst_utils.c\
 		redirection/rd_heredoc.c\
+		redirection/rd_heredoc_exp.c\
+		redirection/rd_heredoc_env.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\

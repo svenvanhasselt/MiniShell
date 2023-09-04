@@ -6,11 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 11:17:04 by psadeghi      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/08/31 14:06:06 by psadeghi      ########   odam.nl         */
-=======
-/*   Updated: 2023/08/31 16:21:50 by svan-has      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2023/09/04 13:57:55 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +85,15 @@ void	free_list(t_pn *lst)
 	}
 }
 
-void	print_list_parser(t_pn *lst)
-{
-	if (!lst)
-		return ;
-	while (lst->next != NULL)
-	{
-		printf("str= %s, ", lst->str);
-		lst = lst->next;
-	}
-	printf("str= %s\n", lst->str);
-	printf("str_point= %p, ", lst->str);
-}
+// void	print_list_parser(t_pn *lst)
+// {
+// 	if (!lst)
+// 		return ;
+// 	while (lst->next != NULL)
+// 	{
+// 		printf("str= %s, ", lst->str);
+// 		lst = lst->next;
+// 	}
+// 	printf("str= %s\n", lst->str);
+// 	printf("str_point= %p, ", lst->str);
+// }

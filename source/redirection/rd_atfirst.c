@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 14:02:47 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/04 13:31:19 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node)
 	}
 }
 
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node, char ***env)
+void	rd_atfirst_in(t_node *head, t_node *first_cmnd, t_pl *node, char ***env)
 {
-	while (head && head->type == REDIRECT_IN && head != first_command)
+	while (head && head->type == REDIRECT_IN && head != first_cmnd)
 	{
 		head = head->next;
 		if (head->type == REDIRECT_IN)
@@ -52,7 +52,7 @@ void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node, char ***env)
 		if (head->type == WORD || head->type == SINGLE_QOUTE || \
 		head->type == DOUBLE_QOUTE)
 		{
-			if (!node && !first_command)
+			if (!node && !first_cmnd)
 				heredoc_without_command(head, env);
 			else
 				rd_atfirst_in_utils(head, node, env);
