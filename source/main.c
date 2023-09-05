@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 19:49:09 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/05 13:58:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_readline(char *prompt, char **envp)
 			{
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list);
-				if (g_heredoc == 0)
+				if (g_heredoc < 2)
 					execution(&p_list, &env, &exit_status);
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
