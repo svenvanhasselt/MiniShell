@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:42:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/05 17:45:11 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_readline(char *prompt, char **envp)
 	int		syntax_check;
 	int		exit_status;
 	
-	signals_init();
+	signals_parent();
 	env = copy_environment_list(envp);
 	p_list = NULL;
 	syntax_check = 0;
@@ -56,14 +56,9 @@ char	*ft_readline(char *prompt, char **envp)
 			if (syntax_check == 0)
 			{
 				expansion(&lst, &env, exit_status);
-<<<<<<< HEAD
-				lst = make_parser(&lst, &p_list);
+				lst = make_parser(&lst, &p_list, &env);
 				if (g_heredoc < 2)
 					execution(&p_list, &env, &exit_status);
-=======
-				lst = make_parser(&lst, &p_list, &env);
-				execution(&p_list, &env, &exit_status);
->>>>>>> main
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
 				// ft_putnbr_fd(exit_status, 1);
