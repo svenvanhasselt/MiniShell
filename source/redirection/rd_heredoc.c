@@ -6,14 +6,11 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:42:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/05 17:48:23 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
-
-extern int g_heredoc;
 
 char	*join_str_node(t_node *node)
 {
@@ -43,42 +40,24 @@ void	heredoc_without_command(t_node *head, char ***env)
 {
 	char	*line;
 	char	*del;
-	int		fork_pid;
 
 	line = NULL;
 	del = ft_strjoin(head->str, "\n");
-	signals_heredoc();
-	fork_pid = fork();
-	if (fork_pid == -1)
-		error_exit("operation failure", errno);
-	if (fork_pid == 0)
+	while (1)
 	{
 		line = get_next_line(1);
 		if (!line || \
 		ft_strncmp(line, del, ft_strlen(del)) == 0)
-		while (1 && g_heredoc == 0)
 		{
-			line = get_next_line(1);
-			if (line && \
-			ft_strncmp(line, del, ft_strlen(del)) != 0)
-				free(line);
-			if (!line || \
-			ft_strncmp(line, del, ft_strlen(del)) == 0)
-			{
-				free(line);
-				break ;
-			}
+			free(line);
+			break ;
 		}
 		if (head->state != IN_DOUBLEQ)
 			line = heredoc_make_tokens(line, env);
 		if (line && \
 		ft_strncmp(line, del, ft_strlen(del)) != 0)
 			free(line);
-		exit (0);
 	}
-	waitpid(fork_pid, NULL, 0);
-	g_heredoc = 0;
-	signals_parent();
 	free(del);
 	return ;
 }
@@ -101,46 +80,22 @@ void	rd_heredoc_utils(t_pl *node, char *line, t_node *lst, char ***env)
 void	rd_heredoc(t_pl *node, char ***env, t_node *lst)
 {
 	char	*line;
-	int		fork_pid;
-	int		fork_status;
 
 	line = NULL;
 	unlink("here_doc");
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_CREAT | O_RDWR | O_EXCL, 0777);
-	signals_heredoc();
-	if (g_heredoc == 2)
-		return ;
-	fork_pid = fork();
-	if (fork_pid == -1)
-		error_exit("operation failure", errno);
-	while (fork_pid == 0 && g_heredoc < 2)
+	while (1)
 	{
 		line = get_next_line(1);
-		if (line && \
-		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
+		if (!line || \
+		ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
 		{
-			write(node->fd_in, line, ft_strlen(line));
 			free(line);
+			break ;
 		}
-		if (!line)
-			exit (1);
-		if (ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
-			exit (0) ;
 		rd_heredoc_utils(node, line, lst, env);
 	}
-	if (fork_pid != 0)
-	{
-		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-			error_exit("signal error", errno);
-		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			error_exit("signal error", errno);
-	}
-	if (fork_pid == 0)
-		exit (0);
-	waitpid(fork_pid, &fork_status, 0);
-	g_heredoc = WEXITSTATUS(fork_status);
-	signals_parent();
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_RDONLY);
 	node->rd_in_heredoc = false;
