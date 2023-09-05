@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 15:52:22 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 10:34:51 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,10 @@ t_node	*rd_out(t_node *tokens, t_pl *node);
 t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list, char ***env);
 void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node);
 void	rd_atfirst_out_utils(t_node *head, t_pl *node);
-void	rd_atfirst_in(t_node *head, t_node *first_cmnd, t_pl *node, char ***env);
+void	rd_atfirst_in(t_node *head, t_node *f_cmnd, t_pl *node, char ***env);
 void	rd_atfirst_in_utils(t_node *head, t_pl *node, char ***env);
 t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
-t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
+t_node	*rd_ml_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
 t_node	*heredoc_expand(t_node *head, t_node *node);
 
 /*REDIRECTION HEREDOC*/
@@ -191,12 +191,11 @@ t_node	*heredoc_expand_split(char *string, char ***env);
 char	*heredoc_make_tokens(char *line, char ***env);
 char	*join_str_node(t_node *node);
 
-
 /* PARSER */
 t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
 t_node	*parser_utils(t_node *tokens, t_pl **p_list, char ***env);
 t_node	*first_list_pl(t_node *tokens, t_pl **p_list, char ***env);
-t_node	*special_last(t_node *tokens, t_node *head , t_pl **p_list);
+t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list);
 t_node	*first_last(t_node *tokens, t_node *head, t_pl **p_list, char ***env);
 void	qoute_trim(t_node *tokens);
 void	combine_tokens(t_node *tokens);
@@ -205,7 +204,7 @@ t_node	*prepare_tokens(t_node **tokens);
 
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
-char	*find_variable(char *variable, enum e_token, char ***env);
+char	*find_variable(char *variable, enum e_token type, char ***env);
 t_node	*split_variable(t_node *lst);
 t_node	*expand_split(t_node **head, char ***env, int exit_status);
 void	expand_variable(t_node **lst, char ***env, int exit_status);

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/04 13:16:27 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 15:51:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 10:37:25 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status)
 		{
 			if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
 				expand_exit_code(head, exit_status);
-			// if (!ft_strncmp(head->str, "?", ft_strlen(head->str)))
-			// 	head->str = null_check(ft_strdup(null_check(ft_itoa(exit_status))));
 			else
 			{
 				head->str = heredoc_find_variable(head->str, head->type, env);

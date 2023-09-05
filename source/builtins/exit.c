@@ -6,13 +6,12 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/03 18:30:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/30 15:24:30 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 10:35:45 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <minishell.h>
-
 
 int	exit_builtin(char **cmd_table, int status)
 {

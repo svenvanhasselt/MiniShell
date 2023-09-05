@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 13:30:34 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 10:31:04 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_node	*rd_makelist_utils2(t_node *t, t_node *f_cmnd, t_pl **p_list, char *ar)
 	return (f_cmnd);
 }
 
-t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
+t_node	*rd_ml_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
 {
 	char	*after_rd;
 
