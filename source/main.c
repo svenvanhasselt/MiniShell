@@ -3,10 +3,15 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
+<<<<<<< HEAD
 /*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
 /*   Updated: 2023/09/05 10:24:57 by psadeghi      ########   odam.nl         */
+=======
+/*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/09/01 18:24:50 by svan-has      ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +62,12 @@ char	*ft_readline(char *prompt, char **envp)
 				if (syntax_check == 0)
 			{
 				expansion(&lst, &env, exit_status);
-				lst = make_parser(&lst, &p_list, &env);
-				ft_putstr_fd("\n\n\n-----------MiniShell Output-------------\n", 1);
+				lst = make_parser(&lst, &p_list);
 				execution(&p_list, &env, &exit_status);
 				unlink("here_doc");
-				ft_putstr_fd("Return code: ", 1);
-				ft_putnbr_fd(exit_status, 1);
-				ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
+				// ft_putstr_fd("Return code: ", 1);
+				// ft_putnbr_fd(exit_status, 1);
+				// ft_putstr_fd("\n-----------MiniShell Output-------------\n", 1);
 			}
 			add_history(line);
 		}

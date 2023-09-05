@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/14 14:14:41 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 17:09:14 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	redirection(t_pl *parser, t_exec *data, int i)
 {
 	int	*status;
 
-	status = &data->exit_status;
+	status = data->exit_status;
 	if ((data->num_commands == 1 && data->fork_pid[i] == 0))
 	{
 		data->fdin = redirect(parser, status, STDIN_FILENO, true);

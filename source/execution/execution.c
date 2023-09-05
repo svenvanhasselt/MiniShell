@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 16:55:49 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/01 17:12:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	execute(t_exec *data, char ***env, int *status);
 char	*path_cmd(char *command, char **env);
 void	execute_command(t_exec *data, char ***env, int i, int *status);
-int		redirection_error(t_exec *data, int i);
+int		redirection_error(t_exec *data, int i, int *status);
 
 void	execution(t_pl **p_list, char ***env, int *status)
 {
@@ -26,6 +26,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 
 	parser = *p_list;
 	data = prepare(&parser, env);
+	data->exit_status = status;
 	if (builtins_redirect(&data, parser, env, status) >= 0)
 		return ;
 	i = 0;
@@ -36,13 +37,13 @@ void	execution(t_pl **p_list, char ***env, int *status)
 		if (data->fork_pid[i] == -1)
 			error_exit("operation failure", errno);
 		redirection(parser, data, i);
-		if (!redirection_error(data, i))
+		if (!redirection_error(data, i, status))
 			execute_command(data, env, i, status);
 		parser = parser->next;
 		i++;
 	}
 	close_pipes_files(data);
-	waitpid_forks(data);
+	waitpid_forks(data, status);
 	free_data(data, parser);
 }
 
@@ -58,11 +59,11 @@ void	execute_command(t_exec *data, char ***env, int i, int *status)
 		execute(data, env, status);
 }
 
-int	redirection_error(t_exec *data, int i)
+int	redirection_error(t_exec *data, int i, int *status)
 {
 	if (data->fdin < 0 || data->fdout < 0)
 	{
-		data->exit_status = 1;
+		*status = 1;
 		if (data->fork_pid[i] == 0)
 			exit (1);
 		return (1);
@@ -72,14 +73,14 @@ int	redirection_error(t_exec *data, int i)
 
 void	execute(t_exec *data, char ***env, int *status)
 {
-	//signals_default();
+	signals_default();
 	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
 	close_pipes_files(data);
 	if (check_builtins(data->cmd_table, env, status))
-		exit (data->exit_status);
+		exit (*status);
 	execve(path_cmd(data->cmd_table[0], *env), data->cmd_table, *env);
 	if (errno != EACCES)
 		error_exit(data->cmd_table[0], ERR_NO_CMD);
