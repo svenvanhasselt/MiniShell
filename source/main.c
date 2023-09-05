@@ -5,13 +5,8 @@
 /*                                                     +:+                    */
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-<<<<<<< HEAD
-/*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:24:57 by psadeghi      ########   odam.nl         */
-=======
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 18:24:50 by svan-has      ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2023/09/05 10:42:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +57,7 @@ char	*ft_readline(char *prompt, char **envp)
 				if (syntax_check == 0)
 			{
 				expansion(&lst, &env, exit_status);
-				lst = make_parser(&lst, &p_list);
+				lst = make_parser(&lst, &p_list, &env);
 				execution(&p_list, &env, &exit_status);
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
