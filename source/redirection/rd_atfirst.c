@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/30 17:01:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 10:32:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node)
 	}
 }
 
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node)
+void	rd_atfirst_in(t_node *head, t_node *f_cmnd, t_pl *node, char ***env)
 {
-	while (head && head->type == REDIRECT_IN && head != first_command)
+	while (head && head->type == REDIRECT_IN && head != f_cmnd)
 	{
 		head = head->next;
 		if (head->type == REDIRECT_IN)
@@ -52,10 +52,10 @@ void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node)
 		if (head->type == WORD || head->type == SINGLE_QOUTE || \
 		head->type == DOUBLE_QOUTE)
 		{
-			if (!node && !first_command)
-				heredoc_without_command(head);
+			if (!node && !f_cmnd)
+				heredoc_without_command(head, env);
 			else
-				rd_atfirst_in_utils(head, node);
+				rd_atfirst_in_utils(head, node, env);
 			if (head->next != NULL)
 				head = head->next;
 		}
@@ -79,7 +79,7 @@ t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type)
 		while ((*tokens)->type != WORD && (*tokens)->next != NULL)
 			(*tokens) = (*tokens)->next;
 		if ((*tokens)->type == WORD)
-			first_command = rd_makelist_utils(*tokens, first_command, p_list);
+			first_command = rd_ml_utils(*tokens, first_command, p_list);
 		if (first_command == NULL)
 		{
 			n_list = make_node_parser(NULL);
@@ -91,7 +91,7 @@ t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type)
 	return (first_command);
 }
 
-t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
+t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list, char ***env)
 {
 	t_node	*head;
 	t_pl	*node;
@@ -101,7 +101,7 @@ t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list)
 	first_command = rd_makelist(&tokens, p_list, tokens->type);
 	node = ft_lastlist_lparser(*p_list);
 	if (head->type == REDIRECT_IN)
-		rd_atfirst_in(head, first_command, node);
+		rd_atfirst_in(head, first_command, node, env);
 	else if (head->type == REDIRECT_OUT)
 		rd_atfirst_out(head, first_command, node);
 	if (first_command != NULL)

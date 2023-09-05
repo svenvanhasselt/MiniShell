@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: sven <sven@student.42.fr>                    +#+                     */
+/*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/06/14 15:09:03 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 13:58:36 by svan-has      ########   odam.nl         */
+/*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/09/05 17:42:25 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_readline(char *prompt, char **envp)
 	int		syntax_check;
 	int		exit_status;
 	
-	// atexit(blah);
+	signals_init();
 	env = copy_environment_list(envp);
 	p_list = NULL;
 	syntax_check = 0;
@@ -38,7 +38,6 @@ char	*ft_readline(char *prompt, char **envp)
 		unlink("here_doc");
 		line = readline(prompt);
 		new = ft_strtrim(line, " ");
-		//if (!line || line[0] == '\0')
 		if (!new)
 		{
 			free(line);
@@ -57,9 +56,14 @@ char	*ft_readline(char *prompt, char **envp)
 			if (syntax_check == 0)
 			{
 				expansion(&lst, &env, exit_status);
+<<<<<<< HEAD
 				lst = make_parser(&lst, &p_list);
 				if (g_heredoc < 2)
 					execution(&p_list, &env, &exit_status);
+=======
+				lst = make_parser(&lst, &p_list, &env);
+				execution(&p_list, &env, &exit_status);
+>>>>>>> main
 				unlink("here_doc");
 				// ft_putstr_fd("Return code: ", 1);
 				// ft_putnbr_fd(exit_status, 1);
@@ -71,7 +75,7 @@ char	*ft_readline(char *prompt, char **envp)
 		free(line);
 		free_tokens(lst);
 		free_llist(&p_list);
-		// system("leaks -quiet minishell");
+		system("leaks -quiet minishell");
 	}
 	return (line);
 }

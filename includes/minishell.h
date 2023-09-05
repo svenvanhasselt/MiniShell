@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 20:27:25 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/05 17:42:47 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,6 @@ typedef struct s_node
 	enum e_state	state;
 	struct s_node	*next;
 }		t_node;
-
-// typedef struct s_lst
-// {
-// 	t_node	*first;
-// 	t_node	*last;
-// 	int		list_size;
-// }	t_lst;
 
 /* PARSER STRUCT'S */
 enum e_node_type
@@ -170,37 +163,52 @@ void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
 
 /* REDIRECTION */
-t_node	*rd_managment(t_node *tokens, t_pl **p_list);
-t_node	*rd_managment_utils(t_node *tokens, t_pl *node);
-t_node	*rd_in(t_node *tokens, t_pl *node);
-void	rd_in_utils(t_node *tokens, t_pl *node);
+t_node	*rd_managment(t_node *tokens, t_pl **p_list, char ***env);
+t_node	*rd_managment_utils(t_node *tokens, t_pl *node, char ***env);
+t_node	*rd_in(t_node *tokens, t_pl *node, char ***env);
+void	rd_in_utils(t_node *tokens, t_pl *node, char ***env);
 t_node	*rd_out(t_node *tokens, t_pl *node);
-t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list);
+t_node	*rd_atfirst_managment(t_node *tokens, t_pl **p_list, char ***env);
 void	rd_atfirst_out(t_node *head, t_node *first_command, t_pl *node);
 void	rd_atfirst_out_utils(t_node *head, t_pl *node);
-void	rd_atfirst_in(t_node *head, t_node *first_command, t_pl *node);
-void	rd_atfirst_in_utils(t_node *head, t_pl *node);
+void	rd_atfirst_in(t_node *head, t_node *f_cmnd, t_pl *node, char ***env);
+void	rd_atfirst_in_utils(t_node *head, t_pl *node, char ***env);
 t_node	*rd_makelist(t_node **tokens, t_pl **p_list, enum e_token rd_type);
-t_node	*rd_makelist_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
-void	rd_heredoc(t_pl *node);
-void	heredoc_without_command(t_node *head);
-//t_node	*rd_atfirst_in(t_node *tokens, t_node *first_command, t_pl *node);
+t_node	*rd_ml_utils(t_node *tokens, t_node *first_command, t_pl **p_list);
+t_node	*heredoc_expand(t_node *head, t_node *node);
+
+/*REDIRECTION HEREDOC*/
+void	rd_heredoc(t_pl *node, char ***env, t_node *lst);
+void	rd_heredoc_utils(t_pl *node, char *line, t_node *lst, char ***env);
+void	heredoc_without_command(t_node *head, char ***env);
+char	*heredoc_make_tokens(char *line, char ***env);
+int		heredoc_find_env_var(char *variable, char **env);
+char	*heredoc_find_variable(char *variable, enum e_token type, char ***env);
+void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status);
+void	hd_make_node(char *str, t_node **l, t_node *node, char *split_str);
+t_node	*heredoc_expand_split(char *string, char ***env);
+char	*heredoc_make_tokens(char *line, char ***env);
+char	*join_str_node(t_node *node);
 
 /* PARSER */
-t_node	*make_parser(t_node **tokens, t_pl **p_list);
-t_node	*parser_utils(t_node *tokens, t_pl **p_list);
-t_node	*first_list_pl(t_node *tokens, t_pl **p_list);
-t_node	*special_last(t_node *tokens, t_node *head , t_pl **p_list);
+t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
+t_node	*parser_utils(t_node *tokens, t_pl **p_list, char ***env);
+t_node	*first_list_pl(t_node *tokens, t_pl **p_list, char ***env);
+t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list);
+t_node	*first_last(t_node *tokens, t_node *head, t_pl **p_list, char ***env);
 void	qoute_trim(t_node *tokens);
 void	combine_tokens(t_node *tokens);
 void	combine_tokens_utils(t_node *tokens, t_node *temp);
+t_node	*prepare_tokens(t_node **tokens);
 
 /*	Expansion */
 void	expansion(t_node **lst, char ***env, int exit_status);
-char	*find_variable(char *variable, enum e_token, char ***env);
+char	*find_variable(char *variable, enum e_token type, char ***env);
 t_node	*split_variable(t_node *lst);
 t_node	*expand_split(t_node **head, char ***env, int exit_status);
 void	expand_variable(t_node **lst, char ***env, int exit_status);
+void	expand(t_node *head, t_node	**node);
+void	expand_exit_code(t_node *head, int exit_status);
 
 /*	Execution */
 void	execution(t_pl **p_list, char ***env, int *status);

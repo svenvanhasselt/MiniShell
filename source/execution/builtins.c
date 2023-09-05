@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 18:31:10 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/05 17:42:39 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,3 @@ int	check_builtins(char **cmd_table, char ***env, int *status)
 		return (0);
 	return (1);
 }
-

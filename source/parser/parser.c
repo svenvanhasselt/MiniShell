@@ -6,53 +6,19 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:21:37 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/04 13:13:47 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*parser_utils(t_node *tokens, t_pl **p_list)
-{
-	t_pl	*last;
-	t_node	*temp;
-
-	temp = NULL;
-	last = ft_lastlist_lparser(*p_list);
-	while (last && tokens != NULL && tokens->type != PIPE)
-	{
-		while (tokens->type == SPC && tokens->next != NULL)
-		{
-			temp = (tokens);
-			(tokens) = (tokens)->next;
-		}
-		while (tokens && (tokens->type == REDIRECT_OUT || \
-		tokens->type == REDIRECT_IN))
-		{
-			tokens = rd_managment(tokens, p_list);
-			if (last->fd_in == -1 || last->fd_out == -1 || \
-			tokens->type == PIPE || tokens->next == NULL)
-				break ;
-		}
-		if ((tokens && tokens->type == PIPE) || \
-		(tokens && tokens->next == NULL && \
-		(last->rd_out == true || last->rd_in == true)))
-			break ;
-		if (last->fd_in == -1 || last->fd_out == -1)
-			break ;
-		ft_add_back_list_parser(&(last->lst), make_node_parser(tokens));
-		tokens = tokens->next;
-	}
-	return (tokens);
-}
-
-t_node	*first_list_pl(t_node *tokens, t_pl **p_list)
+t_node	*first_list_pl(t_node *tokens, t_pl **p_list, char ***env)
 {
 	t_pn	*n_list;
 
 	n_list = NULL;
 	if (tokens->type == REDIRECT_IN || tokens->type == REDIRECT_OUT)
-		tokens = rd_atfirst_managment(tokens, p_list);
+		tokens = rd_atfirst_managment(tokens, p_list, env);
 	else
 	{
 		n_list = make_node_parser(tokens);
@@ -89,29 +55,62 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	return (NULL);
 }
 
-t_node	*make_parser(t_node **tokens, t_pl **p_list)
+t_node	*first_last(t_node *tokens, t_node *head, t_pl **p_list, char ***env)
+{
+	if (tokens && tokens->next != NULL && tokens == head)
+		tokens = first_list_pl(tokens, p_list, env);
+	else if (tokens && tokens->next == NULL)
+		tokens = special_last(tokens, head, p_list);
+	return (tokens);
+}
+
+t_node	*parser_utils(t_node *tokens, t_pl **p_list, char ***env)
+{
+	t_pl	*last;
+
+	last = ft_lastlist_lparser(*p_list);
+	while (last && tokens != NULL && tokens->type != PIPE)
+	{
+		while (tokens->type == SPC && tokens->next != NULL)
+			(tokens) = (tokens)->next;
+		while (tokens && (tokens->type == REDIRECT_OUT || \
+		tokens->type == REDIRECT_IN))
+		{
+			tokens = rd_managment(tokens, p_list, env);
+			if (last->fd_in == -1 || last->fd_out == -1 || \
+			tokens->type == PIPE || tokens->next == NULL)
+				break ;
+		}
+		if ((tokens && tokens->type == PIPE) || \
+		(tokens && tokens->next == NULL && \
+		(last->rd_out == true || last->rd_in == true)))
+			break ;
+		if (last->fd_in == -1 || last->fd_out == -1)
+			break ;
+		ft_add_back_list_parser(&(last->lst), make_node_parser(tokens));
+		tokens = tokens->next;
+	}
+	return (tokens);
+}
+
+t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env)
 {
 	t_pl	*last;
 	t_node	*head;
-	t_node	*save_head;
+	t_node	*first_token;
 
 	last = NULL;
-	save_head = *tokens;
-	qoute_trim(*tokens);
-	combine_tokens(*tokens);
+	first_token = prepare_tokens(tokens);
 	head = *tokens;
 	while ((*tokens) != NULL)
 	{
-		if ((*tokens)->next != NULL && (*tokens) == head)
-			*tokens = first_list_pl(*tokens, p_list);
-		else if ((*tokens) && (*tokens)->next == NULL)
-			*tokens = special_last(*tokens, head, p_list);
+		*tokens = first_last(*tokens, head, p_list, env);
 		if (*tokens)
 		{
 			last = ft_lastlist_lparser(*p_list);
 			if (last && (last->fd_in == -1 || last->fd_out == -1))
 				break ;
-			*tokens = parser_utils(*tokens, p_list);
+			*tokens = parser_utils(*tokens, p_list, env);
 			while ((*tokens) != NULL && ((*tokens)->type == PIPE \
 			|| (*tokens)->type == SPC))
 			{
@@ -120,8 +119,13 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list)
 			}
 		}
 	}
-	return (save_head);
+	return (first_token);
 }
+
+// if ((*tokens)->next != NULL && (*tokens) == head)
+// 	*tokens = first_list_pl(*tokens, p_list, env);
+// else if ((*tokens) && (*tokens)->next == NULL)
+// 	*tokens = special_last(*tokens, head, p_list);
 
 // I should check where to put the heredoc!
 
