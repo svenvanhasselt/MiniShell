@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:40:12 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 17:35:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,13 +179,12 @@ t_node	*heredoc_expand(t_node *head, t_node *node);
 
 /*REDIRECTION HEREDOC*/
 void	rd_heredoc(t_pl *node, char ***env, t_node *lst);
-void	rd_heredoc_utils(t_pl *node, char *line, t_node *lst, char ***env);
-void	heredoc_without_command(t_node *head, char ***env);
+void	rd_heredoc_utils(t_pl *node, char *line);
+void	heredoc_without_command(t_node *head);
 char	*heredoc_make_tokens(char *line, char ***env);
 int		heredoc_find_env_var(char *variable, char **env);
 char	*heredoc_find_variable(char *variable, enum e_token type, char ***env);
 void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status);
-void	hd_make_node(char *str, t_node **l, t_node *node, char *split_str);
 t_node	*heredoc_expand_split(char *string, char ***env);
 char	*heredoc_make_tokens(char *line, char ***env);
 char	*join_str_node(t_node *node);
@@ -209,6 +208,8 @@ t_node	*expand_split(t_node **head, char ***env, int exit_status);
 void	expand_variable(t_node **lst, char ***env, int exit_status);
 void	expand(t_node *head, t_node	**node);
 void	expand_exit_code(t_node *head, int exit_status);
+void	add_node_env(char *string, int i, int *start, t_node **exp_lst);
+void	split_string(char *string_node, t_node **exp_lst);
 
 /*	Execution */
 void	execution(t_pl **p_list, char ***env, int *status);
@@ -222,7 +223,7 @@ void	create_pipes(t_exec *data, int num_commands);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
 int		check_builtins(char **cmd_table, char ***env, int *status);
-int		builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status);
+int		builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);

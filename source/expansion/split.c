@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 16:10:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:50:35 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 17:36:55 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,31 @@ t_node	*split_variable(t_node *lst)
 	return (word_split);
 }
 
-void	add_node_env(char *string, int i, int *start, t_node	**exp_lst)
+void	add_node_env(char *string, int i, int *start, t_node **exp_lst)
 {
 	t_node	*node;
 	char	*split_str;
 
-	split_str = null_check(ft_substr(string, *start, i - *start));
-	node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
-	if (string[*start - 1] == '$')
-		node->type = ENV;
-	ft_add_back_list(exp_lst, node);
-	*start = -1;
+	if (string[*start] == '?' && *start - 1 >= 0 && string[*start - 1] == '$')
+	{
+		node = make_node(ft_strdup("?"), 1, WORD, IN_DOUBLEQ);
+		if (*start - 1 >= 0 && string[*start - 1] == '$')
+			node->type = ENV;
+		ft_add_back_list(exp_lst, node);
+		*start = *start + 1;
+	}
+	if (*start < i)
+	{
+		split_str = null_check(ft_substr(string, *start, i - *start));
+		node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
+		if (*start - 1 >= 0 && string[*start - 1] == '$')
+			node->type = ENV;
+		ft_add_back_list(exp_lst, node);
+		*start = -1;
+	}
 }
 
-void	split_string(char *string_node, t_node	**exp_lst)
+void	split_string(char *string_node, t_node **exp_lst)
 {
 	int		i;
 	int		start;
@@ -67,9 +78,11 @@ void	split_string(char *string_node, t_node	**exp_lst)
 		|| i == (int)len) && start >= 0))
 			add_node_env(string, i, &start, exp_lst);
 		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
-			ft_add_back_list(exp_lst, make_node("$", 1, ENV, IN_DOUBLEQ));
+			ft_add_back_list(exp_lst, make_node(null_check(ft_strdup("$")), \
+			1, ENV, IN_DOUBLEQ));
 		if (string[i] == ' ')
-			ft_add_back_list(exp_lst, make_node(" ", 1, SPC, NORMAL));
+			ft_add_back_list(exp_lst, make_node(null_check(ft_strdup(" ")), \
+			1, SPC, NORMAL));
 		i++;
 	}
 	free(string);
@@ -78,12 +91,10 @@ void	split_string(char *string_node, t_node	**exp_lst)
 t_node	*expand_split(t_node **head, char ***env, int exit_status)
 {
 	t_node	*exp_lst;
-	t_node	*last_node;
 
 	exp_lst = NULL;
 	split_string((*head)->str, &exp_lst);
+	print_list(exp_lst);
 	expand_variable(&exp_lst, env, exit_status);
-	last_node = ft_lastlist(exp_lst);
-	last_node->next = (*head)->next;
 	return (exp_lst);
 }
