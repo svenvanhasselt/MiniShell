@@ -6,13 +6,12 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 11:32:58 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 17:07:27 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
-#include <termios.h>
 
 void	execute(t_exec *data, char ***env, int *status);
 char	*path_cmd(char *command, char **env);
@@ -48,12 +47,6 @@ void	execution(t_pl **p_list, char ***env, int *status)
 
 void	execute_command(t_exec *data, char ***env, int i, int *status)
 {	
-	//struct termios term;
-// 	struct termios term_new;
-
-	// if (tcgetattr(STDIN_FILENO, &term) != 0)
-	// 	error_exit("operation failure", errno);
-	// term_new = term;
 	signals_child();
 	if (data->num_commands == 1 && data->fork_pid[i] == 0)
 		execute(data, env, status);
@@ -63,8 +56,6 @@ void	execute_command(t_exec *data, char ***env, int i, int *status)
 		execute(data, env, status);
 	else if (data->fork_pid[i] == 0)
 		execute(data, env, status);
-	// if (tcsetattr(STDIN_FILENO, TCSANOW, &term) != 0)
-	// 	error_exit("operation failure", errno);
 }
 
 int	redirection_error(t_exec *data, int i, int *status)

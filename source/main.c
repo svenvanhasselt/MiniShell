@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 12:21:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 17:11:51 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,11 @@ char	*ft_readline(char *prompt, char **envp)
 			{
 				expansion(&lst, &env, exit_status);
 				lst = make_parser(&lst, &p_list, &env);
+				show_signals();
 				if (g_signals < 2)
 					execution(&p_list, &env, &exit_status);
+				else
+					exit_status = 1;
 				unlink("here_doc");
 			}
 			add_history(line);

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 09:59:20 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 19:02:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,11 @@ void	hd_make_node(char *str, t_node **l, t_node *node, char *split_str);
 t_node	*heredoc_expand_split(char *string, char ***env);
 char	*heredoc_make_tokens(char *line, char ***env);
 char	*join_str_node(t_node *node);
+void	prepare_heredoc(t_pl *node, char **line, int *fork_pid);
+void	prep_heredoc_nocom(t_node *head, char **line, char **del, int *fork_pid);
+void	clear_heredoc_nocommand(int fork_pid, char *del);
+void	clear_heredoc(t_pl *node, int fork_pid);
+
 
 /* PARSER */
 t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
@@ -223,6 +228,8 @@ int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
 int		check_builtins(char **cmd_table, char ***env, int *status);
 int		builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status);
+void	hide_signals(void);
+void	show_signals(void);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);
@@ -239,8 +246,12 @@ int		array_size(char **array);
 void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
+void	print_env(char ***env);
 int		add_variable(char *string, char ***env);
 void	free_data(t_exec *data, t_pl *parser);
+void	put_env(char *string, char ***env);
+int		check_variable(char **variable);
+int		syntax_check(char *string);
 
 /*	Signals */
 void	signals_parent(void);

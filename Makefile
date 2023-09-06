@@ -6,7 +6,7 @@
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/09/05 17:42:53 by svan-has      ########   odam.nl          #
+#    Updated: 2023/09/06 18:22:12 by svan-has      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,12 +39,14 @@ SRC := \
 		redirection/rd_heredoc.c\
 		redirection/rd_heredoc_exp.c\
 		redirection/rd_heredoc_env.c\
+		redirection/rd_utils.c\
 		execution/execution.c\
 		execution/utils.c\
 		execution/init.c\
 		execution/error_handling.c\
 		execution/redirection.c\
 		execution/builtins.c\
+		execution/termios.c\
 		builtins/echo.c\
 		builtins/cd.c\
 		builtins/pwd.c\
@@ -52,6 +54,7 @@ SRC := \
 		builtins/unset.c\
 		builtins/export.c\
 		builtins/exit.c\
+		builtins/utils.c\
 		signals/signals.c\
 		signals/signal_handlers.c\
 		
