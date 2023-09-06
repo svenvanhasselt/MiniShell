@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:14:07 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 11:32:58 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	execution(t_pl **p_list, char ***env, int *status)
 	i = 0;
 	while (i < data->num_commands)
 	{
-		printf("Hier 2!\n");
 		if (create_fork_pipe(data, parser, i) < 0)
 			return ;
 		redirection(parser, data, i);

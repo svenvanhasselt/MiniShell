@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 16:19:50 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/04 19:53:23 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 09:59:24 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,12 @@ void	signals_heredoc(void)
 		error_exit("signal error", errno);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		error_exit("signal error", errno);
+}
+
+void	signals_ignore(void)
+{
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+			error_exit("signal error", errno);
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+			error_exit("signal error", errno);
 }

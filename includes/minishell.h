@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:42:47 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 09:59:20 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,5 +250,6 @@ void	parent_signint(int sig);
 void	child_sigquit(int sig);
 void	child_sigint(int sig);
 void	heredoc_sigint(int sig);
+void	signals_ignore(void);
 
 #endif

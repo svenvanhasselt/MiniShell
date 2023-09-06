@@ -6,13 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:42:09 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 11:36:58 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_heredoc;
+extern int g_signals;
 
 t_pl	*make_node_lparser(t_pn *small_list)
 {
@@ -94,7 +94,7 @@ void	free_llist(t_pl **p_list)
 	{
 		temp = *p_list;
 		*p_list = (*p_list)->next;
-		if (g_heredoc == 0)
+		if (g_signals < 2)
 		{	
 			i = -1;
 			while (temp->cmd_table[++i] != NULL)
