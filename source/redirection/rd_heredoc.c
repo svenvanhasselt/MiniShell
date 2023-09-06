@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 13:32:21 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 17:35:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ char	*join_str_node(t_node *node)
 {
 	char	*str;
 
+	//printf("this is node->str = %s\n", (*node)->str);
 	str = ft_strdup(node->str);
 	while (node && node->next)
 	{
-		str = ft_strjoin_free(str, node->next->str);
+		str = ft_strjoin(str, node->next->str);
 		node = node->next;
 	}
 	return (str);
@@ -28,7 +29,6 @@ char	*join_str_node(t_node *node)
 char	*heredoc_make_tokens(char *line, char ***env)
 {
 	t_node	*new;
-
 	new = heredoc_expand_split(line, env);
 	free(line);
 	line = join_str_node(new);
@@ -36,7 +36,7 @@ char	*heredoc_make_tokens(char *line, char ***env)
 	return (line);
 }
 
-void	heredoc_without_command(t_node *head, char ***env)
+void	heredoc_without_command(t_node *head)
 {
 	char	*line;
 	char	*del;
@@ -52,8 +52,6 @@ void	heredoc_without_command(t_node *head, char ***env)
 			free(line);
 			break ;
 		}
-		if (head->state != IN_DOUBLEQ)
-			line = heredoc_make_tokens(line, env);
 		if (line && \
 		ft_strncmp(line, del, ft_strlen(del)) != 0)
 			free(line);
@@ -62,13 +60,8 @@ void	heredoc_without_command(t_node *head, char ***env)
 	return ;
 }
 
-void	rd_heredoc_utils(t_pl *node, char *line, t_node *lst, char ***env)
+void	rd_heredoc_utils(t_pl *node, char *line)
 {
-	t_node	*new;
-
-	new = NULL;
-	if (lst->state != IN_DOUBLEQ)
-		line = heredoc_make_tokens(line, env);
 	if (line && \
 	ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
 	{
@@ -94,7 +87,9 @@ void	rd_heredoc(t_pl *node, char ***env, t_node *lst)
 			free(line);
 			break ;
 		}
-		rd_heredoc_utils(node, line, lst, env);
+		if (lst->state != IN_DOUBLEQ)
+			line = heredoc_make_tokens(line, env);
+		rd_heredoc_utils(node, line);
 	}
 	close(node->fd_in);
 	node->fd_in = open("here_doc", O_RDONLY);

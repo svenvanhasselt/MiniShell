@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:37:59 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 13:29:47 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status)
+int	builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status)
 {
 	if ((*data)->num_commands == 1)
 	{

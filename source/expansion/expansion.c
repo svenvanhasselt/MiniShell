@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 18:10:09 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 13:23:51 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,15 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 			if (*lst == head)
 				*lst = expand_split(&head, env, exit_status);
 			else
+			{
 				prev->next = expand_split(&head, env, exit_status);
+				prev = prev->next;
+			}
 			free(head->str);
 			free(head);
 		}
-		prev = head;
+		else
+			prev = head;
 		head = next;
 	}
 }

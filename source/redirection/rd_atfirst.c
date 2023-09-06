@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 15:00:33 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:32:43 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 15:41:23 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	rd_atfirst_in(t_node *head, t_node *f_cmnd, t_pl *node, char ***env)
 		head->type == DOUBLE_QOUTE)
 		{
 			if (!node && !f_cmnd)
-				heredoc_without_command(head, env);
+				heredoc_without_command(head);
 			else
 				rd_atfirst_in_utils(head, node, env);
 			if (head->next != NULL)

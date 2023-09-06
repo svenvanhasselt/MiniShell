@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 13:06:30 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 13:58:28 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/06 15:45:42 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,14 @@ void	free_tokens(t_node *lst)
 	}
 }
 
-// void	print_list(t_node *lst)
-// {
-// 	if (!lst)
-// 		return ;
-// 	while (lst->next != NULL)
-// 	{
-// 		printf("str= .%s., pointer= %p\n", lst->str, lst->str);
-// 		lst = lst->next;
-// 	}
-// 	printf("str= .%s., pointer= %p\n", lst->str, lst->str);
-// }
+void	print_list(t_node *lst)
+{
+	if (!lst)
+		return ;
+	while (lst->next != NULL)
+	{
+		printf("str= .%s., pointer= %p\n", lst->str, lst->str);
+		lst = lst->next;
+	}
+	printf("str= .%s., pointer= %p\n", lst->str, lst->str);
+}

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 17:12:52 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 13:29:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 	parser = *p_list;
 	data = prepare(&parser, env);
 	data->exit_status = status;
-	if (builtins_redirect(&data, parser, env, status) >= 0)
+	if (builtins_rd(&data, parser, env, status) >= 0)
 		return ;
 	i = 0;
 	create_pipes(data, data->num_commands);
