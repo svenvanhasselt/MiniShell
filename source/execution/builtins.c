@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 17:42:39 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 19:12:07 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	dup2_stdin_stdout(int fdin, int fdout)
 		error_exit("operation failure", errno);
 }
 
-int	builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status)
+int	builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status)
 {
 	if ((*data)->num_commands == 1)
 	{
@@ -39,7 +39,7 @@ int	builtins_redirect(t_exec **data, t_pl *parser, char ***env, int *status)
 		}
 		dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
 	}
-	return (-1);
+		return (-1);
 }
 
 int	check_builtins(char **cmd_table, char ***env, int *status)

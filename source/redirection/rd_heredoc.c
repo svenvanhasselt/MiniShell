@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 17:05:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/06 19:10:50 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ char	*join_str_node(t_node *node)
 {
 	char	*str;
 
+	//printf("this is node->str = %s\n", (*node)->str);
 	str = ft_strdup(node->str);
 	while (node && node->next)
 	{
-		str = ft_strjoin_free(str, node->next->str);
+		str = ft_strjoin(str, node->next->str);
 		node = node->next;
 	}
 	return (str);
@@ -31,7 +32,6 @@ char	*join_str_node(t_node *node)
 char	*heredoc_make_tokens(char *line, char ***env)
 {
 	t_node	*new;
-
 	new = heredoc_expand_split(line, env);
 	free(line);
 	line = join_str_node(new);
@@ -39,7 +39,7 @@ char	*heredoc_make_tokens(char *line, char ***env)
 	return (line);
 }
 
-void	heredoc_without_command(t_node *head, char ***env)
+void	heredoc_without_command(t_node *head)
 {
 	char	*line;
 	char	*del;
@@ -65,13 +65,8 @@ void	heredoc_without_command(t_node *head, char ***env)
 	return ;
 }
 
-void	rd_heredoc_utils(t_pl *node, char *line, t_node *lst, char ***env)
+void	rd_heredoc_utils(t_pl *node, char *line)
 {
-	t_node	*new;
-
-	new = NULL;
-	if (lst->state != IN_DOUBLEQ)
-		line = heredoc_make_tokens(line, env);
 	if (line && \
 	ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) != 0)
 	{
@@ -95,6 +90,8 @@ void	rd_heredoc(t_pl *node, char ***env, t_node *lst)
 			exit (1);
 		if (ft_strncmp(line, node->delimiter, ft_strlen(node->delimiter)) == 0)
 			exit (0);
+		if (lst->state != IN_DOUBLEQ)
+			line = heredoc_make_tokens(line, env);
 		rd_heredoc_utils(node, line, lst, env);
 	}
 	clear_heredoc(node, fork_pid);

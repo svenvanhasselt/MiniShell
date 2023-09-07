@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/04 13:16:27 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:37:25 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/05 13:30:35 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,45 +46,12 @@ void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status)
 	}
 }
 
-void	hd_make_node(char *str, t_node **l, t_node *node, char *split_str)
-{
-	int	i;
-	int	start;
-	int	len;
-
-	i = -1;
-	start = -1;
-	len = (int)ft_strlen(str);
-	while (++i <= len)
-	{
-		if ((str[i] != '$' && str[i] != ' ') && (start < 0))
-			start = i;
-		else if (((str[i] == '$' || str[i] == ' ' || i == len) && start >= 0))
-		{
-			split_str = null_check(ft_substr(str, start, i - start));
-			node = make_node(split_str, ft_strlen(split_str), WORD, IN_DOUBLEQ);
-			if (start - 1 >= 0 && str[start - 1] == '$')
-				node->type = ENV;
-			ft_add_back_list(l, node);
-			start = -1;
-		}
-		if (str[i] == '$' && (str[i + 1] == '\0' || str[i + 1] == ' '))
-			ft_add_back_list(l, make_node(ft_strdup("$"), 1, ENV, IN_DOUBLEQ));
-		if (str[i] == ' ')
-			ft_add_back_list(l, make_node(ft_strdup(" "), 1, SPC, NORMAL));
-	}
-}
-
 t_node	*heredoc_expand_split(char *string, char ***env)
 {
-	char	*split_str;
 	t_node	*exp_lst;
-	t_node	*node;
 
 	exp_lst = NULL;
-	node = NULL;
-	split_str = NULL;
-	hd_make_node(string, &exp_lst, node, split_str);
+	split_string(string, &exp_lst);
 	heredoc_expand_variable(&exp_lst, env, 0);
 	return (exp_lst);
 }
