@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 17:58:37 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 15:47:37 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,11 +185,13 @@ char	*heredoc_make_tokens(char *line, char ***env);
 int		heredoc_find_env_var(char *variable, char **env);
 char	*heredoc_find_variable(char *variable, enum e_token type, char ***env);
 void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status);
-//t_node	*heredoc_expand_split(char *string, char ***env);
 t_node	*heredoc_expand_split(t_node **head, char ***env);
 char	*heredoc_make_tokens(char *line, char ***env);
 char	*join_str_node(t_node *node);
 void	heredoc_expansion(t_node **lst, char ***env);
+void	heredoc_split_string_utils(t_node **exp_lst, char *string, int i);
+void	heredoc_split_string(char *string_node, t_node **exp_lst);
+t_node	*heredoc_expand_split(t_node **head, char ***env);
 
 /* PARSER */
 t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
