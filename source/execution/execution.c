@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 19:12:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 16:13:53 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 }
 
 void	execute_command(t_exec *data, char ***env, int i, int *status)
-{	
+{
 	signals_child();
 	if (data->num_commands == 1 && data->fork_pid[i] == 0)
 		execute(data, env, status);

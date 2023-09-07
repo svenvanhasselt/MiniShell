@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 13:23:43 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 16:14:16 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status)
 		}
 		dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
 	}
-		return (-1);
+	return (-1);
 }
 
 int	check_builtins(char **cmd_table, char ***env, int *status)
@@ -49,8 +49,8 @@ int	check_builtins(char **cmd_table, char ***env, int *status)
 	i = -1;
 	if (!cmd_table[0])
 		return (-1);
-	// while (cmd_table[0][++i])
-	// 	cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
+	while (cmd_table[0][++i])
+		cmd_table[0][i] = ft_tolower(cmd_table[0][i]);
 	if (ft_strncmp(cmd_table[0], "cd", ft_strlen(cmd_table[0])) == 0)
 		*status = cd_builtin(cmd_table, env);
 	else if (ft_strncmp(cmd_table[0], "echo", ft_strlen(cmd_table[0])) == 0)
