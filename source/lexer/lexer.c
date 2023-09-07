@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 15:51:49 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 16:14:24 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 15:28:02 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,4 @@ void	make_tokens(char *l, t_node **lst)
 		if (l[i] != '\0')
 			i++;
 	}
-	// print_list(*lst);
 }

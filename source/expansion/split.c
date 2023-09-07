@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 16:10:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 17:36:55 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 15:36:11 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,12 @@ void	split_string(char *string_node, t_node **exp_lst)
 t_node	*expand_split(t_node **head, char ***env, int exit_status)
 {
 	t_node	*exp_lst;
+	t_node	*last;
 
 	exp_lst = NULL;
 	split_string((*head)->str, &exp_lst);
-	print_list(exp_lst);
 	expand_variable(&exp_lst, env, exit_status);
+	last = ft_lastlist(exp_lst);
+	last->next = (*head)->next;
 	return (exp_lst);
 }

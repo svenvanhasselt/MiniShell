@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 17:35:54 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:32:21 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,28 @@
 char	*join_str_node(t_node *node)
 {
 	char	*str;
+	t_node	*temp;
 
-	//printf("this is node->str = %s\n", (*node)->str);
+	temp = node;
 	str = ft_strdup(node->str);
 	while (node && node->next)
 	{
-		str = ft_strjoin(str, node->next->str);
+		str = ft_strjoin_free(str, node->next->str);
 		node = node->next;
 	}
+	free_tokens(temp);
 	return (str);
 }
 
 char	*heredoc_make_tokens(char *line, char ***env)
 {
 	t_node	*new;
-	new = heredoc_expand_split(line, env);
+
+	new = NULL;
+	make_tokens(line, &new);
+	heredoc_expansion(&new, env);
 	free(line);
 	line = join_str_node(new);
-	free_tokens(new);
 	return (line);
 }
 

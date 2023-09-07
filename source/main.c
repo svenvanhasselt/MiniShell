@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 13:56:15 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:11:11 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_readline(char *prompt, char **envp)
 			add_history(line);
 		}
 		free_all(line, new, lst, &p_list);
-		//system("leaks -quiet minishell");
+		system("leaks -quiet minishell");
 	}
 	return (line);
 }

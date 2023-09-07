@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/04 13:16:27 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 13:30:35 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 15:33:30 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,33 @@ void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status)
 	}
 }
 
-t_node	*heredoc_expand_split(char *string, char ***env)
+void	heredoc_expansion(t_node **lst, char ***env)
 {
-	t_node	*exp_lst;
+	t_node	*head;
+	t_node	*prev;
+	t_node	*next;
 
-	exp_lst = NULL;
-	split_string(string, &exp_lst);
-	heredoc_expand_variable(&exp_lst, env, 0);
-	return (exp_lst);
+	head = *lst;
+	prev = *lst;
+	while (head)
+	{
+		next = head->next;
+		if (head->type == ENV || (head->state == IN_DOUBLEQ && \
+		ft_strnstr(head->str, "$", head->len)) || (head->state == \
+		IN_SINGLEQ && ft_strnstr(head->str, "$", head->len)))
+		{
+			if (*lst == head)
+				*lst = heredoc_expand_split(&head, env);
+			else
+			{
+				prev->next = heredoc_expand_split(&head, env);
+				prev = prev->next;
+			}
+			free(head->str);
+			free(head);
+		}
+		else
+			prev = head;
+		head = next;
+	}
 }
