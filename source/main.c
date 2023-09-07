@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 19:13:06 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 16:05:04 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,68 +22,75 @@ void	free_all(char *line, char *new, t_node *lst, t_pl **p_list)
 	free_llist(p_list);
 }
 
-char	*ft_readline(char *prompt, char **envp)
+void	parse_execute(t_node **lst, t_pl **p_list, char ***env, \
+int *exit_status)
 {
-	char	*line;
-	t_node	*lst;
-	char	*new;
-	t_pl	*p_list;
-	char	**env;
-	int		syntax_check;
-	int		exit_status;
-	
-	signals_parent();
-	env = copy_environment_list(envp);
-	p_list = NULL;
-	exit_status = 0;
-	while (1)
+	int	syntax_check;
+
+	syntax_check = syntax_error(lst);
+	if (syntax_check == 0)
 	{
-		g_signals = 0;
-		signals_parent();
-		lst = NULL;
-		unlink("here_doc");
-		line = readline(prompt);
-		new = ft_strtrim(line, " ");
-		if (!new)
-		{
-			free(line);
-			exit(1);
-		}
-		else if (new[0] == '\0')
-		{
-			free(line);
-			free(new);
-			continue ;
-		}
+		expansion(lst, env, *exit_status);
+		*lst = make_parser(lst, p_list, env);
+		show_signals();
+		if (g_signals < 2)
+			execution(p_list, env, exit_status);
 		else
-		{
-			make_tokens(new, &lst);
-			syntax_check = syntax_error(&lst);
-			if (syntax_check == 0)
-			{
-				expansion(&lst, &env, exit_status);
-				lst = make_parser(&lst, &p_list, &env);
-				show_signals();
-				if (g_signals < 2)
-					execution(&p_list, &env, &exit_status);
-				else
-					exit_status = 1;
-				unlink("here_doc");
-			}
-			add_history(line);
-		}
-		free_all(line, new, lst, &p_list);
-		//system("leaks -quiet minishell");
+			*exit_status = 1;
+		unlink("here_doc");
 	}
-	return (line);
+}
+
+int	prompt_init(t_node	**lst, char	**line, char **new)
+{
+	g_signals = 0;
+	signals_parent();
+	*lst = NULL;
+	unlink("here_doc");
+	*line = readline("minishell~>");
+	*new = ft_strtrim(*line, " ");
+	if (!*new)
+	{
+		free(*line);
+		exit(0);
+	}
+	else if (*new[0] == '\0')
+	{
+		free(*line);
+		free(*new);
+		return (0);
+	}
+	return (1);
+}
+
+void	main_init(int argc, char *argv[], t_mdata **main, char **envp)
+{
+	(*main) = null_check(malloc(1 * sizeof(t_mdata)));
+	(*main)->env = copy_environment_list(envp);
+	(*main)->p_list = NULL;
+	(*main)->exit_status = 0;
+	argc = 0;
+	argv[0] = NULL;
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char	*line;
+	t_mdata	*main; 
 
-	argc = 0;
-	argv[0] = NULL;
-	line = ft_readline("minishell~>", envp);
+	main_init(argc, argv, &main, envp);
+	while (1)
+	{
+		if (!prompt_init(&main->lst, &main->line, &main->new))
+			continue ;
+		else
+		{
+			make_tokens(main->new, &main->lst);
+			parse_execute(&main->lst, &main->p_list, &main->env, \
+			&main->exit_status);
+			add_history(main->line);
+		}
+		free_all(main->line, main->new, main->lst, &main->p_list);
+		system("leaks -quiet minishell");
+	}
 	return (0);
 }

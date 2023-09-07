@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/11 12:36:54 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 19:10:50 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:41:28 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*join_str_node(t_node *node)
 char	*heredoc_make_tokens(char *line, char ***env)
 {
 	t_node	*new;
+
 	new = heredoc_expand_split(line, env);
 	free(line);
 	line = join_str_node(new);
@@ -55,8 +56,6 @@ void	heredoc_without_command(t_node *head)
 			exit (1);
 		if (ft_strncmp(line, del, ft_strlen(del)) == 0)
 			exit (0);
-		if (head->state != IN_DOUBLEQ)
-			line = heredoc_make_tokens(line, env);
 		if (line && \
 		ft_strncmp(line, del, ft_strlen(del)) != 0)
 			free(line);
@@ -92,7 +91,7 @@ void	rd_heredoc(t_pl *node, char ***env, t_node *lst)
 			exit (0);
 		if (lst->state != IN_DOUBLEQ)
 			line = heredoc_make_tokens(line, env);
-		rd_heredoc_utils(node, line, lst, env);
+		rd_heredoc_utils(node, line);
 	}
 	clear_heredoc(node, fork_pid);
 }

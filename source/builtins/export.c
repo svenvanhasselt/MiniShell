@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 18:56:40 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 11:42:02 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	add_variable(char *string, char ***env)
 	else
 		put_env(string, env);
 	free(variable);
-	free(string);
 	return (0);
 }
 

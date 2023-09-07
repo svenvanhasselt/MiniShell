@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/06 19:12:59 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 16:03:28 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ typedef struct s_pl
 	int			exit_code;
 }				t_pl;
 
+typedef struct s_main
+{
+	char	*line;
+	t_node	*lst;
+	char	*new;
+	t_pl	*p_list;
+	char	**env;
+	int		exit_status;
+}	t_mdata;
+
 enum e_minishell_errors {
 	ERR_NO_CMD			= -1,
 	ERR_EXPORT_INVALID	= -2,
@@ -119,9 +129,6 @@ typedef struct s_exec_struc
 	t_func	*builtin_func[7];
 	char	**env;
 }	t_exec;
-
-/* FUNCTIONS */
-char	*ft_readline(char *prompt, char **envp);
 
 /* LEXER */
 void	make_tokens(char *l, t_node **lst);

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:40:32 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:24:52 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ void	create_cmd_table(t_pl *parser)
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head_lst)
 		{
+			if (!ft_strncmp(head_lst->str, "", ft_strlen(head_lst->str)))
+			{
+				head_lst = head_lst->next;
+				continue;
+			}
 			if (head_lst->str)
 				head->cmd_table[i] = ft_strdup(head_lst->str);
 			else

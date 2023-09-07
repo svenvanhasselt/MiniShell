@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 16:35:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 13:13:56 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:32:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ char	*find_variable(char *variable, enum e_token type, char ***env)
 		return (variable);
 	else if (type == EXP)
 		return (NULL);
-	return (NULL);
+	return (free(variable), NULL);
 }

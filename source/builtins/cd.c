@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 19:12:15 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:25:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	find_env_var(char *variable, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (!strncmp(env[i], new_variable, ft_strlen(new_variable)) || \
-		!strncmp(env[i], variable, ft_strlen(variable)))
+		if (!strncmp(env[i], new_variable, ft_strlen(new_variable)))
 			return (free(new_variable), i);
 		i++;
 	}
