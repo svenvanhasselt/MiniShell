@@ -6,11 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/04 13:57:57 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 10:21:49 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_signals;
 
 t_pl	*make_node_lparser(t_pn *small_list)
 {
@@ -86,22 +88,23 @@ void	free_llist(t_pl **p_list)
 	t_pl	*temp;
 	int		i;
 
-	i = 0;
 	if (!p_list || !*p_list)
 		return ;
 	while (*p_list)
 	{
 		temp = *p_list;
 		*p_list = (*p_list)->next;
-		i = 0;
-		while (temp->cmd_table[i] != NULL)
+		if (g_signals < 2)
 		{
-			free(temp->cmd_table[i]);
-			i++;
+			i = -1;
+			while (temp->cmd_table[++i] != NULL)
+				free(temp->cmd_table[i]);
+			free(temp->cmd_table);
 		}
-		free(temp->cmd_table);
 		free_list(temp->lst);
+		close(temp->fd_in);
 		free(temp->file_in);
+		close(temp->fd_out);
 		free(temp->file_out);
 		free(temp->delimiter);
 		free(temp->del_without_nl);

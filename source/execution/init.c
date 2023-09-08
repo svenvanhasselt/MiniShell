@@ -6,13 +6,31 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:40:32 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 10:24:06 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 void	create_cmd_table(t_pl *parser);
+
+int	ft_sizelist_init(t_pl *lst)
+{
+	int		count;
+	t_pl	*head;
+
+	count = 0;
+	if (!lst)
+		return (0);
+	head = lst;
+	while (head != NULL)
+	{
+		if (head->lst->str != NULL)
+			count++;
+		head = head->next;
+	}
+	return (count);
+}
 
 void	*prepare(t_pl **parser, char ***env)
 {
@@ -22,16 +40,35 @@ void	*prepare(t_pl **parser, char ***env)
 
 	head = *parser;
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = ft_sizelist_lparser(*parser);
-	data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
-	data->pipe_fd = null_check(malloc((data->num_commands - 1) \
-	* sizeof(int *)));
+	data->num_commands = ft_sizelist_init(*parser);
+	if (data->num_commands > 0)
+	{
+		data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
+		data->pipe_fd = null_check(malloc((data->num_commands - 1) \
+		* sizeof(int *)));
+	}
 	i = -1;
 	while (++i < data->num_commands - 1)
 		data->pipe_fd[i] = null_check(malloc (2 * sizeof(int)));
 	data->env = (*env);
 	create_cmd_table(head);
 	return (data);
+}
+
+int	create_new_table(t_pn **head_lst, t_pl **head, int i)
+{
+	//if (!ft_strncmp((*head_lst)->str, "", ft_strlen((*head_lst)->str)))
+	if ((*head_lst)->str && !ft_strncmp((*head_lst)->str, "", \
+	ft_strlen((*head_lst)->str)))
+	{
+		*head_lst = (*head_lst)->next;
+		return (0);
+	}
+	if ((*head_lst)->str)
+		(*head)->cmd_table[i] = ft_strdup((*head_lst)->str);
+	else
+		(*head)->cmd_table[i] = NULL;
+	return (1);
 }
 
 void	create_cmd_table(t_pl *parser)
@@ -50,10 +87,8 @@ void	create_cmd_table(t_pl *parser)
 		head->cmd_table = null_check(malloc ((size + 1) * sizeof(char *)));
 		while (head_lst)
 		{
-			if (head_lst->str)
-				head->cmd_table[i] = ft_strdup(head_lst->str);
-			else
-				head->cmd_table[i] = NULL;
+			if (!create_new_table(&head_lst, &head, i))
+				continue ;
 			head_lst = head_lst->next;
 			i++;
 		}

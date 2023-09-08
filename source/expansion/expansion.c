@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/01 18:26:09 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 15:26:58 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 16:17:58 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ void	expand_variable(t_node **lst, char ***env, int exit_status)
 	}
 }
 
+void	add_exp_list(t_node *prev, t_node *head, char ***env, int exit_status)
+{
+	prev->next = expand_split(&head, env, exit_status);
+	prev = prev->next;
+}
+
 void	expansion(t_node **lst, char ***env, int exit_status)
 {
 	t_node	*head;
@@ -70,10 +76,7 @@ void	expansion(t_node **lst, char ***env, int exit_status)
 			if (*lst == head)
 				*lst = expand_split(&head, env, exit_status);
 			else
-			{
-				prev->next = expand_split(&head, env, exit_status);
-				prev = prev->next;
-			}
+				add_exp_list(prev, head, env, exit_status);
 			free(head->str);
 			free(head);
 		}

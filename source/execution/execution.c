@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/06 13:29:37 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 10:26:43 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,15 @@ void	execution(t_pl **p_list, char ***env, int *status)
 
 	parser = *p_list;
 	data = prepare(&parser, env);
+	//printf("Number commands: %d\n", data->num_commands);
 	data->exit_status = status;
 	if (builtins_rd(&data, parser, env, status) >= 0)
 		return ;
 	i = 0;
-	create_pipes(data, data->num_commands);
 	while (i < data->num_commands)
 	{
-		data->fork_pid[i] = fork();
-		if (data->fork_pid[i] == -1)
-			error_exit("operation failure", errno);
+		if (create_fork_pipe(data, parser, i) < 0)
+			return ;
 		redirection(parser, data, i);
 		if (!redirection_error(data, i, status))
 			execute_command(data, env, i, status);
@@ -49,6 +48,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 
 void	execute_command(t_exec *data, char ***env, int i, int *status)
 {
+	signals_child();
 	if (data->num_commands == 1 && data->fork_pid[i] == 0)
 		execute(data, env, status);
 	else if (i == 0 && data->fork_pid[i] == 0)
@@ -73,7 +73,6 @@ int	redirection_error(t_exec *data, int i, int *status)
 
 void	execute(t_exec *data, char ***env, int *status)
 {
-	signals_default();
 	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)

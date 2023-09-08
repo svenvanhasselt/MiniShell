@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/07 15:47:37 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 10:20:00 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ typedef struct s_pl
 	int			exit_code;
 }				t_pl;
 
+typedef struct s_main
+{
+	char	*line;
+	t_node	*lst;
+	char	*new;
+	t_pl	*p_list;
+	char	**env;
+	int		exit_status;
+}	t_mdata;
+
 enum e_minishell_errors {
 	ERR_NO_CMD			= -1,
 	ERR_EXPORT_INVALID	= -2,
@@ -119,9 +129,6 @@ typedef struct s_exec_struc
 	t_func	*builtin_func[7];
 	char	**env;
 }	t_exec;
-
-/* FUNCTIONS */
-char	*ft_readline(char *prompt, char **envp);
 
 /* LEXER */
 void	make_tokens(char *l, t_node **lst);
@@ -192,6 +199,11 @@ void	heredoc_expansion(t_node **lst, char ***env);
 void	heredoc_split_string_utils(t_node **exp_lst, char *string, int i);
 void	heredoc_split_string(char *string_node, t_node **exp_lst);
 t_node	*heredoc_expand_split(t_node **head, char ***env);
+void	prepare_heredoc(t_pl *node, char **line, int *fork_pid);
+void	prep_heredoc_nocom(t_node *head, char **line, \
+char **del, int *fork_pid);
+void	clear_heredoc_nocommand(int fork_pid, char *del);
+void	clear_heredoc(t_pl *node, int fork_pid);
 
 /* PARSER */
 t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env);
@@ -214,6 +226,7 @@ void	expand(t_node *head, t_node	**node);
 void	expand_exit_code(t_node *head, int exit_status);
 void	add_node_env(char *string, int i, int *start, t_node **exp_lst);
 void	split_string(char *string_node, t_node **exp_lst);
+void	add_exp_list(t_node *prev, t_node *head, char ***env, int exit_status);
 
 /*	Execution */
 void	execution(t_pl **p_list, char ***env, int *status);
@@ -221,13 +234,16 @@ void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
+//void	close_pipes_files(t_exec *data, t_pl **node);
 void	close_pipes_files(t_exec *data);
 void	waitpid_forks(t_exec *data, int *status);
-void	create_pipes(t_exec *data, int num_commands);
+int		create_fork_pipe(t_exec *data, t_pl *parser, int i);
 int		error_exit(char *message, int error_no);
 int		error_seterrno(char *message, char *message2, int error_no);
 int		check_builtins(char **cmd_table, char ***env, int *status);
 int		builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status);
+void	hide_signals(void);
+void	show_signals(void);
 
 /*	Built-ins */
 int		echo_builtin(char **cmd_table);
@@ -244,11 +260,21 @@ int		array_size(char **array);
 void	*null_check(void *check);
 int		find_env_var(char *variable, char **env);
 int		find_value(char *string);
+void	print_env(char ***env);
 int		add_variable(char *string, char ***env);
 void	free_data(t_exec *data, t_pl *parser);
+void	put_env(char *string, char ***env);
+int		check_variable(char **variable);
+int		syntax_check(char *string);
 
 /*	Signals */
-void	signals_init(void);
-void	signals_default(void);
+void	signals_parent(void);
+void	signals_child(void);
+void	signals_heredoc(void);
+void	parent_signint(int sig);
+void	child_sigquit(int sig);
+void	child_sigint(int sig);
+void	heredoc_sigint(int sig);
+void	signals_ignore(void);
 
 #endif

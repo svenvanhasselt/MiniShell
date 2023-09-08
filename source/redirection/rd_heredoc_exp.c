@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/04 13:16:27 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/07 15:33:30 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 10:25:20 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ void	heredoc_expand_variable(t_node **lst, char ***env, int exit_status)
 	}
 }
 
+void	heredoc_add_exp_list(t_node *prev, t_node *head, char ***env)
+{
+	prev->next = heredoc_expand_split(&head, env);
+	prev = prev->next;
+}
+
 void	heredoc_expansion(t_node **lst, char ***env)
 {
 	t_node	*head;
@@ -64,10 +70,7 @@ void	heredoc_expansion(t_node **lst, char ***env)
 			if (*lst == head)
 				*lst = heredoc_expand_split(&head, env);
 			else
-			{
-				prev->next = heredoc_expand_split(&head, env);
-				prev = prev->next;
-			}
+				heredoc_add_exp_list(prev, head, env);
 			free(head->str);
 			free(head);
 		}

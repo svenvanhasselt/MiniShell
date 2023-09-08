@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/08/31 17:22:57 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/07 11:42:02 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,6 @@
 void	put_env(char *string, char ***env);
 int		add_variable(char *string, char ***env);
 int		check_variable(char **variable);
-
-void	print_env(char ***env)
-{
-	int	i;
-	int	val_set;
-
-	i = 0;
-	while ((*env)[i])
-	{
-		val_set = find_value((*env)[i]);
-		if (val_set < 0)
-			printf("declare -x %s\n", (*env)[i]);
-		else
-			printf("declare -x %.*s\"%s\"\n", val_set + 1, \
-			(*env)[i], (*env)[i] + val_set + 1);
-		i++;
-	}
-}
 
 int	export_builtin(char **cmd_table, char ***env)
 {
@@ -57,13 +39,29 @@ int	export_builtin(char **cmd_table, char ***env)
 	return (exit_code);
 }
 
+int	syntax_check(char *string)
+{
+	int	i;
+
+	if (string && !ft_isalpha(string[0]))
+		return (-1);
+	i = 1;
+	while (string && string[i] && string[i] != '=')
+	{
+		if (!ft_isalnum(string[i]))
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 int	add_variable(char *string, char ***env)
 {
 	char	*variable;
 	int		join_value;
 	int		val_set;
 
-	if (string && !ft_isalpha(string[0]))
+	if (syntax_check(string) < 0)
 		return (-1);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
 	join_value = check_variable(&variable);
@@ -81,7 +79,6 @@ int	add_variable(char *string, char ***env)
 	else
 		put_env(string, env);
 	free(variable);
-	free(string);
 	return (0);
 }
 
@@ -100,20 +97,6 @@ int	check_variable(char **variable)
 		i++;
 	}
 	return (0);
-}
-
-int	find_value(char *string)
-{
-	int	i;
-
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 void	put_env(char *string, char ***env)

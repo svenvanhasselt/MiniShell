@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 11:04:19 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/05 13:15:36 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/07 14:25:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 
 int		change_dir(char *path, char ***env);
+int		add_variable_cd(char *string, char ***env);
 
 int	cd_builtin(char **cmd_table, char ***env)
 {
@@ -43,8 +44,7 @@ int	find_env_var(char *variable, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (!strncmp(env[i], new_variable, ft_strlen(new_variable)) || \
-		!strncmp(env[i], variable, ft_strlen(variable)))
+		if (!strncmp(env[i], new_variable, ft_strlen(new_variable)))
 			return (free(new_variable), i);
 		i++;
 	}
@@ -63,11 +63,39 @@ int	change_dir(char *path, char ***env)
 	env_oldpwd = find_env_var("OLDPWD", *env);
 	old_dir = null_check(getcwd(NULL, 0));
 	if (chdir(path) < 0)
-		return (-1);
+		return (free(old_dir), -1);
 	new_dir = null_check(getcwd(NULL, 0));
-	add_variable(null_check(ft_strjoin("PWD=", new_dir)), env);
-	add_variable(null_check(ft_strjoin("OLDPWD=", old_dir)), env);
+	add_variable_cd(null_check(ft_strjoin("PWD=", new_dir)), env);
+	add_variable_cd(null_check(ft_strjoin("OLDPWD=", old_dir)), env);
 	free(old_dir);
 	free(new_dir);
+	return (0);
+}
+
+int	add_variable_cd(char *string, char ***env)
+{
+	char	*variable;
+	int		join_value;
+	int		val_set;
+
+	if (syntax_check(string) < 0)
+		return (-1);
+	variable = null_check(ft_substr(string, 0, find_value(string)));
+	join_value = check_variable(&variable);
+	if (join_value < 0)
+		return (-1);
+	val_set = find_env_var(variable, *env);
+	if (val_set > 0 && join_value)
+		(*env)[val_set] = null_check(ft_strjoin_free((*env)[val_set], \
+		string + find_value(string) + 1));
+	else if (val_set > 0)
+	{
+		free((*env)[val_set]);
+		(*env)[val_set] = null_check(ft_strdup(string));
+	}
+	else
+		put_env(string, env);
+	free(variable);
+	free(string);
 	return (0);
 }

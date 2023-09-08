@@ -5,29 +5,41 @@
 /*                                                     +:+                    */
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/08/31 16:35:32 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 14:32:36 by svan-has      ########   odam.nl         */
+/*   Created: 2023/09/06 18:19:20 by svan-has      #+#    #+#                 */
+/*   Updated: 2023/09/06 18:28:09 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*find_variable(char *variable, enum e_token type, char ***env)
+void	print_env(char ***env)
 {
-	int		var_set;
-	char	*value;
+	int	i;
+	int	val_set;
 
-	var_set = find_env_var(variable, (*env));
-	if (var_set >= 0)
+	i = 0;
+	while ((*env)[i])
 	{
-		value = null_check(ft_strdup(((*env)[var_set] + \
-		find_value((*env)[var_set]) + 1)));
-		free(variable);
-		return (value);
+		val_set = find_value((*env)[i]);
+		if (val_set < 0)
+			printf("declare -x %s\n", (*env)[i]);
+		else
+			printf("declare -x %.*s\"%s\"\n", val_set + 1, \
+			(*env)[i], (*env)[i] + val_set + 1);
+		i++;
 	}
-	if (!ft_strncmp(variable, "$", ft_strlen(variable)))
-		return (variable);
-	else if (type == EXP)
-		return (NULL);
-	return (free(variable), NULL);
+}
+
+int	find_value(char *string)
+{
+	int	i;
+
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
