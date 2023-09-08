@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 11:20:50 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 15:33:29 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	execute(t_exec *data, char ***env, int *status)
 		error_exit("operation failure", errno);
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
 		error_exit("operation failure", errno);
-	close_pipes_files(data);
 	if (check_builtins(data->cmd_table, env, status))
 		exit (*status);
 	execve(path_cmd(data->cmd_table[0], *env), data->cmd_table, *env);

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/30 12:30:06 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/07/10 15:43:49 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 15:36:12 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 
 void	copy_environ(int var_unset, char ***env);
 
-int	unset_builtin(char *variable, char ***env)
+int	unset_builtin(char **cmd_table, char ***env)
 {
-	int			var_unset;
+	int	i;
+	int	var_unset;
 
-	if (!variable)
+	if (!cmd_table[1])
 		return (0);
-	var_unset = find_env_var(variable, *env);
-	if (var_unset < 0)
-		return (0);
-	copy_environ(var_unset, env);
+	i = 1;
+	while (cmd_table[i])
+	{
+		var_unset = find_env_var(cmd_table[i], *env);
+		if (var_unset < 0)
+		{
+			i++;
+			continue ;
+		}
+		copy_environ(var_unset, env);
+		i++;
+	}
 	return (0);
 }
 
@@ -33,6 +42,7 @@ void	copy_environ(int var_unset, char ***env)
 	int			j;
 	char		**new_environ;
 
+	printf("Hier!!\n");
 	new_environ = null_check(malloc (array_size(*env) * sizeof(char *)));
 	i = 0;
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/08 10:20:00 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 15:33:00 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,6 @@ enum e_minishell_errors {
 	ERR_EXIT_NUM		= -7,
 };
 
-typedef struct s_funcstruc
-{
-	char	*name;
-	void	(*func)(void*);
-}	t_func;
-
 typedef struct s_exec_struc
 {
 	int		fdin;
@@ -126,7 +120,6 @@ typedef struct s_exec_struc
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
-	t_func	*builtin_func[7];
 	char	**env;
 }	t_exec;
 
@@ -250,7 +243,7 @@ int		echo_builtin(char **cmd_table);
 int		cd_builtin(char **cmd_table, char ***env);
 int		pwd_builtin(void);
 int		env_builtin(char **env);
-int		unset_builtin(char *variable, char ***env);
+int		unset_builtin(char **cmd_table, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
 int		exit_builtin(char **cmd_table, int status);
 
