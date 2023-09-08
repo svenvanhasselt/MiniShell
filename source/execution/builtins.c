@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 17:25:45 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 11:21:46 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status)
 		dup2_stdin_stdout((*data)->fdin, (*data)->fdout);
 		if (check_builtins(parser->cmd_table, env, status))
 		{
-			printf("Hi\n");
 			dup2_stdin_stdout((*data)->fdin_old, (*data)->fdout_old);
 			free_data(*data, parser);
 			return (*status);

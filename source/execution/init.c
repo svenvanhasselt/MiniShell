@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 10:24:06 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 11:27:48 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	*prepare(t_pl **parser, char ***env)
 
 int	create_new_table(t_pn **head_lst, t_pl **head, int i)
 {
-	//if (!ft_strncmp((*head_lst)->str, "", ft_strlen((*head_lst)->str)))
 	if ((*head_lst)->str && !ft_strncmp((*head_lst)->str, "", \
 	ft_strlen((*head_lst)->str)))
 	{
@@ -103,6 +102,11 @@ void	free_data(t_exec *data, t_pl *parser)
 	t_pl	*head;
 
 	head = parser;
+	if (data->num_commands == 1)
+	{
+		close(data->fdin_old);
+		close(data->fdout_old);
+	}
 	i = 0;
 	while (i < data->num_commands - 1)
 	{

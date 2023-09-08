@@ -6,39 +6,13 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 10:24:16 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 11:27:29 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 #include <sys/wait.h>
-
-// void	close_pipes_files(t_exec *data, t_pl **node)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < data->num_commands - 1)
-// 	{
-// 		close (data->pipe_fd[i][0]);
-// 		close (data->pipe_fd[i][1]);
-// 		i++;
-// 	}
-// 	while((*node))
-// 	{
-// 		if ((*node)->fd_in != -5)
-// 			close((*node)->fd_in);
-// 		if ((*node)->fd_out != -5)
-// 			close((*node)->fd_out);
-// 		(*node) = (*node)->next;
-// 	}
-// 	// Close FD's? Check!
-// 	// if (data->infile && i == 0)
-// 	// 	close(data->fdin);
-// 	// if (data->outfile && i == data->num_commands - 1)
-// 	// 	close(data->fdout);
-// }
 
 void	close_pipes_files(t_exec *data)
 {
@@ -51,11 +25,6 @@ void	close_pipes_files(t_exec *data)
 		close (data->pipe_fd[i][1]);
 		i++;
 	}
-	// Close FD's? Check!
-	// if (data->infile && i == 0)
-	// 	close(data->fdin);
-	// if (data->outfile && i == data->num_commands - 1)
-	// 	close(data->fdout);
 }
 
 void	waitpid_forks(t_exec *data, int *status)
