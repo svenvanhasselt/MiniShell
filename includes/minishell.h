@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/08 15:33:00 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 18:34:16 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,15 @@ typedef struct s_exec_struc
 	int		fdout;
 	int		fdin_old;
 	int		fdout_old;
+	bool	fdin_pipe;
+	bool	fdout_pipe;
 	int		num_commands;
 	int		*exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
 	char	**env;
+	t_pl	*parser_node;
 }	t_exec;
 
 /* LEXER */
@@ -227,8 +230,9 @@ void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
-//void	close_pipes_files(t_exec *data, t_pl **node);
-void	close_pipes_files(t_exec *data);
+int		redirection_error(t_exec *data, int i, int *status);
+void	close_pipes(t_exec *data);
+void	close_pipes_child(t_exec *data, int i);
 void	waitpid_forks(t_exec *data, int *status);
 int		create_fork_pipe(t_exec *data, t_pl *parser, int i);
 int		error_exit(char *message, int error_no);

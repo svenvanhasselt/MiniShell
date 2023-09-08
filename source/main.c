@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 11:29:53 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 19:21:35 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	prompt_init(t_node	**lst, char	**line, char **new)
 	*lst = NULL;
 	unlink("here_doc");
 	*line = readline("minishell~>");
+	add_history(*line);
 	*new = ft_strtrim(*line, " ");
 	if (!*new)
 	{
@@ -87,7 +88,6 @@ int	main(int argc, char *argv[], char *envp[])
 			make_tokens(main->new, &main->lst);
 			parse_execute(&main->lst, &main->p_list, &main->env, \
 			&main->exit_status);
-			add_history(main->line);
 		}
 		free_all(main->line, main->new, main->lst, &main->p_list);
 	}

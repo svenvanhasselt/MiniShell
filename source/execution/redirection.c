@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 12:42:45 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/01 17:09:14 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 18:24:42 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,16 @@ void	redirection(t_pl *parser, t_exec *data, int i)
 		data->fdout = redirect(parser, status, data->pipe_fd[i][1], false);
 	}
 	data->cmd_table = parser->cmd_table;
+}
+
+int	redirection_error(t_exec *data, int i, int *status)
+{
+	if (data->fdin < 0 || data->fdout < 0)
+	{
+		*status = 1;
+		if (data->fork_pid[i] == 0)
+			exit (1);
+		return (1);
+	}
+	return (0);
 }

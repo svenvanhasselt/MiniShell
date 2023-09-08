@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 15:44:30 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 18:33:53 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 
-void	close_pipes_files(t_exec *data)
+void	close_pipes(t_exec *data)
 {
 	int	i;
 
@@ -25,6 +25,19 @@ void	close_pipes_files(t_exec *data)
 		close (data->pipe_fd[i][1]);
 		i++;
 	}
+}
+
+void	close_pipes_child(t_exec *data, int i)
+{
+	if ((i != 0 && i != data->num_commands - 1))
+	{
+		close (data->pipe_fd[i - 1][1]);
+		close (data->pipe_fd[i][0]);
+	}
+	else if (i == 0 && data->num_commands != 1)
+		close (data->pipe_fd[i][0]);
+	else if (i == data->num_commands - 1 && data->num_commands != 1)
+		close (data->pipe_fd[i - 1][1]);
 }
 
 void	waitpid_forks(t_exec *data, int *status)
@@ -41,27 +54,6 @@ void	waitpid_forks(t_exec *data, int *status)
 			*status = WTERMSIG(*status) + 128;
 		i++;
 	}
-}
-
-int	create_fork_pipe(t_exec *data, t_pl *parser, int i)
-{
-	if (i < data->num_commands - 1)
-	{
-		if (pipe(data->pipe_fd[i]) < 0)
-		{
-			error_seterrno("pipe", "Resource temporarily unavailable", errno);
-			free_data(data, parser);
-			return (-1);
-		}
-	}
-	data->fork_pid[i] = fork();
-	if (data->fork_pid[i] == -1)
-	{
-		error_seterrno("pipe", "Resource temporarily unavailable", errno);
-		free_data(data, parser);
-		return (-1);
-	}
-	return (0);
 }
 
 char	**copy_environment_list(char **env)

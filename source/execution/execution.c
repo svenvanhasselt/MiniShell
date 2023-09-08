@@ -6,17 +6,16 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:35:16 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 15:33:29 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 19:04:49 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <fcntl.h>
 
-void	execute(t_exec *data, char ***env, int *status);
+void	execute(t_exec *data, char ***env, int *status, int i);
 char	*path_cmd(char *command, char **env);
 void	execute_command(t_exec *data, char ***env, int i, int *status);
-int		redirection_error(t_exec *data, int i, int *status);
 
 void	execution(t_pl **p_list, char ***env, int *status)
 {
@@ -32,6 +31,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 	i = 0;
 	while (i < data->num_commands)
 	{
+		data->parser_node = parser;
 		if (create_fork_pipe(data, parser, i) < 0)
 			return ;
 		redirection(parser, data, i);
@@ -40,7 +40,7 @@ void	execution(t_pl **p_list, char ***env, int *status)
 		parser = parser->next;
 		i++;
 	}
-	close_pipes_files(data);
+	close_pipes(data);
 	waitpid_forks(data, status);
 	free_data(data, parser);
 }
@@ -49,29 +49,18 @@ void	execute_command(t_exec *data, char ***env, int i, int *status)
 {
 	signals_child();
 	if (data->num_commands == 1 && data->fork_pid[i] == 0)
-		execute(data, env, status);
+		execute(data, env, status, i);
 	else if (i == 0 && data->fork_pid[i] == 0)
-		execute(data, env, status);
+		execute(data, env, status, i);
 	else if (i == data->num_commands - 1 && data->fork_pid[i] == 0)
-		execute(data, env, status);
+		execute(data, env, status, i);
 	else if (data->fork_pid[i] == 0)
-		execute(data, env, status);
+		execute(data, env, status, i);
 }
 
-int	redirection_error(t_exec *data, int i, int *status)
+void	execute(t_exec *data, char ***env, int *status, int i)
 {
-	if (data->fdin < 0 || data->fdout < 0)
-	{
-		*status = 1;
-		if (data->fork_pid[i] == 0)
-			exit (1);
-		return (1);
-	}
-	return (0);
-}
-
-void	execute(t_exec *data, char ***env, int *status)
-{
+	close_pipes_child(data, i);
 	if (dup2(data->fdin, STDIN_FILENO) < 0)
 		error_exit("operation failure", errno);
 	if (dup2(data->fdout, STDOUT_FILENO) < 0)
@@ -111,4 +100,25 @@ char	*path_cmd(char *command, char **env)
 		free(paths[i]);
 	free(paths);
 	return (command);
+}
+
+int	create_fork_pipe(t_exec *data, t_pl *parser, int i)
+{
+	if (i < data->num_commands - 1)
+	{
+		if (pipe(data->pipe_fd[i]) < 0)
+		{
+			error_seterrno("pipe", "Resource temporarily unavailable", errno);
+			free_data(data, parser);
+			return (-1);
+		}
+	}
+	data->fork_pid[i] = fork();
+	if (data->fork_pid[i] == -1)
+	{
+		error_seterrno("pipe", "Resource temporarily unavailable", errno);
+		free_data(data, parser);
+		return (-1);
+	}
+	return (0);
 }
