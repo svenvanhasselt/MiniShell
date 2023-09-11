@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:54:10 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:56:03 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_node	*rd_out(t_node *tokens, t_pl *node)
 		if (node->rd_out_append == false && g_signals != 2)
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_TRUNC, 0644);
-		}
 		if (node->fd_out == -1)
 			node->errno_out = errno;
 		if (tokens->next != NULL)
