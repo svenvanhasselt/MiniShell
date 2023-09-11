@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/08 14:56:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:06:34 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 12:55:36 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*lexer_trim(char *str)
 			j--;
 		if (j > i)
 			new = ft_substr(str, i, (j - i) + 1);
+		else
+			new = ft_strdup("");
 	}
 	return (new);
 }
