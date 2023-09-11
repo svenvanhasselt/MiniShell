@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 11:29:53 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:11:11 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	prompt_init(t_node	**lst, char	**line, char **new)
 	*lst = NULL;
 	unlink("here_doc");
 	*line = readline("minishell~>");
-	*new = ft_strtrim(*line, " ");
+	add_history(*line);
+	*new = lexer_trim(*line);
 	if (!*new)
 	{
 		free(*line);
@@ -56,8 +57,8 @@ int	prompt_init(t_node	**lst, char	**line, char **new)
 	}
 	else if (*new[0] == '\0')
 	{
-		free(*line);
 		free(*new);
+		free(*line);
 		return (0);
 	}
 	return (1);
@@ -87,9 +88,10 @@ int	main(int argc, char *argv[], char *envp[])
 			make_tokens(main->new, &main->lst);
 			parse_execute(&main->lst, &main->p_list, &main->env, \
 			&main->exit_status);
-			add_history(main->line);
+			// add_history(main->line);
 		}
 		free_all(main->line, main->new, main->lst, &main->p_list);
+		//system("leaks minishell");
 	}
 	return (0);
 }

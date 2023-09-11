@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/08/31 16:27:36 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:49:56 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ t_node	*rd_out(t_node *tokens, t_pl *node)
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_APPEND, 0644);
 		if (node->rd_out_append == false)
+		{
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_TRUNC, 0644);
+		}
 		if (node->fd_out == -1)
 			node->errno_out = errno;
 		if (tokens->next != NULL)

@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/05 10:31:04 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:43:58 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ t_node	*rd_makelist_utils2(t_node *t, t_node *f_cmnd, t_pl **p_list, char *ar)
 	t_pn	*n_list;
 
 	n_list = NULL;
-	while (t && t->type == SPC)
-		t = t->next;
-	if (t->type == WORD && \
+	if (t && t->type == WORD && \
 	ft_strncmp(t->str, ar, ft_strlen(ar)) != 0)
 	{
 		f_cmnd = t;
@@ -89,11 +87,12 @@ t_node	*rd_ml_utils(t_node *tokens, t_node *first_command, t_pl **p_list)
 		if (tokens && tokens->type == WORD)
 		{
 			after_rd = tokens->str;
-			if (tokens->next != NULL)
-				tokens = tokens->next;
+			tokens = tokens->next;
 		}
 		if (tokens && tokens->type == PIPE)
 			return (NULL);
+		while (tokens && tokens->type == SPC)
+			tokens = tokens->next;
 	}
 	first_command = rd_makelist_utils2(tokens, first_command, p_list, after_rd);
 	return (first_command);

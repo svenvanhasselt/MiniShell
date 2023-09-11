@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/08 10:44:55 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:50:38 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,18 +121,3 @@ t_node	*make_parser(t_node **tokens, t_pl **p_list, char ***env)
 	}
 	return (first_token);
 }
-
-// if ((*tokens)->next != NULL && (*tokens) == head)
-// 	*tokens = first_list_pl(*tokens, p_list, env);
-// else if ((*tokens) && (*tokens)->next == NULL)
-// 	*tokens = special_last(*tokens, head, p_list);
-
-// I should check where to put the heredoc!
-
-//fd leaks
-
-//check syntax error at first
-
-// I should take care of redirection in!
-
-//echo < file2 is not working properly
