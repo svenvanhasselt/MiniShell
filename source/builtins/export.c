@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 11:42:02 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 14:41:48 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	syntax_check(char *string)
 	i = 1;
 	while (string && string[i] && string[i] != '=')
 	{
-		if (!ft_isalnum(string[i]))
+		if (!ft_isalnum(string[i]) && string[i] != '+')
 			return (-1);
 		i++;
 	}

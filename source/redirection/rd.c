@@ -6,11 +6,13 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/09 15:52:08 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:49:56 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:54:10 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_signals;
 
 t_node	*rd_out(t_node *tokens, t_pl *node)
 {
@@ -24,11 +26,10 @@ t_node	*rd_out(t_node *tokens, t_pl *node)
 		free(node->file_out);
 		node->file_out = ft_strdup(tokens->str);
 		close(node->fd_out);
-		if (node->rd_out_append == true)
+		if (node->rd_out_append == true && g_signals != 2)
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_APPEND, 0644);
-		if (node->rd_out_append == false)
-		{
+		if (node->rd_out_append == false && g_signals != 2)
 			node->fd_out = open(tokens->str, O_CREAT | \
 			O_WRONLY | O_TRUNC, 0644);
 		}

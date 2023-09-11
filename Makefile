@@ -6,13 +6,13 @@
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/09/11 11:11:07 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/09/11 11:53:03 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror #-g -fsanitize=address
 READLINEFLAGS += -lreadline -L $(shell brew --prefix readline)/lib
 LIBFT	:= ./library/libft
 HEADERS := -I $(LIBFT)/includes -I includes -I $(shell brew --prefix readline)/include

@@ -6,11 +6,13 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/10 17:57:44 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:43:58 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:53:52 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_signals;
 
 void	rd_atfirst_out_utils(t_node *head, t_pl *node)
 {
@@ -18,9 +20,9 @@ void	rd_atfirst_out_utils(t_node *head, t_pl *node)
 	free(node->file_out);
 	node->file_out = ft_strdup(head->str);
 	close(node->fd_out);
-	if (node->rd_out_append == true)
+	if (node->rd_out_append == true && g_signals != 2)
 		node->fd_out = open(head->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (node->rd_out_append == false)
+	if (node->rd_out_append == false && g_signals != 2)
 		node->fd_out = open(head->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (node->fd_out == -1)
 		node->errno_in = errno;

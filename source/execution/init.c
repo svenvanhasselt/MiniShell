@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:45:46 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 11:27:48 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 19:04:36 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_sizelist_init(t_pl *lst)
 	head = lst;
 	while (head != NULL)
 	{
-		if (head->lst->str != NULL)
+		if (head->lst->str != NULL && head->next != NULL)
 			count++;
 		head = head->next;
 	}
@@ -40,7 +40,10 @@ void	*prepare(t_pl **parser, char ***env)
 
 	head = *parser;
 	data = null_check(malloc (1 * sizeof(t_exec)));
-	data->num_commands = ft_sizelist_init(*parser);
+	if (head->lst->str == NULL && head->next == NULL)
+		data->num_commands = 0;
+	else
+		data->num_commands = ft_sizelist_lparser(*parser);
 	if (data->num_commands > 0)
 	{
 		data->fork_pid = null_check(malloc(data->num_commands * sizeof(int)));
@@ -113,7 +116,10 @@ void	free_data(t_exec *data, t_pl *parser)
 		free(data->pipe_fd[i]);
 		i++;
 	}
-	free(data->pipe_fd);
-	free(data->fork_pid);
+	if (data->num_commands > 0)
+	{
+		free(data->pipe_fd);
+		free(data->fork_pid);
+	}
 	free(data);
 }

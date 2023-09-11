@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 17:07:29 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 11:21:46 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/08 15:35:21 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	builtins_rd(t_exec **data, t_pl *parser, char ***env, int *status)
 		(*data)->fdin = redirect(parser, status, STDIN_FILENO, true);
 		(*data)->fdout = redirect(parser, status, STDOUT_FILENO, false);
 		if ((*data)->fdin < 0 || (*data)->fdout < 0)
-			return (*status);
+			return (free_data(*data, parser), *status);
 		dup2_stdin_stdout((*data)->fdin, (*data)->fdout);
 		if (check_builtins(parser->cmd_table, env, status))
 		{
@@ -64,7 +64,7 @@ int	check_builtins(char **cmd_table, char ***env, int *status)
 	else if (ft_strncmp(cmd_table[0], "pwd", ft_strlen(cmd_table[0])) == 0)
 		*status = pwd_builtin();
 	else if (ft_strncmp(cmd_table[0], "unset", ft_strlen(cmd_table[0])) == 0)
-		*status = unset_builtin(cmd_table[1], env);
+		*status = unset_builtin(cmd_table, env);
 	else
 		return (0);
 	return (1);

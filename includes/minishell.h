@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/08 15:19:11 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/11 11:53:17 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,25 +109,21 @@ enum e_minishell_errors {
 	ERR_EXIT_NUM		= -7,
 };
 
-typedef struct s_funcstruc
-{
-	char	*name;
-	void	(*func)(void*);
-}	t_func;
-
 typedef struct s_exec_struc
 {
 	int		fdin;
 	int		fdout;
 	int		fdin_old;
 	int		fdout_old;
+	bool	fdin_pipe;
+	bool	fdout_pipe;
 	int		num_commands;
 	int		*exit_status;
 	int		**pipe_fd;
 	int		*fork_pid;
 	char	**cmd_table;
-	t_func	*builtin_func[7];
 	char	**env;
+	t_pl	*parser_node;
 }	t_exec;
 
 /* LEXER */
@@ -165,7 +161,6 @@ void	free_list(t_pn *lst);
 t_pl	*make_node_lparser(t_pn *small_list);
 t_pl	*ft_lastlist_lparser(t_pl *lst);
 void	ft_add_back_list_lparser(t_pl **lst, t_pl *new);
-//int		ft_sizelist_lparser(t_pl **lst);
 int		ft_sizelist_lparser(t_pl *lst);
 void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
@@ -235,8 +230,9 @@ void	*prepare(t_pl **parser, char ***env);
 void	create_cmd_table(t_pl *parser);
 void	redirection(t_pl *p_list, t_exec *data, int i);
 int		redirect(t_pl *parser, int *status, int fd, bool STDIN);
-//void	close_pipes_files(t_exec *data, t_pl **node);
-void	close_pipes_files(t_exec *data);
+int		redirection_error(t_exec *data, int i, int *status);
+void	close_pipes(t_exec *data);
+void	close_pipes_child(t_exec *data, int i);
 void	waitpid_forks(t_exec *data, int *status);
 int		create_fork_pipe(t_exec *data, t_pl *parser, int i);
 int		error_exit(char *message, int error_no);
@@ -251,7 +247,7 @@ int		echo_builtin(char **cmd_table);
 int		cd_builtin(char **cmd_table, char ***env);
 int		pwd_builtin(void);
 int		env_builtin(char **env);
-int		unset_builtin(char *variable, char ***env);
+int		unset_builtin(char **cmd_table, char ***env);
 int		export_builtin(char **cmd_table, char ***env);
 int		exit_builtin(char **cmd_table, int status);
 

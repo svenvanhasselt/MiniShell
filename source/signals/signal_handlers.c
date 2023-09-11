@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/04 19:53:13 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 14:40:52 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/08 18:43:33 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	child_sigint(int sig)
 
 void	heredoc_sigint(int sig)
 {
-	sig = 0;
 	printf("\n");
-	exit (2);
+	exit (sig);
 }
