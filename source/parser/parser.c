@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:50:38 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 16:43:07 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	}
 	last = ft_lastlist_lparser(*p_list);
 	n_list = last->lst;
-	if (!(last->rd_in == true && last->rd_out == true) && ((last->rd_in_heredoc \
-	== true && ft_strncmp(tokens->str, last->del_without_nl, \
-	ft_strlen(last->del_without_nl)) != 0) || (last->rd_out == true && \
-	ft_strncmp(tokens->str, last->file_out, \
-	ft_strlen(last->file_out)) != 0) || (last->rd_in == true && \
+	if (last->rd_in == true && ((last->del_without_nl && \
+	ft_strncmp(tokens->str, last->del_without_nl, \
+	ft_strlen(last->del_without_nl)) != 0) && \
 	ft_strncmp(tokens->str, last->file_in, \
-	ft_strlen(last->file_in)) != 0)))
+	ft_strlen(last->file_in)) != 0))
+		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
+	else if (last->rd_out == true && \
+	ft_strncmp(tokens->str, last->file_out, ft_strlen(last->file_out)) != 0)
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
 	return (NULL);
 }
@@ -71,14 +72,14 @@ t_node	*parser_utils(t_node *tokens, t_pl **p_list, char ***env)
 	last = ft_lastlist_lparser(*p_list);
 	while (last && tokens != NULL && tokens->type != PIPE)
 	{
-		while (tokens->type == SPC && tokens->next != NULL)
+		while (tokens && tokens->type == SPC && tokens->next != NULL)
 			(tokens) = (tokens)->next;
 		while (tokens && (tokens->type == REDIRECT_OUT || \
 		tokens->type == REDIRECT_IN))
 		{
 			tokens = rd_managment(tokens, p_list, env);
-			if (last->fd_in == -1 || last->fd_out == -1 || \
-			tokens->type == PIPE || tokens->next == NULL)
+			if (tokens && (last->fd_in == -1 || last->fd_out == -1 || \
+			tokens->type == PIPE || tokens->next == NULL))
 				break ;
 		}
 		if ((tokens && tokens->type == PIPE) || \
