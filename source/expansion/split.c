@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/31 16:10:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/07 16:19:02 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 17:58:37 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,19 @@ void	add_node_env(char *string, int i, int *start, t_node **exp_lst)
 	}
 }
 
+void	split_others(char *string, t_node **exp_lst, int i)
+{
+	if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
+		ft_add_back_list(exp_lst, make_node(null_check(ft_strdup("$")), \
+		1, ENV, IN_DOUBLEQ));
+	if (string[i] == ' ')
+		ft_add_back_list(exp_lst, make_node(null_check(ft_strdup(" ")), \
+		1, SPC, NORMAL));
+	if (string[i] == '\'')
+		ft_add_back_list(exp_lst, make_node(null_check(ft_strdup("\'")), \
+		1, WORD, IN_DOUBLEQ));
+}
+
 void	split_string(char *string_node, t_node **exp_lst)
 {
 	int		i;
@@ -72,17 +85,13 @@ void	split_string(char *string_node, t_node **exp_lst)
 	i = 0;
 	while (i <= len)
 	{
-		if ((string[i] != '$' && string[i] != ' ') && (start < 0))
+		if ((string[i] != '$' && string[i] != ' ' && string[i] != '\'') \
+		&& (start < 0))
 			start = i;
-		else if (((string[i] == '$' || string[i] == ' ' \
+		else if (((string[i] == '$' || string[i] == ' ' || string[i] == '\''\
 		|| i == (int)len) && start >= 0))
 			add_node_env(string, i, &start, exp_lst);
-		if (string[i] == '$' && (string[i + 1] == '\0' || string[i + 1] == ' '))
-			ft_add_back_list(exp_lst, make_node(null_check(ft_strdup("$")), \
-			1, ENV, IN_DOUBLEQ));
-		if (string[i] == ' ')
-			ft_add_back_list(exp_lst, make_node(null_check(ft_strdup(" ")), \
-			1, SPC, NORMAL));
+		split_others(string, exp_lst, i);
 		i++;
 	}
 	free(string);
