@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/22 09:22:36 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 18:33:53 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/12 17:56:10 by svan-has      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@ void	close_pipes(t_exec *data)
 
 void	close_pipes_child(t_exec *data, int i)
 {
-	if ((i != 0 && i != data->num_commands - 1))
+	int	pipe;
+
+	pipe = 0;
+	while (pipe < data->num_commands - 1 && data->pipe_fd[pipe][0] != 0)
 	{
-		close (data->pipe_fd[i - 1][1]);
-		close (data->pipe_fd[i][0]);
+		if (pipe + 1 != i)
+			close (data->pipe_fd[pipe][0]);
+		if (pipe != i)
+			close (data->pipe_fd[pipe][1]);
+		pipe++;
 	}
-	else if (i == 0 && data->num_commands != 1)
-		close (data->pipe_fd[i][0]);
-	else if (i == data->num_commands - 1 && data->num_commands != 1)
-		close (data->pipe_fd[i - 1][1]);
 }
 
 void	waitpid_forks(t_exec *data, int *status)
