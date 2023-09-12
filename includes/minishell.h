@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/14 17:33:17 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:53:17 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 11:03:54 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void	ft_add_back_list_lparser(t_pl **lst, t_pl *new);
 int		ft_sizelist_lparser(t_pl *lst);
 void	print_list_lparser(t_pl **plist);
 void	free_llist(t_pl **p_list);
+void	close_fd(int fd_in, int fd_out);
 
 /* REDIRECTION */
 t_node	*rd_managment(t_node *tokens, t_pl **p_list, char ***env);

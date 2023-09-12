@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/01 13:23:53 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/08 14:41:48 by svan-has      ########   odam.nl         */
+/*   Updated: 2023/09/12 11:16:35 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,13 @@ int	syntax_check(char *string)
 int	add_variable(char *string, char ***env)
 {
 	char	*variable;
-	int		join_value;
 	int		val_set;
 
 	if (syntax_check(string) < 0)
 		return (-1);
 	variable = null_check(ft_substr(string, 0, find_value(string)));
-	join_value = check_variable(&variable);
-	if (join_value < 0)
-		return (-1);
 	val_set = find_env_var(variable, *env);
-	if (val_set > 0 && join_value)
-		(*env)[val_set] = null_check(ft_strjoin_free((*env)[val_set], \
-		string + find_value(string) + 1));
-	else if (val_set > 0)
+	if (val_set > 0)
 	{
 		free((*env)[val_set]);
 		(*env)[val_set] = null_check(ft_strdup(string));

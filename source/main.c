@@ -6,7 +6,7 @@
 /*   By: svan-has <svan-has@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:24:48 by svan-has      #+#    #+#                 */
-/*   Updated: 2023/09/11 12:56:25 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 11:19:01 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	main(int argc, char *argv[], char *envp[])
 			&main->exit_status);
 		}
 		free_all(main->line, main->new, main->lst, &main->p_list);
-		system("leaks minishell");
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sven <sven@student.42.fr>                    +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 11:55:38 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 11:49:09 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 11:03:15 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,8 @@ void	free_llist(t_pl **p_list)
 			free(temp->cmd_table);
 		}
 		free_list(temp->lst);
-		close(temp->fd_in);
+		close_fd(temp->fd_in, temp->fd_out);
 		free(temp->file_in);
-		close(temp->fd_out);
 		free(temp->file_out);
 		free(temp->delimiter);
 		free(temp->del_without_nl);

@@ -6,7 +6,7 @@
 #    By: psadeghi <psadeghi@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/31 19:05:22 by svan-has      #+#    #+#                  #
-#    Updated: 2023/09/11 11:53:03 by psadeghi      ########   odam.nl          #
+#    Updated: 2023/09/12 11:05:04 by psadeghi      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC := \
 		parser/parser.c\
 		parser/ll_list_parser.c\
 		parser/ll_node_parser.c\
+		parser/parser_utils.c\
 		syntax/syntax_error.c\
 		syntax/qoute_managing.c\
 		syntax/token_comb.c\

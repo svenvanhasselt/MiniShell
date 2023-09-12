@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/08 14:56:37 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/11 12:55:36 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/12 10:58:31 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*lexer_trim(char *str)
 		str[j] == '\t' || str[j] == '\r' \
 		|| str[j] == '\n' || str[j] == '\v' || str[j] == '\f')))
 			j--;
-		if (j > i)
+		if (j >= i)
 			new = ft_substr(str, i, (j - i) + 1);
 		else
 			new = ft_strdup("");
