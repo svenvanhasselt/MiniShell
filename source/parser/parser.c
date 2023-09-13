@@ -6,7 +6,7 @@
 /*   By: psadeghi <psadeghi@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/07 12:11:10 by psadeghi      #+#    #+#                 */
-/*   Updated: 2023/09/12 16:43:07 by psadeghi      ########   odam.nl         */
+/*   Updated: 2023/09/13 11:00:16 by psadeghi      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ t_node	*special_last(t_node *tokens, t_node *head, t_pl **p_list)
 	}
 	last = ft_lastlist_lparser(*p_list);
 	n_list = last->lst;
-	if (last->rd_in == true && ((last->del_without_nl && \
+	if (!(last->rd_in == true && last->rd_out == true) && \
+	((last->del_without_nl && \
 	ft_strncmp(tokens->str, last->del_without_nl, \
 	ft_strlen(last->del_without_nl)) != 0) && \
 	ft_strncmp(tokens->str, last->file_in, \
 	ft_strlen(last->file_in)) != 0))
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
-	else if (last->rd_out == true && \
+	else if (!(last->rd_in == true && last->rd_out == true) && \
 	ft_strncmp(tokens->str, last->file_out, ft_strlen(last->file_out)) != 0)
 		ft_add_back_list_parser(&n_list, make_node_parser(tokens));
 	return (NULL);
